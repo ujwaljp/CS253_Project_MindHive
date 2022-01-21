@@ -1,1 +1,1 @@
-# CS253_team_MindHive
+# CS253_Team_MindHive
