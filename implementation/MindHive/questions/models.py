@@ -1,8 +1,9 @@
-from pyexpat import model
 from django.db import models
+
 from ..MindHive.models import Content
 from ..users.models import User
 from ..tags.models import Tag
+
 class Question(Content):
     # Question-specific fields
     title = models.CharField(max_length=200)
