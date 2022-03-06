@@ -1,8 +1,9 @@
 from django.db import models
-
-from ..answers.models import Answer
 from ..questions.models import Question
+from ..answers.models import Answer
 from ..comments.models import Comment
+from ..tags.models import Tag
+from ..notifications.models import Notification
 
 class User(models.Model):
     username = models.CharField(max_length=20)
@@ -11,10 +12,10 @@ class User(models.Model):
     password = models.CharField(max_length=20)
     profile_image = models.ImageField(upload_to='profile_image', blank=True)
     blocked = models.BooleanField(default=False)
-    followingQuestions = models.ManyToManyField('Question', blank=True)
-    bookmarkQuestions = models.ManyToManyField('Question', blank=True)
-    favouriteTags = models.ManyToManyField('Tag', blank=True)
-    notifications = models.ManyToManyField('Notification', blank=True)
+    followingQuestions = models.ManyToManyField(Question, blank=True)
+    bookmarkQuestions = models.ManyToManyField(Question, blank=True)
+    favouriteTags = models.ManyToManyField(Tag, blank=True)
+    notifications = models.ManyToManyField(Notification, blank=True)
 
     def __str__(self):
         return self.username
