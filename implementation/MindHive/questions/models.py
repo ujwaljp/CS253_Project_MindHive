@@ -1,3 +1,7 @@
 from django.db import models
+from ..MindHive.models import Content
 
-# Create your models here.
+class Question(Content):
+    # Question-specific fields
+    # ...
+    pass
