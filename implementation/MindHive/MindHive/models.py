@@ -8,6 +8,5 @@ class Content(models.Model):
     numDislikes = models.IntegerField(default=0)
     likedBy = models.ManyToManyField(User, related_name='likedBy')
     dislikedBy = models.ManyToManyField(User, related_name='dislikedBy')
-    models.ForeignKey
     def __str__(self):
         return self.text
