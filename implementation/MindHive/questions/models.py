@@ -1,8 +1,8 @@
 from django.db import models
 
-from ..MindHive.models import Content
-from ..users.models import User
-from ..tags.models import Tag
+from home.models import Content
+from users.models import User
+from tags.models import Tag
 
 class Question(Content):
     # Question-specific fields

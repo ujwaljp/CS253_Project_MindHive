@@ -1,9 +1,9 @@
 from django.db import models
-from ..questions.models import Question
-from ..answers.models import Answer
-from ..comments.models import Comment
-from ..tags.models import Tag
-from ..notifications.models import Notification
+from questions.models import Question
+from answers.models import Answer
+from comments.models import Comment
+from tags.models import Tag
+from notifications.models import Notification
 
 class User(models.Model):
     username = models.CharField(max_length=20)

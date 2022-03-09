@@ -1,6 +1,6 @@
 from django.db import models
-from ..questions.models import Question
-from ..answers.models import Answer
+from questions.models import Question
+from answers.models import Answer
 
 # Create your models here.
 class Notification(models.Model):
