@@ -6,8 +6,8 @@ class Content(models.Model):
     pub_date = models.DateTimeField('date published')
     numLikes = models.IntegerField(default=0)
     numDislikes = models.IntegerField(default=0)
-    likedBy = models.ManyToManyField(to='users.User', related_name='likedBy')
-    dislikedBy = models.ManyToManyField(to='users.User', related_name='dislikedBy')
+    likedBy = models.ManyToManyField(to='users.User', related_name='likedBy', blank=True)
+    dislikedBy = models.ManyToManyField(to='users.User', related_name='dislikedBy', blank=True)
 
     def __str__(self):
         return self.text
