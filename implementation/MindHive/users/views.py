@@ -12,4 +12,5 @@ def profile(request):
     usr1.blocked = False
 
     usr = [usr1]
-    return render(request, 'profile.html', {'users': usr})
+    # return render(request, 'profile.html', {'users': usr})
+    return HttpResponse("Hello, world. You're at the polls index.")
