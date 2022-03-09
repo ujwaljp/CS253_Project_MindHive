@@ -2,7 +2,7 @@ from django.urls import path
 
 from . import views
 
-url_patterns = [
+urlpatterns = [
     # eg: /questions/1/
     path('<int:question_id>', views.view, name='view_question'),
     # eg: /questions/ask/
