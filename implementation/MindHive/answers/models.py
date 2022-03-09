@@ -1,6 +1,5 @@
 from django.db import models
-from ..MindHive.models import Content
-from ..questions.models import Question
+from home.models import Content
 
 class Answer(Content):
-    parentObj=models.ForeignKey(Question, on_delete=models.CASCADE)
+    parentObj=models.ForeignKey(to='questions.Question', on_delete=models.CASCADE)
