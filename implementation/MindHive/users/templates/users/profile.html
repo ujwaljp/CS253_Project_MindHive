@@ -8,7 +8,6 @@
 </head>
 <body>
     {%block content%}
-        {%for user in users%}
             {%if user.blocked == False%}
                 Name = {{user.name}}
                 UserName = {{user.username}}
@@ -16,7 +15,6 @@
                 Image = <img src="{{user.profile_image.url}}"/>
                 <br>
             {%endif%}
-        {%endfor%}
     {%endblock%}
 </body>
 </html>

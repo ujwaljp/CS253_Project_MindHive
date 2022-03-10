@@ -4,9 +4,9 @@ from django.http import HttpResponse
 from .models import User
 # Create your views here.
 
-def profile(request):
-    usr = User.objects.all()
-    return render(request, 'implementation/MindHive/users/templates/users/profile.html', {'users': usr})
+def profile(request,user_id):
+    usr = User.objects.get(id=user_id)
+    return render(request, 'users/profile.html', {'user': usr})
     #return HttpResponse("Hello, world. You're at the polls index.")
 
 def edit(request):
