@@ -25,6 +25,8 @@ urlpatterns = [
     path('home/', include('questions.urls')),
     path('admin/', admin.site.urls),
     path('', views.index, name='index'),
+    path('sign_up/', views.signup, name='signup'),
+    path('sign_up/createuser', views.createuser, name='createuser')
 ]
 
 urlpatterns = urlpatterns + static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)
