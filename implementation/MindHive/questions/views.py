@@ -20,5 +20,5 @@ def ask(request, user_id):
 def submit(request, user_id):
     # user = User.objects.filter(id = user_id).values('User')
     user = get_object_or_404(User, id = user_id)
-    newQuestion = Question.objects.create(text = request.POST.get('text',False), pub_date = datetime.datetime.now(), author = user)
+    newQuestion = Question.objects.create(text = request.POST.get('question',False), pub_date = datetime.datetime.now(), author = user)
     return render(request, 'questions/submit.html', {'Ques' : newQuestion})
