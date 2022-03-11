@@ -1,3 +1,5 @@
 from django.db import models
+from home.models import Content
 
-# Create your models here.
+class Answer(Content):
+    parentObj=models.ForeignKey(to='questions.Question', on_delete=models.CASCADE)
