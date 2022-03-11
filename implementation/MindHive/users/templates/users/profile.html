@@ -1,20 +1,115 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Profile Page</title>
+    <title>Document</title>
+    {% load static %}
+    <link rel="style" href="{% static 'users/style.css' %}">
 </head>
+
 <body>
-    {%block content%}
-            {%if user.blocked == False%}
-                Name = {{user.name}}
-                UserName = {{user.username}}
-                Email = {{user.email}}
-                Image = <img src="{{user.profile_image.url}}"/>
-                <br>
-            {%endif%}
-    {%endblock%}
+    <nav id="navbar">
+        <a href="#" id="logo">
+            <img src="icon.jpg" alt="Hello" class="logo-img">
+            <div id="logo-name">MindHive</div>
+        </a>
+
+        <form class="inline-block">
+            <input class="form-input" type="search" placeholder="Search" aria-placeholder="Search">
+        </form>
+        <ul>
+            <li class="item"><a href="#home">Home</a></li>
+            <li class="item"><a href="#services-container">Services</a></li>
+            <li class="item"><a href="#client-section">Our Clients</a></li>
+            <li class="item"><a href="#contact">Contact Us</a></li>
+        </ul>
+    </nav>
+    <div id="container">
+
+        <div id="left">
+
+            <a href="#" class="sect">
+                <img id="H-img" src="" />
+                <div class="comp">Home</div>
+            </a>
+            <a href="#" class="sect">
+                <img id="Q-img" src="" />
+                <div class="comp">Questions</div>
+            </a>
+            <a href="#" class="sect">
+                <img id="T-img" src="" />
+                <div class="comp">Tags</div>
+            </a>
+            <a href="#" class="sect">
+                <img id="U-img" src="" />
+                <div class="comp">Users</div>
+            </a>
+            <a href="#" class="sect">
+
+                <div class="comp">Followings</div>
+            </a>
+            <a href="#" class="sect">
+
+                <div class="comp">Bookmarks</div>
+            </a>
+
+        </div>
+        <div class="profile">
+            <div id="photo">
+                <div id="center-photo">
+                    <img src="profile.png" alt="">
+                </div>
+                <div id="photo-button">
+                    <button id="Ch-file">
+                        Choose File
+                    </button>
+                </div>
+
+            </div>
+
+            <div id="data">
+                <form class="data-input" action="">
+                    <p class="text-name">Username</p>
+                    <input class="text-input" type="text" placeholder="Username">
+                </form>
+                <form class="data-input" action="">
+                    <p class="text-name">Name</p>
+                    <input class="text-input" type="text" placeholder="Name">
+                </form>
+                <form class="data-input" action="">
+                    <p class="text-name">Email</p>
+                    <input class="text-input" type="text" placeholder="Email">
+                </form>
+                <form class="data-input" action="">
+                    <p class="text-name">Department</p>
+                    <input class="text-input" type="text" placeholder="Department">
+                </form>
+                <form class="data-input" action="">
+                    <p class="text-name">Password</p>
+                    <input class="text-input" type="text" placeholder="Password">
+                </form>
+                <div class="data-box">
+                    <button id="submit">
+                        Save
+
+                    </button>
+                    <button id="cancel">
+                        Cancel
+
+                    </button>
+
+                </div>
+            </div>
+
+
+        </div>
+
+
+    </div>
+
 </body>
+
 </html>
