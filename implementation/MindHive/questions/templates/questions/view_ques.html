@@ -4,14 +4,46 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>User {{user.name}} - MindHive</title>
+    <title> {{question.title}} - MindHive</title>
 </head>
 <body>
     <h1>{{question.title}}</h1>
     <p>
-        Asked on {{question.pub_date}} by {{question.author.name}}
+        Asked on {{question.pub_date}} by {{question.author.name}} <br><hr><br>
+        {{question.text}} <br><br>
+        {{question.numViews}} Views, {{question.numLikes}} Upvotes, {{question.numDislikes}} Downvotes
     </p>
-    <h3>{{question.text}}</h3>
-
+    <p>
+        <a href="/questions/{{question.id}}/edit">Edit</a>
+        <a href="/questions/{{question.id}}/delete">Delete</a>
+    </p>
+    <!-- add buttons for up and downvotes -->
+    <button ng-click="upvote()">Upvote</button>
+    <button ng-click="downvote()">Downvote</button>
+    <h2>{{ question.answer_set.count }} Answer</h2>
+    <ul>
+        {% for answer in question.answer_set.all %}
+            <li>
+                <p>
+                    {{answer.text}} <br><br>
+                    Answered on {{answer.pub_date}} by {{answer.author.name}} <br><br>
+                    {{answer.numLikes}} Upvotes, {{answer.numDislikes}} Downvotes
+                </p>
+                <ul>
+                    {% for comment in answer.comment_set.all %}
+                        <li>
+                            <p>
+                                {{comment.text}} - Commented on {{comment.pub_date}} by {{comment.author.name}}
+                            </p>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </li>
+        {% endfor %}
+    </ul>
+    <form ng-submit="addComment()">
+        <input type="text" ng-model="commentText">
+        <button type="submit">Add Comment</button>
+    </form>
 </body>
 </html>
