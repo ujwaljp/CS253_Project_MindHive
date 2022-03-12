@@ -1,4 +1,3 @@
-from http.client import HTTPResponse
 from django.shortcuts import render
 from django.http import HttpResponse
 from .models import User
@@ -6,9 +5,7 @@ from .models import User
 
 def profile(request,user_id):
     usr = User.objects.get(id=user_id)
-    return render(request, 'users/profile.html', {'user': usr})
-    #return HttpResponse("Hello, world. You're at the polls index.")
+    return render(request, 'homepage.html', {'usr': usr})
 
 def edit(request):
-    # return render(request, 'profile.html', {'users': usr})
     return HttpResponse("Here the edit page will come")
