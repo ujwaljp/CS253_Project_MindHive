@@ -1,17 +1,17 @@
 from django.db import models
 
 class User(models.Model):
-    username = models.CharField(max_length=20)
-    name = models.CharField(max_length=20)
-    email = models.EmailField()
-    password = models.CharField(max_length=20)
+    username = models.CharField(max_length=20,blank=False)
+    name = models.CharField(max_length=20,blank=False)
+    email = models.EmailField(blank=False)
+    password = models.CharField(max_length=40,blank=False)
     profile_image = models.ImageField(upload_to='profile_image', blank=True)
     blocked = models.BooleanField(default=False)
     followingQuestions = models.ManyToManyField(to='questions.Question', related_name='user_fq', blank=True)
     bookmarkQuestions = models.ManyToManyField(to='questions.Question', related_name='user_bq', blank=True)
     favouriteTags = models.ManyToManyField(to='tags.Tag', blank=True)
     notifications = models.ManyToManyField(to='notifications.Notification', blank=True)
-
+    roll_no=models.CharField(max_length=8)
     def __str__(self):
         return self.username
 

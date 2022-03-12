@@ -5,7 +5,7 @@ from .models import User
 
 def profile(request,user_id):
     usr = User.objects.get(id=user_id)
-    return render(request, 'users/profile.html', {'user': usr})
+    return render(request, 'homepage.html', {'usr': usr})
     #return HttpResponse("Hello, world. You're at the polls index.")
 
 def edit(request):
