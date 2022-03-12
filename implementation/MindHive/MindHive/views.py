@@ -1,6 +1,10 @@
+## Login page for new/tokenless user ## 
+
 import re
 from django.shortcuts import redirect, render
 from users.models import User
+from 
+
 # Create your views here.
 def index(request):
     return render(request, 'index.html')
@@ -23,6 +27,7 @@ def createuser(request):
         return render(request, 'sign_up.html', {'errors' : msg})
         
     if password == password2:
+        # email auth part here
         new_user = User.objects.create(username=username, password=password,name=name, email=email )
         new_user.save()
         return redirect('/')
