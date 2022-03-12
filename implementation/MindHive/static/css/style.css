@@ -147,11 +147,10 @@ body{
 }
 
 #left a:hover{
-    background-color: rgb(134, 97, 97);
-    color: red;
-    border:1px solid red;
+    background-color: rgb(126, 120, 120);
+    color: white;
+    border:1px solid black;
     font-weight: 100;
-
 }
 #left a:hover #H-img{
     content:url('https://img.icons8.com/material-outlined/24/000000/home--v2.png');
