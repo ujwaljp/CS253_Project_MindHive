@@ -5,7 +5,7 @@ class User(models.Model):
     name = models.CharField(max_length=20,blank=False)
     email = models.EmailField(blank=False)
     password = models.CharField(max_length=40,blank=False)
-    profile_image = models.ImageField(upload_to='profile_image', blank=True)
+    profile_image = models.ImageField(upload_to='profile_image', default='default.jpg')
     blocked = models.BooleanField(default=False)
     followingQuestions = models.ManyToManyField(to='questions.Question', related_name='user_fq', blank=True)
     bookmarkQuestions = models.ManyToManyField(to='questions.Question', related_name='user_bq', blank=True)

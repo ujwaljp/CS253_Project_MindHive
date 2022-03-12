@@ -8,12 +8,11 @@
     <title>Document</title>
     <link rel="stylesheet" href="{% static '/css/style.css' %}">
 </head>
-
+{%block content%}
 <body>
     <nav id="navbar">
         <a href="#" id="logo">
-            <img src="icon.jpg" alt="Hello" class="logo-img">
-            <div id="logo-name">MindHive</div>
+            <img src="../media/icon.jpg" alt="Hello" class="logo-img">
         </a>
 
         <form class="inline-block">
@@ -59,33 +58,31 @@
         <div class="profile">
             <div id="photo">
                 <div id="center-photo">
-                    <img src="profile.png" alt="">
+                    {% comment %} Image=<img src="{{user.profile_image.url}}" /> {% endcomment %}
+                    <img src="{{usr.profile_image.url}}" />
                 </div>
-                <div id="photo-button">
-                    <button id="Ch-file">
-                        Choose File
-                    </button>
-                </div>
-
             </div>
-
             <div id="data">
                 <form class="data-input" action="">
                     <p class="text-name">Username</p>
-                    <p>{{usr}}</p>
+                    <p>{{usr.username}}</p>
                 </form>
                 <form class="data-input" action="">
                     <p class="text-name">Name</p>
                     {{usr.name}}
                 </form>
                 <form class="data-input" action="">
+                    <p class="text-name">Roll_no</p>
+                    {{usr.roll_no}}
+                </form>
+                <form class="data-input" action="">
                     <p class="text-name">Email</p>
                     {{usr.email}}
                 </form>
-                <form class="data-input" action="">
+                {% comment %} <form class="data-input" action="">
                     <p class="text-name">Department</p>
                     <input class="text-input" type="text" placeholder="Department">
-                </form>
+                </form> {% endcomment %}
                 {% comment %} <form class="data-input" action="">
                     <p class="text-name">Password</p>
                     <input class="text-input" type="text" placeholder="Password">
@@ -105,10 +102,7 @@
 
 
         </div>
-
-
     </div>
-
 </body>
-
+{%endblock%}
 </html>
