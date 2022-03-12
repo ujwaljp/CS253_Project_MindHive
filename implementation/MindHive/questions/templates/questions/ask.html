@@ -11,7 +11,15 @@
     
         <form action="submit" method="post">
             {%csrf_token%}
+            Title? : <input type="text" name="title">  
             What is the question? : <input type="text" name="question">
+            Tags : <input list="tags">     
+            <select multiple name="cars" id="cars">
+                <option value="volvo">Volvo</option>
+                <option value="saab">Saab</option>
+                <option value="mercedes">Mercedes</option>
+                <option value="audi">Audi</option>
+            </select>
             <input type="submit">
         </form>
     {%endblock%}

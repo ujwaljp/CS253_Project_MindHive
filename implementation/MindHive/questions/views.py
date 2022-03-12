@@ -1,3 +1,4 @@
+from turtle import title
 from django.http import HttpResponse
 import sys
 sys.path.append("..")
@@ -18,5 +19,5 @@ def ask(request, user_id):
 def submit(request, user_id):
     # user = User.objects.filter(id = user_id).values('User')
     user = get_object_or_404(User, id = user_id)
-    newQuestion = Question.objects.create(text = request.POST.get('question',False), pub_date = datetime.datetime.now(), author = user)
-    return render(request, 'questions/submit.html', {'Ques' : newQuestion})
+    newQuestion = Question.objects.create(text = request.POST.get('question',False), pub_date = datetime.datetime.now(), author = user,title=request.POST.get('title',False))
+    return render(request, 'questions/view_ques.html', {'question' : newQuestion})
