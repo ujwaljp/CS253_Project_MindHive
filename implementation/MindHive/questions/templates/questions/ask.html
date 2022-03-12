@@ -16,7 +16,7 @@
             Tags : <input list="tags">     
             <select multiple name="tags" id="tags">
                 {%for tag in tags%}
-                <option value="{{tag.name}}">{{tag.name}}</option>
+                <option value="{{tag.id}}">{{tag.name}}</option>
                 {%endfor%}
             </select>
             <input type="submit">

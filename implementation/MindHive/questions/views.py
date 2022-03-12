@@ -21,5 +21,9 @@ def ask(request, user_id):
 def submit(request, user_id):
     # user = User.objects.filter(id = user_id).values('User')
     user = get_object_or_404(User, id = user_id)
-    newQuestion = Question.objects.create(text = request.POST.get('question',False), pub_date = datetime.datetime.now(), author = user,title=request.POST.get('title',False),tags=request.POST.get('tags',False))
+    tags = []
+    tags = tags + list(request.POST['tags'])
+    newQuestion = Question.objects.create(text = request.POST.get('question',False), pub_date = datetime.datetime.now(), author = user,title=request.POST.get('title',False))
+    for tag in tags:
+        newQuestion.tags.set(tag)
     return render(request, 'questions/view_ques.html', {'question' : newQuestion})
