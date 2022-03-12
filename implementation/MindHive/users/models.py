@@ -1,4 +1,5 @@
 from django.db import models
+import datetime
 
 class User(models.Model):
     username = models.CharField(max_length=20,blank=False)
@@ -12,9 +13,12 @@ class User(models.Model):
     favouriteTags = models.ManyToManyField(to='tags.Tag', blank=True)
     notifications = models.ManyToManyField(to='notifications.Notification', blank=True)
     roll_no=models.CharField(max_length=8)
+    verified = models.BooleanField(default=False)
+    last_login = models.DateTimeField(default = datetime.datetime.now())
+    
     def __str__(self):
         return self.username
-
+    
 class Report(models.Model):
     report_text = models.CharField(max_length=200)
     reporter = models.ForeignKey(User, on_delete=models.CASCADE)
