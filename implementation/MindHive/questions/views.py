@@ -1,6 +1,8 @@
 from turtle import title
 from django.http import HttpResponse
 import sys
+
+from questions.forms import QuestionForm
 sys.path.append("..")
 from .models import Question
 from users.models import User
@@ -15,8 +17,9 @@ def edit(request, question_id):
     return HttpResponse("You're editing question %s." % question_id)
 
 def ask(request, user_id):
-    tags = Tag.objects.all()
-    return render(request, 'questions/ask.html', {'tags' : tags})
+    #tags = Tag.objects.all()
+    form = QuestionForm()
+    return render(request, 'questions/ask.html', {'form' : form})
 
 def submit(request, user_id):
     # user = User.objects.filter(id = user_id).values('User')

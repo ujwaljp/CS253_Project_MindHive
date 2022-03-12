@@ -11,7 +11,7 @@
     
         <form action="submit" method="post">
             {%csrf_token%}
-            Title? : <input type="text" name="title">  
+            <!-- Title? : <input type="text" name="title">  
             What is the question? : <input type="text" name="question">
             Tags : <input list="tags">     
             <select multiple name="tags" id="tags">
@@ -19,7 +19,9 @@
                 <option value="{{tag.id}}">{{tag.name}}</option>
                 {%endfor%}
             </select>
-            <input type="submit">
+            <input type="submit"> -->
+            {{form}}
+            <button>Submit</button>
         </form>
     {%endblock%}
 </body>
