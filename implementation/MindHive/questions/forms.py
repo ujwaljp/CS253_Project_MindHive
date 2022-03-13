@@ -3,7 +3,6 @@ from .models import Question
 import sys
 sys.path.append("..")
 from tags.models import Tag
-import datetime
 class CreateQuestionForm(forms.ModelForm):    
     class Meta:
         model = Question
