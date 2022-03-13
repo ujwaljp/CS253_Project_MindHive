@@ -2,7 +2,7 @@ from django.db import models
 from datetime import datetime
 class Content(models.Model):
     text = models.CharField(max_length=200)
-    author = models.ForeignKey(to='users.User', on_delete=models.CASCADE, related_name='author',default=1)
+    author = models.ForeignKey(to='users.User', on_delete=models.CASCADE, related_name='author')
     pub_date = models.DateTimeField('date published',default=datetime.now())
     numLikes = models.IntegerField(default=0)
     likedBy = models.ManyToManyField(to='users.User', related_name='likedBy', blank=True)

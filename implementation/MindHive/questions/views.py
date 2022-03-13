@@ -21,3 +21,5 @@ class QuestionCreateView(CreateView):
     form_class = CreateQuestionForm
     template_name = "questions/askform.html"
     success_url = 'https://stackoverflow.com/a/60273100/7063031'
+    def get_initial(self):
+        return {"author": self.kwargs.get("user_id")}
