@@ -280,3 +280,17 @@ body{
     cursor: pointer;
     font-weight: bold;
 }
+.form-group {
+    margin-left: 200px;
+    margin-right: 50px;
+    margin-top: 5px;
+    padding-left: 5px;
+    padding-top: 24px;
+    font-size: large;
+}
+.btn-secondary {
+    color: #fff;
+    background-color: #6c757d;
+    border-color: #6c757d;
+    margin-left: 100px;
+  }

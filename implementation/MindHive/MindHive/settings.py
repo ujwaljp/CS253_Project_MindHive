@@ -45,9 +45,10 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'crispy_forms',
     'rest_framework.authtoken'
 ]
-
+CRISPY_TEMPLATE_PACK = 'bootstrap4'
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -93,7 +94,6 @@ DATABASES = {
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
 
-<<<<<<< HEAD
 PASSWORD_HASHERS = [
     'django.contrib.auth.hashers.Argon2PasswordHasher',
     'django.contrib.auth.hashers.BCryptSHA256PasswordHasher',
@@ -109,8 +109,6 @@ REST_FRAMEWORK = {
     ]
 }
 
-=======
->>>>>>> 84eb2fee38ebdaf40507cb3b6aedba1c16ba204c
 AUTH_PASSWORD_VALIDATORS = [
     {
         'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
@@ -153,7 +151,6 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
-<<<<<<< HEAD
 
 # Email Config
 # EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
@@ -172,5 +169,3 @@ EMAIL_HOST_PASSWORD = ''
 EMAIL_USE_TLS = False
 
 MESSAGE_STORAGE = 'django.contrib.messages.storage.session.SessionStorage'
-=======
->>>>>>> 84eb2fee38ebdaf40507cb3b6aedba1c16ba204c
