@@ -15,24 +15,19 @@
     <center><h1>MindHive</h1>
     <br>
     <div class="container"></div>
-      <p align="left" style="color: green">{{ success }}</p>
-      <p align="left" style="color: red">{{ error }}</p>
-        <form id="post_form" method="POST" action="login">
+        <form id="post_form" method="POST" action="otp">
             {% csrf_token %}
+            <p align="left" style="color: green">{{ msg }}</p>
             <div class="form-outline mb-4">
-                <input type="email" name="email" placeholder="Enter IITK email id" class="form-control"> 
-            </div>
-            <div class="form-outline mb-4">
-                <input type="password" name="password" placeholder="Enter password" class="form-control"> 
+                <input type="integer" name="OTP" placeholder="Enter your OTP" class="form-control"> 
             </div>
             <br>
-            <button type="submit" class="btn btn-primary">Sign in</button>
+            <button type="submit" class="btn btn-primary">Sign Up</button>
         </form>
     </div>
     <br>
-    <a href="forgot_pswd.html">Forgot Password?</a>
-    <br><br>
-    <p>Don't have an account? <a href="/sign_up">Sign up</a></p>
+    
+    <p>Already have an account? <a href="../">Sign in</a></p>
     </center>
   </body>
 </html>

@@ -8,10 +8,13 @@ from django.template.loader import render_to_string
 from django.utils.http import urlsafe_base64_encode,urlsafe_base64_decode
 from django.utils.encoding import force_bytes, force_text, DjangoUnicodeDecodeError
 from django.contrib.auth.models import AbstractUser
-from .utils import generate_token
-from django.core.mail import EmailMessage
+# from .utils import generate_token
+from django.core.mail import send_mail
 from django.conf import settings
-from django.contrib.auth import login, logout
+from django.contrib import messages
+# from django.contrib.auth import login, logout
+from random import randint
+from django.core.signing import Signer
 
 '''
 1. How to add password hashing- shouldn't store passwords directly
@@ -29,37 +32,51 @@ def index(request):
 def signup(request):
     return render(request, 'sign_up.html')
 
-def send_activation_email(user, request):
+def send_activation_email(user, request, OTP):
     current_site = get_current_site(request)
     subject = "Account Confirmation Email" 
     body = render_to_string('Mindhive/activate.html',{
         'user':user,
         'domain': current_site,
         'uid':urlsafe_base64_encode(force_bytes(user.id)),
-        'token':generate_token.make_token(user)              #######################################
+        'token':OTP          #######################################
     })
+    print('here')
+    print(user.email)
     
-    email = EmailMessage(subject=subject,body=body,
+    send_mail(subject=subject,message = body,
                  from_email=settings.EMAIL_FROM_USER,
-                 to=[user.email])
-    email.send()
+                 recipient_list=[user.email], fail_silently=False)
+    # email.send()
+    print('here')
+    return
 
-def activate_account(request, uid_b64e, token):
+# def otp(request, uid_b64e, token):
+def otp(request):
+    username = request.session['username']
+    password = request.session['password']
+    email = request.session['email']
+    name = request.session['name']
+    roll_no=request.session['roll_no']
+    OTP = request.session['OTP']
     try:
-        uid = force_text(urlsafe_base64_decode(uid_b64e))
-        user = User.objects.get(id=uid)
+        user = User(username=username, password=password, name=name,
+                        email=email ,roll_no=roll_no)
         # ToDo: if no match with uid
     except Exception as e:
         user=None 
+        
+    signer = Signer(settings.SECRET_KEY)
+    value = signer.unsign(request.session['value'])
     
-    if user and generate_token.check_token(user, token):      ######################################
+    if user and value == str(OTP):      ######################################
         user.verified = True
         user.save()
         msg = 'Account verified! Go ahead and Log in'
-        return render('index.html', {'success' : msg})  
+        return redirect('', {'success' : msg})
     else:
         msg = 'Authentication Failed!'
-        return render('sign_up.html', {'error' : msg})
+        return render(request, 'sign_up.html', {'error' : msg})
 
 def createuser(request):
     username = request.POST['username']
@@ -82,9 +99,21 @@ def createuser(request):
         # Email verification
         new_user = User(username=username, password=password, name=name,
                         email=email ,roll_no=roll_no)
-        send_activation_email(new_user, request)
-        msg = 'Please check your inbox for the activation of account'
-        return render(request, 'index.html', {'success' : msg})
+        OTP = randint(10000000,99999999)
+        # print(OTP)
+        send_activation_email(new_user, request, OTP)
+        print('sent')
+        signer = Signer(settings.SECRET_KEY)
+        value = signer.sign(OTP)
+        msg = 'Please check your inbox for the OTP'
+        request.session['username'] = username
+        request.session['password'] = password
+        request.session['email'] = email
+        request.session['name'] = name
+        request.session['roll_no'] = roll_no
+        request.session['OTP'] = OTP
+        request.session['value'] = value
+        return render(request, 'Mindhive/otp.html', {'success' : msg, 'value': value})
     
 def login(request):
     email = request.POST['email']

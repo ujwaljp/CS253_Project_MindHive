@@ -2,10 +2,8 @@
 
 Hi {{user.username}}
 
-Click on the link below to confirm your email id.
+Entere the following OTP to confirm your email id.
 
-https://{{domain}}{% url 'activate' uid_b64e=uid token=token %}
-
-
+OTP : {{token}}
 
 {% endautoescape %}
