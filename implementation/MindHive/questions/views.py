@@ -23,7 +23,8 @@ def submit(request, user_id):
     user = get_object_or_404(User, id = user_id)
     tags = []
     tags = tags + list(request.POST['tags'])
-    newQuestion = Question.objects.create(text = request.POST.get('question',False), pub_date = datetime.datetime.now(), author = user,title=request.POST.get('title',False))
+    newQuestion = Question.objects.create(text = request.POST.get('question',False),
+                                          pub_date = datetime.datetime.now(), author = user,title=request.POST.get('title',False))
     for tag in tags:
         newQuestion.tags.set(tag)
     return render(request, 'questions/view_ques.html', {'question' : newQuestion})
