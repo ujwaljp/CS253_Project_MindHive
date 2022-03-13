@@ -1,8 +1,7 @@
-## Login page for new/tokenless user ## 
-
 import re
 from django.shortcuts import redirect, render
 from users.models import User
+<<<<<<< HEAD
 from django.contrib.sites.shortcuts import get_current_site
 from django.template.loader import render_to_string
 from django.utils.http import urlsafe_base64_encode,urlsafe_base64_decode
@@ -25,6 +24,8 @@ from django.core.signing import Signer
 
 '''
 
+=======
+>>>>>>> 84eb2fee38ebdaf40507cb3b6aedba1c16ba204c
 # Create your views here.
 def index(request):
     return render(request, 'index.html')
@@ -32,6 +33,7 @@ def index(request):
 def signup(request):
     return render(request, 'sign_up.html')
 
+<<<<<<< HEAD
 def send_activation_email(user, request, OTP):
     current_site = get_current_site(request)
     subject = "Account Confirmation Email" 
@@ -78,6 +80,8 @@ def otp(request):
         msg = 'Authentication Failed!'
         return render(request, 'sign_up.html', {'error' : msg})
 
+=======
+>>>>>>> 84eb2fee38ebdaf40507cb3b6aedba1c16ba204c
 def createuser(request):
     username = request.POST['username']
     password = request.POST['password1']
@@ -85,16 +89,15 @@ def createuser(request):
     email = request.POST['email']
     name = request.POST['name']
     roll_no=request.POST['roll_no']
-    
     # check if the both the passwords are same
     if User.objects.filter(username=username).exists() or User.objects.filter(email=email).exists():
-        msg = 'An account with the given Username/Email already exists'
+        msg = ['An account with the given Username/Email already exists']
         return render(request, 'sign_up.html', {'errors' : msg})
-    
     elif password != password2:
-        msg = "Passwords don't match"
+        msg = ["Passwords don't match"]
         return render(request, 'sign_up.html', {'errors' : msg})
         
+<<<<<<< HEAD
     elif password == password2:
         # Email verification
         new_user = User(username=username, password=password, name=name,
@@ -130,3 +133,9 @@ def login(request):
     else:
         msg = 'Email not registered. Try Signing up'
         return render(request, 'index.html', {'error' : msg} )
+=======
+    if password == password2:
+        new_user = User.objects.create(username=username, password=password,name=name, email=email ,roll_no=roll_no)
+        new_user.save()
+        return redirect('/')
+>>>>>>> 84eb2fee38ebdaf40507cb3b6aedba1c16ba204c
