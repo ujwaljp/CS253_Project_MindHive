@@ -26,7 +26,13 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.index, name='index'),
     path('sign_up/', views.signup, name='signup'),
+<<<<<<< HEAD
+    path('sign_up/createuser', views.createuser, name='createuser'),
+    path('sign_up/otp', views.otp, name='otp'),
+    # path('verify/<uid_b64e>/<token>', views.activate_account, name='activate')
+=======
     path('sign_up/createuser', views.createuser, name='createuser')
+>>>>>>> 84eb2fee38ebdaf40507cb3b6aedba1c16ba204c
 ]
 
 urlpatterns = urlpatterns + static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)
