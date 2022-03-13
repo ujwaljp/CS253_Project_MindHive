@@ -15,10 +15,18 @@
     <center><h1>MindHive</h1>
     <br>
     <div class="container"></div>
+        <!-- <p>
+            {% if errors %}
+
+            {% endif %}
+
+        </p> -->
         <form id="post_form" method="POST" action="createuser">
 
             {% csrf_token %}
-            <p align="left" style="color: red">{{ error }}</p>
+            {% if errors %}
+            <p align="left" style="color: red">{{ errors }}</p>
+            {% endif %}
             <div class="form-outline mb-4">
                 <input type="text" name="roll_no" placeholder="Enter your IIT Kanpur Roll no." class="form-control"> 
             </div>

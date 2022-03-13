@@ -75,7 +75,7 @@ def otp(request):
         return redirect('', {'success' : msg})
     else:
         msg = 'Authentication Failed!'
-        return render(request, 'sign_up.html', {'error' : msg})
+        return render(request, 'sign_up.html', {'errors' : msg})
 
 def createuser(request):
     username = request.POST['username']
@@ -86,10 +86,10 @@ def createuser(request):
     roll_no=request.POST['roll_no']
     # check if the both the passwords are same
     if User.objects.filter(username=username).exists() or User.objects.filter(email=email).exists():
-        msg = ['An account with the given Username/Email already exists']
+        msg = 'An account with the given Username/Email already exists'
         return render(request, 'sign_up.html', {'errors' : msg})
     elif password != password2:
-        msg = ["Passwords don't match"]
+        msg = "Passwords don't match"
         return render(request, 'sign_up.html', {'errors' : msg})
         
     elif password == password2:
