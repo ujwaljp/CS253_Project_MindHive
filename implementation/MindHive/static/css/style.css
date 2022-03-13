@@ -61,8 +61,9 @@ body{
 }
 /* Navigation Bar: search */
 .inline-block{
-    display: inline-block;
-
+    display: block;
+    width: 950px;
+    height: 40px;
 }
 .form-input{
     float: none;
@@ -72,9 +73,13 @@ body{
     margin: 0;
     padding: 14px;
     border: 1px solid black;
-    
+    height: 40px;
 }
-
+.dropdown{
+    position: relative;
+    left: 50px;
+    top: 7px;
+}
 /* Navigation Bar: List Styling */
 
 #navbar ul{
@@ -106,14 +111,13 @@ body{
 /* ----left compponet */
 #left{
     position: sticky;
-    border:1px solid black;
     float: left;
-    width: 25%;
-    height: 77vh;
-    display:flex;
+    width: auto;
+    height: 90vh;
+    display: flex;
     flex-direction: column;
-    margin-top: 28px;
-    margin-left: 22px;
+    margin-top: 0;
+    margin-left: 0;
     background-color: whitesmoke;
 }
 
@@ -147,24 +151,11 @@ body{
 }
 
 #left a:hover{
-    background-color: rgb(126, 120, 120);
-    color: white;
-    border:1px solid black;
+    background-color: rgb(255, 255, 255);
+    color: rgb(59, 58, 58);
+    /* border:1px solid black; */
     font-weight: 100;
-}
-#left a:hover #H-img{
-    content:url('https://img.icons8.com/material-outlined/24/000000/home--v2.png');
-    
-}
-#left a:hover #Q-img{
-    content:url('https://img.icons8.com/ios/50/000000/questions.png');
-    
-}
-#left a:hover #T-img{
-    content:url('https://img.icons8.com/ios/50/000000/tags--v1.png');
-}
-#left a:hover #U-img{
-    content:url('https://img.icons8.com/external-flatart-icons-outline-flatarticons/64/000000/external-users-cv-resume-flatart-icons-outline-flatarticons.png');
+    box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
 }
 
 .sect{
@@ -206,12 +197,20 @@ body{
     /* border: 2px solid black; */
     width:50%;
     margin: 0em 4.5em;
+    
 }
 #center-photo img{
     height: 300px;
     width: 300px;
     border-radius: 50%;
+    border: 5px lightgray solid;
 }
+.box-shadow-hover:hover {
+    box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
+}
+.pointer {
+    cursor: pointer;
+  }
 #photo-button{
     /* border: 2px solid black; */
     margin: 3em 6em;
@@ -225,7 +224,7 @@ body{
     height: 2em;
 }
 #Ch-file:hover{
-    background-color: rgb(83, 79, 79);
+    background-color: rgb(255, 254, 254);
 
 }
 
@@ -240,11 +239,11 @@ body{
     display: block;
     padding: 0.5em 1em;
     margin: 0em 1em;
-    justify-content: center;
+    font-size: xx-large;
 }
 .text-name{
     margin:0em;
-    font-size: small;
+    font-size: x-large;
     font-weight: bold;
     color: grey;
 }
