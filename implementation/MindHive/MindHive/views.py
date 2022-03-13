@@ -1,3 +1,4 @@
+from audioop import reverse
 import re
 from django.shortcuts import redirect, render
 from users.models import User
@@ -112,17 +113,20 @@ def createuser(request):
         return render(request, 'Mindhive/otp.html', {'success' : msg, 'value': value})
     
 def login(request):
-    email = request.POST['email']
-    password = request.POST['password']
-    
-    if User.objects.filter(email=email).exists():
-        user = User.objects.get(email=email)
-        # ToDo: if no match with uid
-        if user.password == password:
-            return render(request, 'home/')
+    if request.method == 'POST':
+        email = request.POST['email']
+        password = request.POST['password']
+        
+        if User.objects.filter(email=email).exists():
+            user = User.objects.get(email=email)
+            # ToDo: if no match with uid
+            if user.password == password:
+                return render(request, 'index.html', {'error' : 'login is working'})
+            else:
+                msg = 'Incorrect Password!'
+                return render(request, 'index.html', {'error' : msg})
         else:
-            msg = 'Incorrect Password!'
-            return render(request, 'index.html', {'error' : msg})
+            msg = 'Email not registered. Try Signing up'
+        
     else:
-        msg = 'Email not registered. Try Signing up'
-        return render(request, 'index.html', {'error' : msg} )
+        return render(request, 'index.html')
