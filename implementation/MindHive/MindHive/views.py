@@ -11,6 +11,16 @@ from django.contrib.auth.models import AbstractUser
 from .utils import generate_token
 from django.core.mail import EmailMessage
 from django.conf import settings
+from django.contrib.auth import login, logout
+
+'''
+1. How to add password hashing- shouldn't store passwords directly
+2. Let's test activation email part for now and disable it, can add it in the end after testing
+   the other project components
+3. Should we change user model to a one-to-one relationship with the User (default django model)
+4. 
+
+'''
 
 # Create your views here.
 def index(request):
@@ -45,10 +55,10 @@ def activate_account(request, uid_b64e, token):
     if user and generate_token.check_token(user, token):      ######################################
         user.verified = True
         user.save()
-        msg = ['Account verified! Go ahead and Log in']
+        msg = 'Account verified! Go ahead and Log in'
         return render('index.html', {'success' : msg})  
     else:
-        msg = ['Authentication Failed!']
+        msg = 'Authentication Failed!'
         return render('sign_up.html', {'error' : msg})
 
 def createuser(request):
@@ -61,11 +71,11 @@ def createuser(request):
     
     # check if the both the passwords are same
     if User.objects.filter(username=username).exists() or User.objects.filter(email=email).exists():
-        msg = ['An account with the given Username/Email already exists']
+        msg = 'An account with the given Username/Email already exists'
         return render(request, 'sign_up.html', {'errors' : msg})
     
     elif password != password2:
-        msg = ["Passwords don't match"]
+        msg = "Passwords don't match"
         return render(request, 'sign_up.html', {'errors' : msg})
         
     elif password == password2:
@@ -73,7 +83,7 @@ def createuser(request):
         new_user = User(username=username, password=password, name=name,
                         email=email ,roll_no=roll_no)
         send_activation_email(new_user, request)
-        msg = ['Please check your inbox for the activation of account']
+        msg = 'Please check your inbox for the activation of account'
         return render(request, 'index.html', {'success' : msg})
     
 def login(request):
@@ -86,8 +96,8 @@ def login(request):
         if user.password == password:
             return render(request, 'home/')
         else:
-            msg = ['Incorrect Password!']
+            msg = 'Incorrect Password!'
             return render(request, 'index.html', {'error' : msg})
     else:
-        msg = ['Email not regestered. Try Signing up']
+        msg = 'Email not registered. Try Signing up'
         return render(request, 'index.html', {'error' : msg} )
