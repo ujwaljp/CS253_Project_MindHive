@@ -4,7 +4,7 @@ from .models import Answer
 # Register your models here.
 @admin.register(Answer)
 class AnswerAdmin(admin.ModelAdmin):
-    list_display = ('text', 'author', 'pub_date', 'to_question')
+    list_display = ('show_description', 'author', 'pub_date', 'to_question')
     fieldsets = (
         (None, {
             'fields': ('text', 'to_question', ('author', 'pub_date'), 'anonymous')

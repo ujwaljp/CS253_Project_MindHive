@@ -3,7 +3,7 @@ from .models import Comment
 # Register your models here.
 @admin.register(Comment)
 class CommentAdmin(admin.ModelAdmin):
-    list_display = ('text', 'author', 'pub_date', 'parentObjType')
+    list_display = ('show_description', 'author', 'pub_date', 'parentObjType')
     fieldsets = (
         (None, {
             'fields': ('text', ('author', 'pub_date'))

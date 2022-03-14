@@ -13,3 +13,6 @@ class Content(models.Model):
 
     def __str__(self):
         return self.text
+    
+    def show_description(self):
+        return self.text[:70]
