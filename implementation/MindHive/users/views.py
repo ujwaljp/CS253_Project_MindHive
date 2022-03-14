@@ -12,8 +12,11 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from . import forms
 from django.views.generic import CreateView
+from django.contrib.auth import get_user_model
+
 # Create your views here.
 
+User = get_user_model()
 
 class SignUp(CreateView):
     form_class = forms.UserCreateForm
@@ -23,7 +26,7 @@ class SignUp(CreateView):
 
 def profile(request,pk):
     usr = User.objects.get(pk=pk)
-    return render(request, 'homepage.html', {'usr': usr})
+    return render(request, 'homepage.html', {'usr': usr, 'viewer': request.user})
 
 
 # def edit(request,user_id):
@@ -39,6 +42,7 @@ class UserEditView(LoginRequiredMixin ,generic.UpdateView):
     model = User
     fields=["username","profile_image"]
     template_name = "users/edit_profile.html"
+    login_url = '/users/login/'
     def form_valid(self, form):
         form.instance.user = self.request.user
         return super().form_valid(form)

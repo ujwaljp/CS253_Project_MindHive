@@ -28,12 +28,12 @@
                 </button>
                 <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                   {% if usr.is_authenticated %}
-                  <a class="dropdown-item" href="{% url 'edit_users' pk=usr.id %}">Edit Profile</a>
+                  <a class="dropdown-item" href="{% url 'users:edit_users' pk=usr.id %}">Edit Profile</a>
 
                   <a class="dropdown-item" href="#">Change Password</a>
 
 
-                  <a  class="dropdown-item" href="{% url 'logout' %}">Logout</a>
+                  <a  class="dropdown-item" href="{% url 'users:logout' %}">Logout</a>
                   {% endif %}
 
                   <a class="dropdown-item" href="#">Contact Us</a>
