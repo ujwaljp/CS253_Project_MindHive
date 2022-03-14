@@ -12,5 +12,5 @@ class CreateQuestionForm(forms.ModelForm):
         widgets = {'author': forms.HiddenInput(),'text':RichTextFormField()}  
         tags = forms.ModelMultipleChoiceField(
         queryset=Tag.objects.all(),
-        widget=forms.CheckboxSelectMultiple
+        widget=forms.CheckboxSelectMultiple,
         )
