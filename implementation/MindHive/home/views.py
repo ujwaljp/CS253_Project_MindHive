@@ -9,8 +9,10 @@ def view(request, user_id):
     # return HttpResponse(interestQues)
     return render(request, 'home/home.html', {'questions' : interestQues})
 
-def searchbar(request):
-    if request.method == 'GET':
-        search = request.GET.get('search')
-        post = Question.object.all().filter(title=search)
-        return render(request, 'searchbar.html', {'post':post})
+def search_results(request):
+    if request.method == 'POST':
+        searched = request.POST('searched')
+        posts = Question.object.all().filter(title=searched)
+        return render(request, 'search_results.html', {'searched':searched, 'posts':posts})
+    else:
+        return render(request, 'search_results.html', {})
