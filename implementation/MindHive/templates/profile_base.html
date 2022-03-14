@@ -27,8 +27,15 @@
                   Settings
                 </button>
                 <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                  <a class="dropdown-item" href="{% url 'users:edit_users' pk=usr.id %}">Edit Profile</a>
+                  {% if usr.is_authenticated %}
+                  <a class="dropdown-item" href="{% url 'edit_users' pk=usr.id %}">Edit Profile</a>
+
                   <a class="dropdown-item" href="#">Change Password</a>
+
+
+                  <a  class="dropdown-item" href="{% url 'logout' %}">Logout</a>
+                  {% endif %}
+
                   <a class="dropdown-item" href="#">Contact Us</a>
                 </div>
             </div>
@@ -64,32 +71,9 @@
             </a>
 
         </div>
-        <div class="profile">
-            <div id="photo">
-                <div id="center-photo">
-                    <img src="{{usr.profile_image.url}}" />
-                </div>
-            </div>
-            <div id="data">
-                <form class="data-input" action="">
-                    <p class="text-name">Username</p>
-                    {{usr.username}}
-                </form>
-                <form class="data-input" action="">
-                    <p class="text-name">Name</p>
-                    {{usr.name}}
-                </form>
-                <form class="data-input" action="">
-                    <p class="text-name">Roll_no</p>
-                    {{usr.roll_no}}
-                </form>
-                <form class="data-input" action="">
-                    <p class="text-name">Email</p>
-                    {{usr.email}}
-                </form>
-                </div>
-            </div>
-        </div>
+        {% block profile_content %}
+
+        {% endblock %}
     </div>
 </body>
 {%endblock%}

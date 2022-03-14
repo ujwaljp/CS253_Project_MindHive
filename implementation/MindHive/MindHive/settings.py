@@ -48,6 +48,8 @@ INSTALLED_APPS = [
     'crispy_forms',
     'rest_framework.authtoken',
     'ckeditor',
+    'bootstrap3',
+
 ]
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 MIDDLEWARE = [
@@ -171,3 +173,6 @@ EMAIL_HOST_PASSWORD = ''
 EMAIL_USE_TLS = False
 
 MESSAGE_STORAGE = 'django.contrib.messages.storage.session.SessionStorage'
+
+LOGIN_REDIRECT_URL = 'test'
+LOGOUT_REDIRECT_URL = 'thanks'

@@ -27,8 +27,8 @@ class UserInfoManager(BaseUserManager):
         user.save(using=self._db)
         return user
 
-
 class User(AbstractUser):
+
     username = models.CharField(max_length=20,blank=False)
     email = models.EmailField(
         verbose_name='email address',
@@ -47,6 +47,7 @@ class User(AbstractUser):
     favouriteTags = models.ManyToManyField(to='tags.Tag', blank=True)
     notifications = models.ManyToManyField(to='notifications.Notification', blank=True)
 
+
     objects = UserInfoManager()
 
     USERNAME_FIELD = 'email'
@@ -54,8 +55,6 @@ class User(AbstractUser):
 
     def __str__(self):
         return self.username
-
-
 class Report(models.Model):
     report_text = models.CharField(max_length=200)
     reporter = models.ForeignKey(User, on_delete=models.CASCADE)
