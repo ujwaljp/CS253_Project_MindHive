@@ -10,7 +10,7 @@
     <h1>{{question.title}}</h1>
     <p>
         Asked on {{question.pub_date}} by {{question.author.name}} <br><hr><br>
-        {{question.text}} <br><br>
+        {{question.text|safe}} <br><br>
         {{question.numViews}} Views, {{question.numLikes}} Upvotes, {{question.numDislikes}} Downvotes
     </p>
     <p>

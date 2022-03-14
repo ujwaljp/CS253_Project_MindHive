@@ -1,9 +1,9 @@
 from django.db import models
 
 from datetime import datetime
-
+from ckeditor.fields import RichTextField
 class Content(models.Model):
-    text = models.CharField(max_length=1000)
+    text = RichTextField()
     author = models.ForeignKey(to='users.User', on_delete=models.SET_NULL, related_name='author', null=True)
     anonymous = models.BooleanField(default=False)
     pub_date = models.DateTimeField('date published', default=datetime.now())
