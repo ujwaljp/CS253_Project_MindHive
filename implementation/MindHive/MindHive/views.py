@@ -20,7 +20,7 @@ from django.core.signing import Signer
 2. Let's test activation email part for now and disable it, can add it in the end after testing
    the other project components
 3. Should we change user model to a one-to-one relationship with the User (default django model)
-4. 
+4.
 
 '''
 
@@ -33,7 +33,7 @@ def signup(request):
 
 def send_activation_email(user, request, OTP):
     current_site = get_current_site(request)
-    subject = "Account Confirmation Email" 
+    subject = "Account Confirmation Email"
     body = render_to_string('Mindhive/activate.html',{
         'user':user,
         'domain': current_site,
@@ -42,7 +42,7 @@ def send_activation_email(user, request, OTP):
     })
     print('here')
     print(user.email)
-    
+
     send_mail(subject=subject,message = body,
                  from_email=settings.EMAIL_FROM_USER,
                  recipient_list=[user.email], fail_silently=False)
@@ -63,11 +63,11 @@ def otp(request):
                         email=email ,roll_no=roll_no)
         # ToDo: if no match with uid
     except Exception as e:
-        user=None 
-        
+        user=None
+
     signer = Signer(settings.SECRET_KEY)
     value = signer.unsign(request.session['value'])
-    
+
     if user and value == str(OTP):      ######################################
         user.verified = True
         user.save()
@@ -91,32 +91,35 @@ def createuser(request):
     elif password != password2:
         msg = "Passwords don't match"
         return render(request, 'sign_up.html', {'errors' : msg})
-        
+
     elif password == password2:
         # Email verification
-        new_user = User(username=username, password=password, name=name,
+        new_user = User(username=username, name=name,
                         email=email ,roll_no=roll_no)
-        OTP = randint(10000000,99999999)
-        # print(OTP)
-        send_activation_email(new_user, request, OTP)
-        print('sent')
-        signer = Signer(settings.SECRET_KEY)
-        value = signer.sign(OTP)
-        msg = 'Please check your inbox for the OTP'
-        request.session['username'] = username
-        request.session['password'] = password
-        request.session['email'] = email
-        request.session['name'] = name
-        request.session['roll_no'] = roll_no
-        request.session['OTP'] = OTP
-        request.session['value'] = value
-        return render(request, 'Mindhive/otp.html', {'success' : msg, 'value': value})
-    
+        new_user.set_password(password)
+        new_user.save()
+        print('User created')
+        # OTP = randint(10000000,99999999)
+        # # print(OTP)
+        # send_activation_email(new_user, request, OTP)
+        # print('sent')
+        # signer = Signer(settings.SECRET_KEY)
+        # value = signer.sign(OTP)
+        # msg = 'Please check your inbox for the OTP'
+        # request.session['username'] = username
+        # request.session['password'] = password
+        # request.session['email'] = email
+        # request.session['name'] = name
+        # request.session['roll_no'] = roll_no
+        # request.session['OTP'] = OTP
+        # request.session['value'] = value
+        return render(request, 'index.html')
+
 def login(request):
     if request.method == 'POST':
         email = request.POST['email']
         password = request.POST['password']
-        
+
         if User.objects.filter(email=email).exists():
             user = User.objects.get(email=email)
             # ToDo: if no match with uid
@@ -127,6 +130,6 @@ def login(request):
                 return render(request, 'index.html', {'error' : msg})
         else:
             msg = 'Email not registered. Try Signing up'
-        
+
     else:
         return render(request, 'index.html')

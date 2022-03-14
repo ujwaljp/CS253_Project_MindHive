@@ -1,20 +1,60 @@
 from django.db import models
+from django.contrib.auth.models import User
+from django.contrib.auth.models import BaseUserManager, AbstractBaseUser, AbstractUser
 
-class User(models.Model):
+
+class UserInfoManager(BaseUserManager):
+    def create_user(self, email, username, name, password,roll_no=None, ):
+        if not email:
+            raise ValueError('User must have an email address')
+
+        user = self.model(
+            email = self.normalize_email(email),
+            username=username,
+            roll_no=roll_no,
+            name=name,
+        )
+        user.set_password(password)
+        user.save(using=self._db)
+        return user
+
+    def create_superuser(self, email, username, password, name=None, roll_no=None):
+        user = self.create_user(email=email, username=username, name=name,
+                                roll_no=roll_no, password=password)
+        user.is_superuser = True
+        user.is_staff = True
+
+        user.save(using=self._db)
+        return user
+
+class User(AbstractUser):
+
     username = models.CharField(max_length=20,blank=False)
-    name = models.CharField(max_length=20,blank=False)
-    email = models.EmailField(blank=False)
-    password = models.CharField(max_length=40,blank=False)
+    email = models.EmailField(
+        verbose_name='email address',
+        max_length=255,
+        unique=True,
+        blank=False,
+    )
+
+    name = models.CharField(max_length=20, blank=True, null=True)
+    roll_no=models.CharField(max_length=8, blank=True, null=True)
+
     profile_image = models.ImageField(upload_to='profile_image', default='default.jpg')
     blocked = models.BooleanField(default=False)
     followingQuestions = models.ManyToManyField(to='questions.Question', related_name='user_fq', blank=True)
     bookmarkQuestions = models.ManyToManyField(to='questions.Question', related_name='user_bq', blank=True)
     favouriteTags = models.ManyToManyField(to='tags.Tag', blank=True)
     notifications = models.ManyToManyField(to='notifications.Notification', blank=True)
-    roll_no=models.CharField(max_length=8)
+
+
+    objects = UserInfoManager()
+
+    USERNAME_FIELD = 'email'
+    REQUIRED_FIELDS = ['username' ]
+
     def __str__(self):
         return self.username
-
 class Report(models.Model):
     report_text = models.CharField(max_length=200)
     reporter = models.ForeignKey(User, on_delete=models.CASCADE)
