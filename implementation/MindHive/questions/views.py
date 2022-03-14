@@ -12,41 +12,49 @@ from django.views.generic.edit import CreateView
 sys.path.append("..")
 
 
-def view(request, question_id):
+def view_question(request, question_id):
+    if not request.user.is_authenticated:
+        return HttpResponseRedirect(reverse('login'))
     question = Question.objects.get(id=question_id)
-    return render(request, 'questions/view_ques.html', {'question': question})
+    context = {
+        'question': question,
+        'user': request.user,
+    }
+    return render(request, 'questions/view_ques.html', context)
 
 
-def edit(request, question_id):
+def edit_question(request, question_id):
     return HttpResponse("You're editing question %s." % question_id)
 
 
-def like(request, question_id):
-    question = get_object_or_404(Question, id=question_id)
-    user_id = 2
-    if question.likedBy.filter(id=user_id).exists():
-        question.likedBy.remove(user_id)
+def vote(request, question_id):
+    if not request.user.is_authenticated:  # add blocked as well
+        return HttpResponseRedirect(reverse('login'))
+    user = request.user
+    if request.POST['obj_type'] == 'question':
+        object = get_object_or_404(Question, id=question_id)
     else:
-        question.likedBy.add(user_id)
-        if question.dislikedBy.filter(id=user_id).exists():
-            question.dislikedBy.remove(user_id)
-    return HttpResponseRedirect(reverse('view_question', args=[question.id]))
-
-
-def dislike(request, question_id):
-    question = get_object_or_404(Question, id=question_id)
-    user_id = 2
-    if question.dislikedBy.filter(id=user_id).exists():
-        question.dislikedBy.remove(user_id)
+        object = get_object_or_404(Answer, id=request.POST['answer_id'])
+    vote = request.POST['vote']
+    if vote == 'upvote':
+        if object.likedBy.filter(id=user.id).exists():
+            object.likedBy.remove(user.id)
+        else:
+            object.likedBy.add(user.id)
+            if object.dislikedBy.filter(id=user.id).exists():
+                object.dislikedBy.remove(user.id)
     else:
-        question.dislikedBy.add(user_id)
-        if question.likedBy.filter(id=user_id).exists():
-            question.likedBy.remove(user_id)
+        if object.dislikedBy.filter(id=user.id).exists():
+            object.dislikedBy.remove(user.id)
+        else:
+            object.dislikedBy.add(user.id)
+            if object.likedBy.filter(id=user.id).exists():
+                object.likedBy.remove(user.id)
     return HttpResponseRedirect(reverse('view_question', args=[question_id]))
 
 
 def add_comment(request, question_id):
-    if request.user.is_anonymous:
+    if not request.user.is_authenticated:
         return HttpResponseRedirect(reverse('login'))
     user = request.user
     if request.POST['obj_type'] == 'question':
