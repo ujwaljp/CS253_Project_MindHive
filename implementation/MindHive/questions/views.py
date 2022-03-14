@@ -1,6 +1,6 @@
 import sys
 
-from .forms import CreateQuestionForm
+from .forms import CreateQuestionForm, AddAnswerForm
 from .models import Question
 from answers.models import Answer
 
@@ -15,13 +15,25 @@ sys.path.append("..")
 def view_question(request, question_id):
     if not request.user.is_authenticated:
         return HttpResponseRedirect(reverse('login'))
-    question = Question.objects.get(id=question_id)
+
+    if request.method == 'POST':
+        form = AddAnswerForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect(reverse('view_question', args=[question_id]))
+    
+    question = get_object_or_404(Question, id=question_id)
+    initial_ans_data = {
+        'author': request.user,
+        'to_question': question
+    }
     context = {
         'question': question,
         'user': request.user,
         'bookmarked': question.users_bookmarked.filter(id=request.user.id).exists(),
         'followed': question.users_following.filter(id=request.user.id).exists(),
         'reported': question.report_set.filter(reportedUser=request.user).exists(),
+        'form': AddAnswerForm(initial_ans_data),
     }
     return render(request, 'questions/view_ques.html', context)
 
@@ -100,5 +112,6 @@ class QuestionCreateView(CreateView):
     form_class = CreateQuestionForm
     template_name = "questions/askform.html"
     success_url = 'https://stackoverflow.com/a/60273100/7063031'
+    
     def get_initial(self):
         return {"author": self.kwargs.get("user_id")}

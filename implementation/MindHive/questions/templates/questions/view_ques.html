@@ -11,31 +11,29 @@
     <p>
         Asked on {{question.pub_date}} by {{question.get_author_name}} <br><hr>
         <div style="background-color:rgb(222, 237, 241);">{{question.text|safe}}</div>
-        {{question.viewedBy.count}} Views, {{question.likedBy.count}} Upvotes, {{question.dislikedBy.count}} Downvotes || 
+        {{question.viewedBy.count}} Views, {{question.likedBy.count}} Upvotes, {{question.dislikedBy.count}} Downvotes | 
         {% for tag in question.tags.all %}
-            <a href="/questions/tag/{{tag.name}}">{{tag.name}}</a>
+            <button type="submit" style="background-color: #ffc368;">
+                <i>{{tag.name}}</i>
+            </button>
         {% endfor %}
-    </p>
-    <p>
         {% if user == question.author %}
-            <a href="/questions/{{question.id}}/edit">Edit</a>
-            <a href="/questions/{{question.id}}/delete">Delete</a>
+            | <a href="/questions/{{question.id}}/edit">Edit Question</a>
         {% endif %}
-        <form action="{% url 'follow_bookmark' question.id %}" method="POST">
-            {% csrf_token %}
-            {% if bookmarked %}
-                <button type="submit", name="action", value="unbookmark">Unbookmark</button>
-            {% else %}
-                <button type="submit" name="action", value="bookmark">Bookmark</button>
-            {% endif %}
-            {% if followed %}
-                <button type="submit" name="action", value="unfollow">Unfollow</button>
-            {% else %}
-                <button type="submit" name="action", value="follow">Follow</button>
-            {% endif %}
-        </form>
-
     </p>
+    <form action="{% url 'follow_bookmark' question.id %}" method="POST">
+        {% csrf_token %}
+        {% if bookmarked %}
+            <button type="submit", name="action", value="unbookmark">Unbookmark</button>
+        {% else %}
+            <button type="submit" name="action", value="bookmark">Bookmark</button>
+        {% endif %}
+        {% if followed %}
+            <button type="submit" name="action", value="unfollow">Unfollow</button>
+        {% else %}
+            <button type="submit" name="action", value="follow">Follow</button>
+        {% endif %}
+    </form>
     <!-- add buttons for up and downvotes -->
     <form action="{% url 'vote' question.id %}" method="POST">
         {% csrf_token %}
@@ -48,6 +46,9 @@
             <li>
                 <div style="background-color:#ddd;">{{comment.text|safe}}</div> 
                 --- Commented on {{comment.pub_date}} by {{comment.author.name}}
+                {% if user == comment.author %}
+                    | <a href="#">Edit</a>
+                {% endif %}
             </li>
             <hr>
         {% endfor %}
@@ -60,13 +61,17 @@
     </ul>
     <hr>
     
-    <h2>{{ question.answer_set.count }} Answer</h2>
+    <h2>{{ question.answer_set.count }} Answer{% if question.answer_set.count > 1 %}s{% endif %}
+    </h2>
     <ul>
         {% for answer in question.answer_set.all %}
             <li>
                 <div style="background-color:rgb(226, 233, 215);">{{answer.text|safe}}</div>
                 {{answer.likedBy.count}} Upvotes, {{answer.dislikedBy.count}} Downvotes 
                 --- Answered on {{answer.pub_date}} by {{answer.get_author_name}} <br><br>
+                {% if user == answer.author %}
+                    | <a href="#">Edit</a>
+                {% endif %}
                 <form action="{% url 'vote' question.id %}" method="POST">
                     {% csrf_token %}
                     <input type="hidden" name="obj_type" value="answer">
@@ -80,6 +85,9 @@
                         <li>
                             <div style="background-color:#ddd;">{{comment.text|safe}}</div> 
                             --- Commented on {{comment.pub_date}} by {{comment.author.name}}
+                            {% if user == comment.author %}
+                                | <a href="#">Edit</a>
+                            {% endif %}
                         </li>
                         <hr>
                     {% endfor %}
@@ -93,5 +101,18 @@
             </li>
         {% endfor %}
     </ul>
+    <hr>
+    <h2>Your answer</h2>
+    <form action="{% url 'view_question' question.id %}" method="POST">
+        {% csrf_token %}
+        {{ form.as_p }}
+        {{ form.media }}
+        <input type="submit" value="Post your answer">
+    </form>
 </body>
+<script>
+if ( window.history.replaceState ) {
+    window.history.replaceState( null, null, window.location.href );
+}
+</script>
 </html>
