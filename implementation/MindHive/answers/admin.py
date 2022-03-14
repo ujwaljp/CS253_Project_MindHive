@@ -1,4 +1,14 @@
 from django.contrib import admin
 from .models import Answer
 # Register your models here.
-admin.site.register(Answer)
+@admin.register(Answer)
+class AnswerAdmin(admin.ModelAdmin):
+    list_display = ('text', 'author', 'pub_date', 'ques')
+    fieldsets = (
+        (None, {
+            'fields': ('text', 'ques', ('author', 'pub_date'), 'anonymous')
+        }),
+        ('Votes', {
+            'fields': (('likedBy', 'dislikedBy'),)
+        })
+    )
