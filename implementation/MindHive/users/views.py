@@ -26,7 +26,10 @@ class SignUp(CreateView):
 
 def profile(request,pk):
     usr = User.objects.get(pk=pk)
-    return render(request, 'homepage.html', {'usr': usr, 'viewer': request.user})
+    if request.user.is_authenticated:
+        return render(request, 'homepage.html', {'usr': usr, 'viewer': request.user})
+    else:
+        return render(request, 'homepage.html', {'usr': usr})
 
 
 # def edit(request,user_id):
