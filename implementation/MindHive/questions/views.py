@@ -19,6 +19,8 @@ def view_question(request, question_id):
     context = {
         'question': question,
         'user': request.user,
+        'bookmarked': question.bookmarkedBy.filter(id=request.user.id).exists(),
+        'followed': question.followedBy.filter(id=request.user.id).exists(),
     }
     return render(request, 'questions/view_ques.html', context)
 

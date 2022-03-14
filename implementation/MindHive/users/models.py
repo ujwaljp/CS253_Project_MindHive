@@ -42,8 +42,8 @@ class User(AbstractUser):
 
     profile_image = models.ImageField(upload_to='profile_image', default='default.jpg')
     blocked = models.BooleanField(default=False)
-    followingQuestions = models.ManyToManyField(to='questions.Question', related_name='user_fq', blank=True)
-    bookmarkQuestions = models.ManyToManyField(to='questions.Question', related_name='user_bq', blank=True)
+    followingQuestions = models.ManyToManyField(to='questions.Question', related_name='users_following', blank=True)
+    bookmarkQuestions = models.ManyToManyField(to='questions.Question', related_name='users_bookmarked', blank=True)
     favouriteTags = models.ManyToManyField(to='tags.Tag', blank=True)
     notifications = models.ManyToManyField(to='notifications.Notification', blank=True)
 

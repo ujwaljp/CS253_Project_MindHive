@@ -11,7 +11,10 @@
     <p>
         Asked on {{question.pub_date}} by {{question.get_author_name}} <br><hr>
         <div style="background-color:rgb(222, 237, 241);">{{question.text|safe}}</div>
-        {{question.viewedBy.count}} Views, {{question.likedBy.count}} Upvotes, {{question.dislikedBy.count}} Downvotes
+        {{question.viewedBy.count}} Views, {{question.likedBy.count}} Upvotes, {{question.dislikedBy.count}} Downvotes || 
+        {% for tag in question.tags.all %}
+            <a href="/questions/tag/{{tag.name}}">{{tag.name}}</a>
+        {% endfor %}
     </p>
     <p>
         <a href="/questions/{{question.id}}/edit">Edit</a>
