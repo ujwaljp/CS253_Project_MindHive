@@ -1,38 +1,21 @@
-<!DOCTYPE html>
-{% load static %}
-<html lang="en">
-  <head>
-    <!-- Required meta tags -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- Add some styling to this Landing page-->
 
-    <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
-    <link rel="stylesheet" href="{% static '/css/master.css' %}">
-    <title>Welcome to MindHive</title>
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title></title>
   </head>
   <body>
-    <center><h1>MindHive</h1>
-    <br>
-    <div class="container"></div>
-      <p align="left" style="color: green">{{ success }}</p>
-      <p align="left" style="color: red">{{ error }}</p>
-        <form id="post_form" method="POST" action="login">
-            {% csrf_token %}
-            <div class="form-outline mb-4">
-                <input type="email" name="email" placeholder="Enter IITK email id" class="form-control"> 
-            </div>
-            <div class="form-outline mb-4">
-                <input type="password" name="password" placeholder="Enter password" class="form-control"> 
-            </div>
-            <br>
-            <button type="submit" class="btn btn-primary">Sign in</button>
-        </form>
-    </div>
-    <br>
-    <a href="forgot_pswd.html">Forgot Password?</a>
-    <br><br>
-    <p>Don't have an account? <a href="sign_up">Sign up</a></p>
-    </center>
+    <h1>Welcome to  Mindhive</h1>
+
+
+  {% if user.is_authenticated %}
+    <a href="{% url 'users:logout' %}">Logout</a>
+    {% else %}
+    <a href="{% url 'users:signup' %}" class="">Sign Up</a>
+    <a href="{% url 'users:login' %}">Login</a>
+
+    {% endif %}
   </body>
 </html>
