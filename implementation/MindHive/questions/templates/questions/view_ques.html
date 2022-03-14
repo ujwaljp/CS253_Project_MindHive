@@ -18,13 +18,11 @@
         <a href="/questions/{{question.id}}/delete">Delete</a>
     </p>
     <!-- add buttons for up and downvotes -->
-    <form action="{% url 'like_question' question.id %}" method="POST">
+    <form action="{% url 'vote' question.id %}" method="POST">
         {% csrf_token %}
-        <button type="submit", name="question_id",  value={{question.id}}>Like</button>
-    </form>
-    <form action="{% url 'dislike_question' question.id %}" method="POST">
-        {% csrf_token %}
-        <button type="submit", name="question_id",  value={{question.id}}>Dislike</button>
+        <input type="hidden" name="obj_type" value="question">
+        <button type="submit", name="vote",  value="upvote">Upvote</button>
+        <button type="submit", name="vote",  value="downvote">Downvote</button>
     </form>
     <ul>
         {% for comment in question.comment_set.all %}
@@ -49,7 +47,14 @@
             <li>
                 <div style="background-color:rgb(226, 233, 215);">{{answer.text|safe}}</div>
                 {{answer.likedBy.count}} Upvotes, {{answer.dislikedBy.count}} Downvotes 
-                --- Answered on {{answer.pub_date}} by {{answer.get_author_name}} <br>
+                --- Answered on {{answer.pub_date}} by {{answer.get_author_name}} <br><br>
+                <form action="{% url 'vote' question.id %}" method="POST">
+                    {% csrf_token %}
+                    <input type="hidden" name="obj_type" value="answer">
+                    <input type="hidden" name="answer_id" value={{answer.id}}>
+                    <button type="submit", name="vote",  value="upvote">Upvote</button>
+                    <button type="submit", name="vote",  value="downvote">Downvote</button>
+                </form>
                 <hr>
                 <ul>
                     {% for comment in answer.comment_set.all %}
