@@ -19,8 +19,9 @@ def view_question(request, question_id):
     context = {
         'question': question,
         'user': request.user,
-        'bookmarked': question.bookmarkedBy.filter(id=request.user.id).exists(),
-        'followed': question.followedBy.filter(id=request.user.id).exists(),
+        'bookmarked': question.users_bookmarked.filter(id=request.user.id).exists(),
+        'followed': question.users_following.filter(id=request.user.id).exists(),
+        'reported': question.report_set.filter(reportedUser=request.user).exists(),
     }
     return render(request, 'questions/view_ques.html', context)
 
@@ -52,6 +53,23 @@ def vote(request, question_id):
             object.dislikedBy.add(user.id)
             if object.likedBy.filter(id=user.id).exists():
                 object.likedBy.remove(user.id)
+    return HttpResponseRedirect(reverse('view_question', args=[question_id]))
+
+
+def follow_bookmark(request, question_id):
+    if not request.user.is_authenticated:
+        return HttpResponseRedirect(reverse('login'))
+    user = request.user
+    question = get_object_or_404(Question, id=question_id)
+    action = request.POST['action']
+    if action == 'unbookmark':
+        question.users_bookmarked.remove(user.id)
+    elif action == 'bookmark':
+        question.users_bookmarked.add(user.id)
+    elif action == 'unfollow':
+        question.users_following.remove(user.id)
+    elif action == 'follow':
+        question.users_following.add(user.id)
     return HttpResponseRedirect(reverse('view_question', args=[question_id]))
 
 

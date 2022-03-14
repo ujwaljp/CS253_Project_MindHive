@@ -59,7 +59,13 @@ class Report(models.Model):
     report_text = models.CharField(max_length=200)
     reporter = models.ForeignKey(User, on_delete=models.CASCADE)
     reportedUser = models.ForeignKey(User, on_delete=models.CASCADE, related_name='reported')
-    reportedObjType = models.CharField(max_length=20)
+    reported_on = models.DateTimeField(auto_now_add=True)
+    REPORTED_OBJECT_TYPES = (
+        ('q', 'Question'),
+        ('a', 'Answer'),
+        ('c', 'Comment'),
+    )
+    reportedObjType = models.CharField(max_length=1, choices=REPORTED_OBJECT_TYPES)
     reportedObjQ = models.ForeignKey(to='questions.Question', on_delete=models.CASCADE, null=True, blank=True)
     reportedObjA = models.ForeignKey(to='answers.Answer', on_delete=models.CASCADE, null=True, blank=True)
     reportedObjC = models.ForeignKey(to='comments.Comment', on_delete=models.CASCADE, null=True, blank=True)

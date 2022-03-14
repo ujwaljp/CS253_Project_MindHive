@@ -17,8 +17,24 @@
         {% endfor %}
     </p>
     <p>
-        <a href="/questions/{{question.id}}/edit">Edit</a>
-        <a href="/questions/{{question.id}}/delete">Delete</a>
+        {% if user == question.author %}
+            <a href="/questions/{{question.id}}/edit">Edit</a>
+            <a href="/questions/{{question.id}}/delete">Delete</a>
+        {% endif %}
+        <form action="{% url 'follow_bookmark' question.id %}" method="POST">
+            {% csrf_token %}
+            {% if bookmarked %}
+                <button type="submit", name="action", value="unbookmark">Unbookmark</button>
+            {% else %}
+                <button type="submit" name="action", value="bookmark">Bookmark</button>
+            {% endif %}
+            {% if followed %}
+                <button type="submit" name="action", value="unfollow">Unfollow</button>
+            {% else %}
+                <button type="submit" name="action", value="follow">Follow</button>
+            {% endif %}
+        </form>
+
     </p>
     <!-- add buttons for up and downvotes -->
     <form action="{% url 'vote' question.id %}" method="POST">
