@@ -18,16 +18,24 @@ from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
 from . import views
+from django.contrib.auth import views as auth_views
 
 urlpatterns = [
     path('questions/', include('questions.urls')),
-    path('users/', include('users.urls')),
-    path('login', views.login, name='login'),
+    path('users/', include('users.urls', namespace='users')),
+
     path('home/', include('home.urls')),
     path('admin/', admin.site.urls),
-    path('', views.index, name='index'),
-    path('sign_up/', views.signup, name='signup'),
-    path('sign_up/createuser', views.createuser, name='createuser')
+    path('', views.HomePage.as_view(), name='index'),
+    # path('sign_up/', views.signup, name='signup'),
+    # path('login/',
+    #     auth_views.LoginView.as_view(template_name='login.html'), name='login'),
+    # path('logout/', auth_views.LogoutView.as_view(),
+    #     name='logout'),
+    # path('sign_up/createuser', views.createuser, name='createuser'),
+    path('test/', views.TestPage.as_view(), name='test'),
+    path('thanks/', views.ThanksPage.as_view(), name='thanks'),
+    # path('thanks',views.thanks, name='thanks'),
 ]
 
 urlpatterns = urlpatterns + static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)

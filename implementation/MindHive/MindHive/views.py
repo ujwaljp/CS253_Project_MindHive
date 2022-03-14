@@ -7,6 +7,8 @@ from django.template.loader import render_to_string
 from django.utils.http import urlsafe_base64_encode,urlsafe_base64_decode
 from django.utils.encoding import force_bytes, DjangoUnicodeDecodeError
 from django.contrib.auth.models import AbstractUser
+from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import login_required
 # from .utils import generate_token
 from django.core.mail import send_mail
 from django.conf import settings
@@ -14,6 +16,7 @@ from django.contrib import messages
 # from django.contrib.auth import login, logout
 from random import randint
 from django.core.signing import Signer
+from django.contrib.auth.hashers import check_password
 
 '''
 1. How to add password hashing- shouldn't store passwords directly
@@ -24,58 +27,77 @@ from django.core.signing import Signer
 
 '''
 
+
+from django.views.generic import TemplateView
+
+
+class TestPage(TemplateView):
+    template_name = 'test.html'
+
+class ThanksPage(TemplateView):
+    template_name='thanks.html'
+
+class HomePage(TemplateView):
+    template_name = 'index.html'
+
+
 # Create your views here.
-def index(request):
-    return render(request, 'index.html')
+# def index(request):
+#     return render(request, 'index.html')
+#
+# def signup(request):
+#     return render(request, 'sign_up.html')
+#
+# # @login_required
+# def logout_user(request):
+#     logout(request)
+#     return render(request, 'thanks.html')
 
-def signup(request):
-    return render(request, 'sign_up.html')
-
-def send_activation_email(user, request, OTP):
-    current_site = get_current_site(request)
-    subject = "Account Confirmation Email"
-    body = render_to_string('Mindhive/activate.html',{
-        'user':user,
-        'domain': current_site,
-        'uid':urlsafe_base64_encode(force_bytes(user.id)),
-        'token':OTP          #######################################
-    })
-    print('here')
-    print(user.email)
-
-    send_mail(subject=subject,message = body,
-                 from_email=settings.EMAIL_FROM_USER,
-                 recipient_list=[user.email], fail_silently=False)
-    # email.send()
-    print('here')
-    return
-
-# def otp(request, uid_b64e, token):
-def otp(request):
-    username = request.session['username']
-    password = request.session['password']
-    email = request.session['email']
-    name = request.session['name']
-    roll_no=request.session['roll_no']
-    OTP = request.session['OTP']
-    try:
-        user = User(username=username, password=password, name=name,
-                        email=email ,roll_no=roll_no)
-        # ToDo: if no match with uid
-    except Exception as e:
-        user=None
-
-    signer = Signer(settings.SECRET_KEY)
-    value = signer.unsign(request.session['value'])
-
-    if user and value == str(OTP):      ######################################
-        user.verified = True
-        user.save()
-        msg = 'Account verified! Go ahead and Log in'
-        return redirect('', {'success' : msg})
-    else:
-        msg = 'Authentication Failed!'
-        return render(request, 'sign_up.html', {'errors' : msg})
+# def send_activation_email(user, request, OTP):
+#     current_site = get_current_site(request)
+#     subject = "Account Confirmation Email"
+#     body = render_to_string('Mindhive/activate.html',{
+#         'user':user,
+#         'domain': current_site,
+#         'uid':urlsafe_base64_encode(force_bytes(user.id)),
+#         'token':OTP          #######################################
+#     })
+#     print('here')
+#     print(user.email)
+#
+#     send_mail(subject=subject,message = body,
+#                  from_email=settings.EMAIL_FROM_USER,
+#                  recipient_list=[user.email], fail_silently=False)
+#     # email.send()
+#     print('here')
+#     return
+#
+# # def otp(request, uid_b64e, token):
+# def otp(request):
+#     username = request.session['username']
+#     password = request.session['password']
+#     email = request.session['email']
+#     name = request.session['name']
+#     roll_no=request.session['roll_no']
+#     OTP = request.session['OTP']
+#     try:
+#         user = User(username=username, password=password, name=name,
+#                         email=email ,roll_no=roll_no)
+#         # ToDo: if no match with uid
+#     except Exception as e:
+#         user=None
+#
+#     signer = Signer(settings.SECRET_KEY)
+#     value = signer.unsign(request.session['value'])
+#
+#     if user and value == str(OTP):      ######################################
+#         user.verified = True
+#         user.save()
+#         msg = 'Account verified! Go ahead and Log in'
+#         return redirect('', {'success' : msg})
+#     else:
+#         msg = 'Authentication Failed!'
+#         return render(request, 'sign_up.html', {'errors' : msg})
 
 def createuser(request):
     username = request.POST['username']
@@ -115,21 +137,23 @@ def createuser(request):
         # request.session['value'] = value
         return render(request, 'index.html')
 
-def login(request):
-    if request.method == 'POST':
-        email = request.POST['email']
-        password = request.POST['password']
+def thanks(request):
+    return render(request, 'thanks.html')
 
-        if User.objects.filter(email=email).exists():
-            user = User.objects.get(email=email)
-            # ToDo: if no match with uid
-            if user.password == password:
-                return render(request, 'index.html', {'error' : 'login is working'})
-            else:
-                msg = 'Incorrect Password!'
-                return render(request, 'index.html', {'error' : msg})
-        else:
-            msg = 'Email not registered. Try Signing up'
 
-    else:
-        return render(request, 'index.html')
+        # email = request.POST['email']
+        # password = request.POST['password']
+        #
+        # if User.objects.filter(email=email).exists():
+        #     user = User.objects.get(email=email)
+        #     # ToDo: if no match with uid
+        #     if user.password == password:
+        #         return render(request, 'index.html', {'error' : 'login is working'})
+        #     else:
+        #         msg = 'Incorrect Password!'
+        #         return render(request, 'index.html', {'error' : msg})
+        # else:
+        #     msg = 'Email not registered. Try Signing up'
+
+    # else:
+    #     return render(request, 'index.html')
