@@ -16,3 +16,9 @@ class Content(models.Model):
     
     def show_description(self):
         return self.text[:70]
+    
+    def get_author_name(self):
+        if self.anonymous:
+            return 'Anonymous User'
+        else:
+            return self.author.name

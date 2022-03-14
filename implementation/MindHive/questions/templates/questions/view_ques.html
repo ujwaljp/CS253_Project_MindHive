@@ -9,8 +9,8 @@
 <body>
     <h1>{{question.title}}</h1>
     <p>
-        Asked on {{question.pub_date}} by {{question.author.name}} <br><hr>
-        {{question.text|safe}}
+        Asked on {{question.pub_date}} by {{question.get_author_name}} <br><hr>
+        <div style="background-color:rgb(222, 237, 241);">{{question.text|safe}}</div>
         {{question.viewedBy.count}} Views, {{question.likedBy.count}} Upvotes, {{question.dislikedBy.count}} Downvotes
     </p>
     <p>
@@ -26,32 +26,48 @@
         {% csrf_token %}
         <button type="submit", name="question_id",  value={{question.id}}>Dislike</button>
     </form>
+    <ul>
+        {% for comment in question.comment_set.all %}
+            <li>
+                <div style="background-color:#ddd;">{{comment.text|safe}}</div> 
+                --- Commented on {{comment.pub_date}} by {{comment.author.name}}
+            </li>
+            <hr>
+        {% endfor %}
+        <form action="{% url 'add_comment' question.id %}" method="POST">
+            {% csrf_token %}
+            <input type="text" maxlength="200" name="comment_text" placeholder="Add a comment">
+            <input type="hidden" name="obj_type" value="question">
+            <button type="submit", name="question_id",  value={{question.id}}>Comment</button>
+        </form>
+    </ul>
+    <hr>
     
     <h2>{{ question.answer_set.count }} Answer</h2>
     <ul>
         {% for answer in question.answer_set.all %}
             <li>
-                <p>
-                    {{answer.text}} <br><br>
-                    Answered on {{answer.pub_date}} by {{answer.author.name}} <br><br>
-                    {{answer.likedBy.count}} Upvotes, {{answer.dislikedBy.count}} Downvotes
-                </p>
+                <div style="background-color:rgb(226, 233, 215);">{{answer.text|safe}}</div>
+                {{answer.likedBy.count}} Upvotes, {{answer.dislikedBy.count}} Downvotes 
+                --- Answered on {{answer.pub_date}} by {{answer.get_author_name}} <br>
+                <hr>
                 <ul>
                     {% for comment in answer.comment_set.all %}
                         <li>
-                            <p>
-                                {{comment.text}} - Commented on {{comment.pub_date}} by {{comment.author.name}}
-                            </p>
+                            <div style="background-color:#ddd;">{{comment.text|safe}}</div> 
+                            --- Commented on {{comment.pub_date}} by {{comment.author.name}}
                         </li>
+                        <hr>
                     {% endfor %}
+                    <form action="{% url 'add_comment' question.id %}" method="POST">
+                        {% csrf_token %}
+                        <input type="text" maxlength="200" name="comment_text" placeholder="Add a comment">
+                        <input type="hidden" name="obj_type" value="answer">
+                        <button type="submit", name="answer_id",  value={{answer.id}}>Comment</button>
+                    </form>
                 </ul>
             </li>
         {% endfor %}
     </ul>
-    <form ng-submit="addComment()">
-        <input type="text" ng-model="commentText">
-        <button type="submit">Add Comment</button>
-    </form>
-    
 </body>
 </html>
