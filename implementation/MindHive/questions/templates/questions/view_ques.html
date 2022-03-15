@@ -25,12 +25,12 @@
     </p>
     <form action="{% url 'questions:follow_bookmark' question.id %}" method="POST">
         {% csrf_token %}
-        {% if bookmarked %}
+        {% if user in question.users_bookmarked.all %}
             <button type="submit", name="action", value="unbookmark">Unbookmark</button>
         {% else %}
             <button type="submit" name="action", value="bookmark">Bookmark</button>
         {% endif %}
-        {% if followed %}
+        {% if user in question.users_following.all %}
             <button type="submit" name="action", value="unfollow">Unfollow</button>
         {% else %}
             <button type="submit" name="action", value="follow">Follow</button>
@@ -130,7 +130,7 @@ if ( window.history.replaceState ) {
 function submitVote(obj_type,id,vote){
     $.ajax({
         type : 'POST',
-        url  : "{% url 'ajax_posting' %}",
+        url  : "{% url 'questions:ajax_posting' %}",
         data : {
             'csrfmiddlewaretoken': '{{ csrf_token }}',
             'obj_type' : obj_type,

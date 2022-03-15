@@ -15,8 +15,6 @@ sys.path.append("..")
 def view_question(request, question_id):
     if not request.user.is_authenticated:
         return HttpResponseRedirect(reverse('users:login'))
-    for ques in Question.objects.all():
-        print(ques.id)
     if request.method == 'POST':
         form = AddAnswerForm(request.POST)
         if form.is_valid():
@@ -24,6 +22,8 @@ def view_question(request, question_id):
             return HttpResponseRedirect(reverse('questions:view_question', args=[question_id]))
 
     question = get_object_or_404(Question, id=question_id)
+    if not question.viewedBy.filter(id=request.user.id).exists():
+        question.viewedBy.add(request.user.id)
     initial_ans_data = {
         'author': request.user,
         'to_question': question
@@ -31,16 +31,30 @@ def view_question(request, question_id):
     context = {
         'question': question,
         'user': request.user,
-        'bookmarked': question.users_bookmarked.filter(id=request.user.id).exists(),
-        'followed': question.users_following.filter(id=request.user.id).exists(),
-        'reported': question.report_set.filter(reportedUser=request.user).exists(),
         'form': AddAnswerForm(initial_ans_data),
     }
     return render(request, 'questions/view_ques.html', context)
 
 
 def edit_question(request, question_id):
-    return HttpResponse("You're editing question %s." % question_id)
+    if not request.user.is_authenticated:
+        return HttpResponseRedirect(reverse('login'))
+
+    if request.method == 'POST':
+        question = get_object_or_404(Question, id=question_id)
+        form = CreateQuestionForm(request.POST, instance=question)
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect(reverse('questions:view_question', args=[question_id]))
+    
+    # for GET request
+    question = get_object_or_404(Question, id=question_id)
+    form = CreateQuestionForm(instance=question)
+    context = {
+        'form': form,
+        'question': question,
+    }
+    return render(request, 'questions/askform.html', context=context)
 
 
 def vote(request, question_id):
