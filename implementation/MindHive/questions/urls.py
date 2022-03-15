@@ -2,6 +2,8 @@ from django.urls import path
 
 from . import views
 
+app_name = 'questions'
+
 urlpatterns = [
     # eg: /questions/1/
     path('<int:question_id>', views.view_question, name='view_question'),

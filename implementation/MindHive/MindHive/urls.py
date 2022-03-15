@@ -21,7 +21,7 @@ from . import views
 from django.contrib.auth import views as auth_views
 
 urlpatterns = [
-    path('questions/', include('questions.urls')),
+    path('questions/', include('questions.urls',namespace='questions')),
     path('users/', include('users.urls', namespace='users')),
 
     path('home/', include('home.urls')),

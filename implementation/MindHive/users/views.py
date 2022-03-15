@@ -31,6 +31,8 @@ def profile(request,pk):
     else:
         return render(request, 'homepage.html', {'usr': usr})
 
+def testview(request):
+    return HttpResponse('<h1>Test page</h1>')
 
 # def edit(request):
 #     if request.method:
