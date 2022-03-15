@@ -1,10 +1,12 @@
-<!DOCTYPE html>
-<html lang="en" dir="ltr">
-  <head>
-    <meta charset="utf-8">
-    <title></title>
-  </head>
-  <body>
-    <h1>You are now logged in</h1>
-  </body>
-</html>
+ {% extends 'base.html' %}
+
+
+ {% block insert_content %}
+ <section>
+
+ <h2>You are now logged in</h2>
+ <a href="{% url 'home:view_home' %}">Go to Home page</a>
+
+</section>
+
+ {% endblock %}
