@@ -10,9 +10,9 @@ def view(request, user_id):
     return render(request, 'home/home.html', {'questions' : interestQues})
 
 def search_results(request):
-    if request.method == 'POST':
-        searched = request.POST['searched']
-        posts = Question.objects.all().filter(title=searched)
+    if request.method == 'GET':
+        searched = request.GET['searched']
+        posts = Question.objects.all().filter(title__icontains=searched)
         return render(request, 'search_results.html', {'searched':searched, 'posts':posts})
     else:
         return render(request, 'search_results.html', {})
