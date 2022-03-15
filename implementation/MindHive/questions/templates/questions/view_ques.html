@@ -60,6 +60,14 @@
                 </button>
             {% endif %}
         </form>
+
+        <form action="{% url 'questions:report' question.id %}" method="POST" style="display:inline">
+            {% csrf_token %}
+            <input type="hidden" name="obj_type" value="question">
+            <button type="submit" name="id", value={{question.id}}>
+                <i class="fa-regular fa-circle-xmark"></i>
+            </button>
+        </form>
     </p>
     <!-- <form id="vote_form" method="POST">
         {% csrf_token %}
@@ -145,14 +153,18 @@
             </li>
         {% endfor %}
     </ul>
+    
     <hr>
+    
     <h2>Your answer</h2>
-    <form action="{% url 'questions:view_question' question.id %}" method="POST">
+    <form action="{% url 'questions:add_answer' question.id %}" method="POST">
         {% csrf_token %}
         {{ form.as_p }}
         {{ form.media }}
         <input type="submit" value="Post your answer">
     </form>
+
+
     <script>
     if ( window.history.replaceState ) {
         window.history.replaceState( null, null, window.location.href );

@@ -15,15 +15,11 @@ sys.path.append("..")
 def view_question(request, question_id):
     if not request.user.is_authenticated:
         return HttpResponseRedirect(reverse('users:login'))
-    if request.method == 'POST':
-        form = AddAnswerForm(request.POST)
-        if form.is_valid():
-            form.save()
-            return HttpResponseRedirect(reverse('questions:view_question', args=[question_id]))
 
     question = get_object_or_404(Question, id=question_id)
     if not question.viewedBy.filter(id=request.user.id).exists():
         question.viewedBy.add(request.user.id)
+    
     initial_ans_data = {
         'author': request.user,
         'to_question': question
@@ -100,6 +96,20 @@ def follow_bookmark(request, question_id):
     return HttpResponseRedirect(reverse('questions:view_question', args=[question_id]))
 
 
+def report(request, question_id):
+    if not request.user.is_authenticated:
+        return HttpResponseRedirect(reverse('users:login'))
+    if request.POST['obj_type'] == 'question':
+        object = get_object_or_404(Question, id=question_id)
+    else:
+        object = get_object_or_404(Answer, id=request.POST['answer_id'])
+    
+    if object.report_set.filter(reporter=request.user).exists():
+        return JsonResponse({'status': 'already reported'})
+    else:
+        return HttpResponseRedirect(reverse('questions:ReportCreateView', args=[question_id]))
+
+
 def add_comment(request, question_id):
     if not request.user.is_authenticated:
         return HttpResponseRedirect(reverse('users:login'))
@@ -119,6 +129,14 @@ def add_comment(request, question_id):
         parentObjQ = parentObjQ,
         parentObjA = parentObjA
     )
+    return HttpResponseRedirect(reverse('questions:view_question', args=[question_id]))
+
+
+
+def add_answer(request, question_id):
+    form = AddAnswerForm(request.POST)
+    if form.is_valid():
+        form.save()
     return HttpResponseRedirect(reverse('questions:view_question', args=[question_id]))
 
 

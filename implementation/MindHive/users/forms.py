@@ -9,7 +9,6 @@ from django.contrib.auth.forms import UserCreationForm
 from tags.models import Tag
 
 class UserCreateForm(UserCreationForm):
-
     class Meta:
         fields = ('username', 'name', 'email', 'password1', 'password2')
         model = get_user_model()
