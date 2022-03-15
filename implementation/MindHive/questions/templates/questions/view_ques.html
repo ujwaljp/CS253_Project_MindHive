@@ -5,6 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title> {{question.title}} - MindHive</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 </head>
 <body>
     <h1>{{question.title}}</h1>
@@ -34,9 +35,17 @@
             <button type="submit" name="action", value="follow">Follow</button>
         {% endif %}
     </form>
+    <form id="vote_form" method="POST">
+        {% csrf_token %}
+        Using AJAX
+        <button onclick="submitVote('question','{{question.id}}','upvote')">Upvote</button>
+        <button onclick="submitVote('question','{{question.id}}','downvote')">Downvote</button>
+     </form>
+     <div id="output"></div>
     <!-- add buttons for up and downvotes -->
     <form action="{% url 'vote' question.id %}" method="POST">
         {% csrf_token %}
+        Using FORM
         <input type="hidden" name="obj_type" value="question">
         <button type="submit", name="vote",  value="upvote">Upvote</button>
         <button type="submit", name="vote",  value="downvote">Downvote</button>
@@ -113,6 +122,25 @@
 <script>
 if ( window.history.replaceState ) {
     window.history.replaceState( null, null, window.location.href );
+}
+function submitVote(obj_type,id,vote){
+    $.ajax({
+        type : 'POST',
+        url  : "{% url 'ajax_posting' %}",
+        data : {
+            'csrfmiddlewaretoken': '{{ csrf_token }}',
+            'obj_type' : obj_type,
+            'question_id' : id,
+            'answer_id' : id,
+            'vote' : vote,
+        },
+        success :  function(data){
+            $('#output').html(data.msg)
+        },
+        error : function(data){
+            console.log("error")
+        }
+    });
 }
 </script>
 </html>
