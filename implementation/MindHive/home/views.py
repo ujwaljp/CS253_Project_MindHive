@@ -2,10 +2,13 @@ from django.shortcuts import render
 from django.http import HttpResponse
 from questions.models import Question
 from users.models import User
+from django.contrib.auth.decorators import login_required
 # Create your views here.
-def view(request, user_id):
-    user = User.objects.filter(id = user_id).values_list('favouriteTags')
+@login_required(login_url='users:login')
+def view(request):
+    user = User.objects.filter(id = request.user.id).values_list('favouriteTags')
     interestQues = Question.objects.filter(tags__in = user)
+    print(interestQues)
     # return HttpResponse(interestQues)
     return render(request, 'home/home.html', {'questions' : interestQues})
 
