@@ -18,4 +18,5 @@ urlpatterns = [
     path('<int:pk>', views.profile, name='view_user'),
      # eg: /users/1/edit/
     path('edit/', UserEditView.as_view(), name='edit_users'),
+    path('addtags/',views.addTagsView.as_view(), name='addtags'),
 ]

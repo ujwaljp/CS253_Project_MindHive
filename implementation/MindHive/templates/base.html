@@ -21,7 +21,7 @@
 		                <ul class="navbar-nav ms-auto">
                    {% if user.is_authenticated %}
                     <li class="nav-item"><a href="#" class="nav-link">Home</a></li>
-                    <li class="nav-item"><a href="#" class="nav-link">My favourite tags</a></li>
+                    <li class="nav-item"><a href="{% url 'users:addtags' %}" class="nav-link">My favourite tags</a></li>
 
                     <li class="nav-item"><a class="nav-link" href="{% url 'users:logout' %}">Logout</a></li>
                     {% else %}
@@ -42,6 +42,6 @@
         {% endblock %}
       </div>
 
-        {% include 'footer.html' %}
+        <!-- {% include 'footer.html' %} -->
   </body>
 </html>

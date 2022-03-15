@@ -8,6 +8,7 @@ from django.urls import reverse
 from .models import User
 from django.views import generic
 from .forms import UpdateUserInfo
+from . forms import addTagsForm
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from . import forms
@@ -22,6 +23,20 @@ class SignUp(CreateView):
     form_class = forms.UserCreateForm
     success_url = reverse_lazy('users:login')
     template_name = 'users/sign_up.html'
+
+class addTagsView(LoginRequiredMixin, generic.UpdateView):
+    model = User
+    form_class= addTagsForm
+    # fields = ['favouriteTags']
+    template_name = 'users/addtags.html'
+    login_url = '/users/login'
+    def get_object(self):
+        return self.request.user
+    def form_valid(self, form):
+        form.instance.user = self.request.user
+        return super().form_valid(form)
+    def get_success_url(self):
+        return reverse('users:view_user', kwargs={'pk': self.object.id})
 
 
 def profile(request,pk):

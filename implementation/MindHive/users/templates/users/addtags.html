@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block insert_content %}
+<section>
+
+
+<div class="form-group" >
+    <form method="post">{% csrf_token %}
+        {{ form.media }}
+        {{ form.author.as_hidden }}
+        {{ form|crispy }}
+        <input type="submit" value="Save">
+    </form>
+</div>
+</section>
+{% endblock %}
