@@ -7,7 +7,7 @@ from django.urls import reverse_lazy
 from django.urls import reverse
 from .models import User
 from django.views import generic
-from .forms import Updateuserinfo
+from .forms import UpdateUserInfo
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from . import forms
@@ -32,8 +32,8 @@ def profile(request,pk):
         return render(request, 'homepage.html', {'usr': usr})
 
 
-# def edit(request,user_id):
-#     if request.user.is_authentcated:
+# def edit(request):
+#     if request.method:
 #         usr = User.objects.get(id=user_id)
 #
 #         return render(request, 'edit_profile.html', {'usr': usr})
@@ -41,11 +41,15 @@ def profile(request,pk):
 #         return HttpResponse('You must be logged in')
 
 
+
 class UserEditView(LoginRequiredMixin ,generic.UpdateView):
     model = User
     fields=["username","profile_image"]
     template_name = "users/edit_profile.html"
     login_url = '/users/login/'
+    # form = Updateuserinfo(request.POST)
+    def get_object(self):
+        return self.request.user
     def form_valid(self, form):
         form.instance.user = self.request.user
         return super().form_valid(form)

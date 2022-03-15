@@ -17,5 +17,5 @@ urlpatterns = [
         views.SignUp.as_view(), name='signup'),
     path('<int:pk>', views.profile, name='view_user'),
      # eg: /users/1/edit/
-    path('<int:pk>/edit', UserEditView.as_view(), name='edit_users'),
+    path('edit/', UserEditView.as_view(), name='edit_users'),
 ]

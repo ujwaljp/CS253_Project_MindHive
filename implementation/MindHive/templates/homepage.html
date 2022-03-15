@@ -28,7 +28,7 @@
                 </button>
                 <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                   {%if viewer %}
-                  <a class="dropdown-item" href="{% url 'users:edit_users' pk=user.id %}">Edit Your Profile</a>
+                  <a class="dropdown-item" href="{% url 'users:edit_users' %}">Edit Your Profile</a>
 
                   <a class="dropdown-item" href="#">Change Password</a>
                   {% endif %}
