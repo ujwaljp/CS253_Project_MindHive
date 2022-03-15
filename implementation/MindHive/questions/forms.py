@@ -1,4 +1,6 @@
 import sys
+
+from users.models import Report
 sys.path.append("..")
 
 from django import forms
@@ -43,3 +45,10 @@ class AddAnswerForm(forms.ModelForm):
             'anonymous': 'Answer anonymously?',
         }
         anonymous = forms.BooleanField(required=False)
+
+
+class CreateReportForm(forms.ModelForm):
+    class Meta:
+        model = Report
+        fields = ["report_text", "reporter", "reportedUser", "reportedObjType",
+                  "reportedObjQ", "reportedObjA", "reportedObjC"]

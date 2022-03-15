@@ -1,10 +1,7 @@
 from django.shortcuts import render
-from django.http import HttpResponse
 from questions.models import Question
-from answers.models import Answer
 from users.models import User
 from django.contrib.auth.decorators import login_required
-from django.views import generic
 from questions.models import Question
 # Create your views here.
 @login_required(login_url='users:login')

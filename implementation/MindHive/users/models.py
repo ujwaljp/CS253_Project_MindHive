@@ -69,7 +69,6 @@ class Report(models.Model):
     reportedObjQ = models.ForeignKey(to='questions.Question', on_delete=models.CASCADE, null=True, blank=True)
     reportedObjA = models.ForeignKey(to='answers.Answer', on_delete=models.CASCADE, null=True, blank=True)
     reportedObjC = models.ForeignKey(to='comments.Comment', on_delete=models.CASCADE, null=True, blank=True)
-    report_date = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return self.report_text
