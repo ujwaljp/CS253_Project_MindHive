@@ -38,7 +38,7 @@ def view_question(request, question_id):
 
 def edit_question(request, question_id):
     if not request.user.is_authenticated:
-        return HttpResponseRedirect(reverse('login'))
+        return HttpResponseRedirect(reverse('users:login'))
 
     if request.method == 'POST':
         question = get_object_or_404(Question, id=question_id)
@@ -46,7 +46,7 @@ def edit_question(request, question_id):
         if form.is_valid():
             form.save()
             return HttpResponseRedirect(reverse('questions:view_question', args=[question_id]))
-    
+
     # for GET request
     question = get_object_or_404(Question, id=question_id)
     form = CreateQuestionForm(instance=question)
@@ -59,7 +59,7 @@ def edit_question(request, question_id):
 
 def vote(request, question_id):
     if not request.user.is_authenticated:  # add blocked as well
-        return HttpResponseRedirect(reverse('login'))
+        return HttpResponseRedirect(reverse('users:login'))
     user = request.user
     if request.POST['obj_type'] == 'question':
         object = get_object_or_404(Question, id=question_id)
@@ -85,7 +85,7 @@ def vote(request, question_id):
 
 def follow_bookmark(request, question_id):
     if not request.user.is_authenticated:
-        return HttpResponseRedirect(reverse('login'))
+        return HttpResponseRedirect(reverse('users:login'))
     user = request.user
     question = get_object_or_404(Question, id=question_id)
     action = request.POST['action']
@@ -102,7 +102,7 @@ def follow_bookmark(request, question_id):
 
 def add_comment(request, question_id):
     if not request.user.is_authenticated:
-        return HttpResponseRedirect(reverse('login'))
+        return HttpResponseRedirect(reverse('users:login'))
     user = request.user
     if request.POST['obj_type'] == 'question':
         object = get_object_or_404(Question, id=request.POST['question_id'])
@@ -137,7 +137,7 @@ def ajax_posting(request):
         'msg':'Your form has been submitted successfully' # response message
     }
     if not request.user.is_authenticated:  # add blocked as well
-        return HttpResponseRedirect(reverse('login'))
+        return HttpResponseRedirect(reverse('users:login'))
     user = request.user
     if request.POST['obj_type'] == 'question':
         object = get_object_or_404(Question, id=request.POST['question_id'])

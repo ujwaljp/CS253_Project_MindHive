@@ -24,7 +24,7 @@ urlpatterns = [
     path('questions/', include('questions.urls',namespace='questions')),
     path('users/', include('users.urls', namespace='users')),
 
-    path('home/', include('home.urls')),
+    path('home/', include('home.urls', namespace='home')),
     path('admin/', admin.site.urls),
     path('', views.HomePage.as_view(), name='index'),
     # path('sign_up/', views.signup, name='signup'),
