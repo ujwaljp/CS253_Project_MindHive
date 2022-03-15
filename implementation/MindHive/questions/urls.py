@@ -13,5 +13,5 @@ urlpatterns = [
     path('<int:question_id>/add-comment', views.add_comment, name='add_comment'),
     path('ajax-posting/', views.ajax_posting, name='ajax_posting'),
     # eg: /questions/askform/
-    path('<int:user_id>/askform', views.QuestionCreateView.as_view()),
+    path('<int:user_id>/askform', views.QuestionCreateView.as_view(),name="add_question"),
 ]

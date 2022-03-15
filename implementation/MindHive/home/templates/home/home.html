@@ -2,11 +2,10 @@
     {%block insert_content%}
     <section>
 
-
     <div class="container">
     {% if questions %}
     {%for ques in questions%}
-    <div class="card">
+    <div class="card" style="padding:5px">
       <a href="{% url 'questions:view_question' question_id=ques.id %}">
         <h2>{{ques.title}}</h2>
         </a>

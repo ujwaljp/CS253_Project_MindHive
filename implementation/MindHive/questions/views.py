@@ -10,6 +10,8 @@ from django.shortcuts import render, get_object_or_404
 from django.views.generic.edit import CreateView
 
 sys.path.append("..")
+def basepage(request):
+    return render(request, 'base.html', context)
 
 
 def view_question(request, question_id):
