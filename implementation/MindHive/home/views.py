@@ -11,8 +11,8 @@ def view(request, user_id):
 
 def search_results(request):
     if request.method == 'POST':
-        searched = request.POST('searched')
-        posts = Question.object.all().filter(title=searched)
+        searched = request.POST['searched']
+        posts = Question.objects.all().filter(title=searched)
         return render(request, 'search_results.html', {'searched':searched, 'posts':posts})
     else:
         return render(request, 'search_results.html', {})

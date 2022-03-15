@@ -18,9 +18,9 @@
         <a href="#" id="logo">
             <img src="../media/icon.jpg" alt="Hello" class="logo-img">
         </a>
-        <form class="inline-block" method=POST action="{% url ' 'searched_results%}">
+        <form class="d-flex" method=POST action="{% url ' 'searched_results%}">
             {% csrf_token%}
-            <input class="form-input" type="search" placeholder="Search" aria-placeholder="Search" length=30px>
+            <input class="form-control me-2" type="search" placeholder="Search" aria-placeholder="Search" length=30px>
             <button class="btn btn-outline-secondary" type="button">
                 Search
               </button>
