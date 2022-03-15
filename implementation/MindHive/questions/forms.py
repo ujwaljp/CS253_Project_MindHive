@@ -47,6 +47,8 @@ class AddAnswerForm(forms.ModelForm):
         anonymous = forms.BooleanField(required=False)
 
 
-# class CreateReportForm(forms.ModelForm):
-#     class Meta:
-#         model = Report
+class CreateReportForm(forms.ModelForm):
+    class Meta:
+        model = Report
+        fields = ["report_text", "reporter", "reportedUser", "reportedObjType",
+                  "reportedObjQ", "reportedObjA", "reportedObjC"]
