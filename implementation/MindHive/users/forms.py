@@ -19,7 +19,7 @@ class UserCreateForm(UserCreationForm):
         self.fields['email'].label = 'Email Address'
 
 
-class Updateuserinfo(forms.ModelForm):
+class UpdateUserInfo(forms.ModelForm):
     class Meta:
         model = User
         fields = ["username","profile_image"]

@@ -14,14 +14,15 @@ sys.path.append("..")
 
 def view_question(request, question_id):
     if not request.user.is_authenticated:
-        return HttpResponseRedirect(reverse('login'))
-
+        return HttpResponseRedirect(reverse('users:login'))
+    for ques in Question.objects.all():
+        print(ques.id)
     if request.method == 'POST':
         form = AddAnswerForm(request.POST)
         if form.is_valid():
             form.save()
-            return HttpResponseRedirect(reverse('view_question', args=[question_id]))
-    
+            return HttpResponseRedirect(reverse('questions:view_question', args=[question_id]))
+
     question = get_object_or_404(Question, id=question_id)
     initial_ans_data = {
         'author': request.user,
@@ -65,7 +66,7 @@ def vote(request, question_id):
             object.dislikedBy.add(user.id)
             if object.likedBy.filter(id=user.id).exists():
                 object.likedBy.remove(user.id)
-    return HttpResponseRedirect(reverse('view_question', args=[question_id]))
+    return HttpResponseRedirect(reverse('questions:view_question', args=[question_id]))
 
 
 def follow_bookmark(request, question_id):
@@ -82,7 +83,7 @@ def follow_bookmark(request, question_id):
         question.users_following.remove(user.id)
     elif action == 'follow':
         question.users_following.add(user.id)
-    return HttpResponseRedirect(reverse('view_question', args=[question_id]))
+    return HttpResponseRedirect(reverse('questions:view_question', args=[question_id]))
 
 
 def add_comment(request, question_id):
@@ -104,7 +105,7 @@ def add_comment(request, question_id):
         parentObjQ = parentObjQ,
         parentObjA = parentObjA
     )
-    return HttpResponseRedirect(reverse('view_question', args=[question_id]))
+    return HttpResponseRedirect(reverse('questions:view_question', args=[question_id]))
 
 
 class QuestionCreateView(CreateView):
@@ -112,7 +113,7 @@ class QuestionCreateView(CreateView):
     form_class = CreateQuestionForm
     template_name = "questions/askform.html"
     success_url = 'https://stackoverflow.com/a/60273100/7063031'
-    
+
     def get_initial(self):
         return {"author": self.kwargs.get("user_id")}
 

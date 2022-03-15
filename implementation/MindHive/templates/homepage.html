@@ -14,6 +14,7 @@
 </head>
 {%block content%}
 <body>
+  <div class="container">
     <nav id="navbar">
         <a href="#" id="logo">
             <img src="../media/icon.jpg" alt="Hello" class="logo-img">
@@ -28,15 +29,18 @@
                 </button>
                 <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                   {%if viewer %}
-                  <a class="dropdown-item" href="{% url 'users:edit_users' pk=user.id %}">Edit Your Profile</a>
+                  <a class="dropdown-item" href="{% url 'users:edit_users' %}">Edit Your Profile</a>
 
                   <a class="dropdown-item" href="#">Change Password</a>
+                  <a class="dropdown-item" href="{% url 'users:logout' %}">Logout</a>
                   {% endif %}
                   <a class="dropdown-item" href="#">Contact Us</a>
                 </div>
             </div>
         </ul>
     </nav>
+  </div>
+
     <div id="container">
 
         <div id="left">
