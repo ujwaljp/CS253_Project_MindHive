@@ -1,17 +1,12 @@
+from .models import User
+from .forms import addTagsForm, UserCreateForm
 
-from attr import fields
-import django
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.urls import reverse_lazy
 from django.urls import reverse
-from .models import User
 from django.views import generic
-from .forms import UpdateUserInfo
-from . forms import addTagsForm
-from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
-from . import forms
 from django.views.generic import CreateView
 from django.contrib.auth import get_user_model
 
@@ -20,7 +15,7 @@ from django.contrib.auth import get_user_model
 User = get_user_model()
 
 class SignUp(CreateView):
-    form_class = forms.UserCreateForm
+    form_class = UserCreateForm
     success_url = reverse_lazy('users:login')
     template_name = 'users/sign_up.html'
 
@@ -56,7 +51,6 @@ def testview(request):
 #         return render(request, 'edit_profile.html', {'usr': usr})
 #     else:
 #         return HttpResponse('You must be logged in')
-
 
 
 class UserEditView(LoginRequiredMixin ,generic.UpdateView):
