@@ -4,6 +4,7 @@ from questions.models import Question
 from users.models import User
 from django.contrib.auth.decorators import login_required
 from questions.models import Question
+from django.db.models import Q
 # Create your views here.
 @login_required(login_url='users:login')
 def view(request):
@@ -43,7 +44,7 @@ def folView(request):
 def search_results(request):
     if request.method == 'GET':
         searched = request.GET['searched']
-        posts = Question.objects.all().filter(title__icontains=searched)
-        return render(request, 'search_results.html', {'searched':searched, 'posts':posts})
+        searched_ques = Question.objects.filter(Q(title__icontains=searched) | Q(text__icontains=searched)).distinct()
+        return render(request, 'home/search_results.html', {'searched':searched, 'questions':searched_ques})
     else:
-        return render(request, 'search_results.html', {})
+        return render(request, 'home/search_results.html', {})

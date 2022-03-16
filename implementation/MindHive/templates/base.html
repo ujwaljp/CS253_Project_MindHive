@@ -31,8 +31,8 @@
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
                 <div class="collapse navbar-collapse" id="navbarResponsive">
 		                <ul class="navbar-nav ms-auto">
-                            <form class="d-flex" method=get action="{% url  'home:search_results' %}">
-                                <input class="form-input" type="search" placeholder="Search" aria-placeholder="Search" length="45px" name="searched">
+                            <form class="inline-block" method=get action="{% url  'home:search_results' %}">
+                                <input class="form-input" type="search" placeholder="Search" aria-placeholder="Search" name="searched">
                                 <button class="btn btn-outline-secondary" type="button">
                                     Search
                                   </button>
@@ -66,7 +66,7 @@
                 <img id="H-img" src="" />
                 <div class="comp">Home</div>
             </a>
-            <a href="#" class="sect">
+            <a href="{% url 'questions:add_question'%}" class="sect">
                 <img id="Q-img" src="" />
                 <div class="comp">Ask Question</div>
             </a>

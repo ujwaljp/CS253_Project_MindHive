@@ -185,7 +185,7 @@ class QuestionCreateView(CreateView):
     model = Question
     form_class = CreateQuestionForm
     template_name = "questions/askform.html"
-    success_url = 'https://stackoverflow.com/a/60273100/7063031'
+    success_url = 'https://youtu.be/dQw4w9WgXcQ'
 
     def get_initial(self):
         return {"author": self.request.user.id}
