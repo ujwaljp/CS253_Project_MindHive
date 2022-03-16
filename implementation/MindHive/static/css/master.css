@@ -119,12 +119,24 @@ body{
 }
 #dropdownMenuButton {
     position: relative;
-    left: 130px;
+    left: 300px;
     bottom: 20px;
   }
 
   .dropdown-menu.show {
-    left: 90px;
+    left: 250px;
+  }
+  #search {
+    left: 1350px;
+    position: absolute;
+    top: 26px;
+  }
+  #search{
+      background-color:grey;
+      color: white;
+  }
+  #search:hover{
+      background-color: darkgrey;
   }
 #id_favouriteTags {
     height: 600px;
