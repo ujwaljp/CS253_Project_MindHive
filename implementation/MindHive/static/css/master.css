@@ -251,9 +251,15 @@ left: 330px;
 }
 
 form[view="profile"]{
+    position: absolute;
+    left: 57px;
     font-size: x-large  ;
     font-family: sans-serif;
 }
 .test{
     font-size: xx-large;
+}
+#data {
+    position: absolute;
+    left: 600px;
 }
