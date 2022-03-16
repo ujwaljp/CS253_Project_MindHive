@@ -1,3 +1,4 @@
+from django.http import HttpResponse
 from django.shortcuts import render
 from questions.models import Question
 from users.models import User
@@ -19,7 +20,18 @@ def view(request):
     # print(interestQues[0].id, interestQues[1].id)
     # return HttpResponse(interestQues)
     return render(request, 'home/home.html', {'questions' : interestQues})
-#
+
+def bookView(request):
+    user = User.objects.filter(id = request.user.id).values_list('bookmarkQuestions')
+    bookQuestions = Question.objects.filter(id__in = user).distinct()
+    # Creturn HttpResponse(user)
+    return render(request, 'home/home.html', {'questions':bookQuestions})
+
+def folView(request):
+    user = User.objects.filter(id = request.user.id).values_list('followingQuestions')
+    folQuestions = Question.objects.filter(id__in = user).distinct()
+    # Creturn HttpResponse(user)
+    return render(request, 'home/home.html', {'questions':folQuestions})
 # class HomeView(generic.ListView):
 #     model = Question
 #     template_name = 'home/home.html'
