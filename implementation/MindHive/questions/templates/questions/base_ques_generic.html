@@ -1,64 +1,78 @@
 <!DOCTYPE html>
-<html lang="en">
 {% load static %}
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{question.title}} - MindHive</title>
-    <link rel="stylesheet" href="{% static '/css/style.css' %}">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script src="https://kit.fontawesome.com/1c64b1c074.js" crossorigin="anonymous"></script>
-</head>
+{% load crispy_forms_tags %}
 
-{%block content%}
-<body>
-    <nav id="navbar">
-        <a href="#" id="logo">
-            <img src="../media/icon.jpg" alt="Hello" class="logo-img">
-        </a>
-        <form class="inline-block">
-            <input class="form-input" type="search" placeholder="Search" aria-placeholder="Search" length=50px>
-        </form>
-        <ul>
-            <div class="dropdown">
-                <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    Settings
-                </button>
-                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                    {% if user.is_authenticated %}
-                        <a class="dropdown-item" href="{% url 'users:edit_users' %}">Edit Profile</a>
-                        <a class="dropdown-item" href="#">Change Password</a>
-                        <a  class="dropdown-item" href="{% url 'users:logout' %}">Logout</a>
-                    {% endif %}
-                    <a class="dropdown-item" href="#">Contact Us</a>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <meta name="description" content="" />
+        <meta name="author" content="" />
+        <title>{{question.title}} - MindHive</title>
+        <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+        <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+        <script src="https://kit.fontawesome.com/1c64b1c074.js" crossorigin="anonymous"></script>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+        <link href="{% static 'css/master.css'%}" rel="stylesheet" />
+        {% comment %} <link rel="stylesheet" href="{% static '/css/style.css' %}"> {% endcomment %}
+    </head>
+    <body id="page-top">
+        <!-- Navigation-->
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top" id="mainNav">
+            <div class="container px-4">
+                <a href="#" id="logo">
+                    <img src="../media/icon.jpg" alt="Hello" class="logo-img">
+                </a>
+                <a class="navbar-brand" href="#page-top" align="left">MindHive</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+                <div class="collapse navbar-collapse" id="navbarResponsive">
+		                <ul class="navbar-nav ms-auto">
+                            <form class="inline-block">
+                                <input class="form-input" type="search" placeholder="Search" aria-placeholder="Search" length="50px">
+                            </form>
+                    <li class="nav-item">                        
+                        <div class="dropdown">
+                            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                              Settings
+                            </button>
+                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                {% if user.is_authenticated %}
+                              <a class="dropdown-item" href="{% url 'users:edit_users' %}">Edit Your Profile</a>
+            
+                              <a class="dropdown-item" href="#">Change Password</a>
+                              <a class="dropdown-item" href="{% url 'users:logout' %}">Logout</a>
+                              {% else %}
+                              <a class="dropdown-item" href="{% url 'users:login' %}">Login</a></li>
+                                <a class="dropdown-item" href="{% url 'users:signup' %}">Sign Up</a></li>
+                              {% endif %}
+                              <a class="dropdown-item" href="#">Contact Us</a>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
                 </div>
             </div>
-        </ul>
-    </nav>
-    <div id="container">
-
+        </nav>
         <div id="left">
 
-            <a href="#" class="sect">
+            <a href="{% url 'home:view_home'%}" class="sect">
                 <img id="H-img" src="" />
                 <div class="comp">Home</div>
             </a>
             <a href="#" class="sect">
                 <img id="Q-img" src="" />
-                <div class="comp">Questions</div>
+                <div class="comp">Ask Question</div>
             </a>
-            <a href="#" class="sect">
+            <a href="{% url 'users:addtags' %}" class="sect">
                 <img id="T-img" src="" />
                 <div class="comp">Tags</div>
             </a>
             <a href="#" class="sect">
                 <img id="U-img" src="" />
-                <div class="comp">Users</div>
+                <div class="comp">View Profile</div>
             </a>
             <a href="#" class="sect">
 
@@ -68,13 +82,14 @@
 
                 <div class="comp">Bookmarks</div>
             </a>
-
         </div>
-        
-        {% block main_content %}
+        <div class="content">
+        {% block insert_content %}
+
+
 
         {% endblock %}
-    </div>
-</body>
-{%endblock%}
+        </div>
+      </div>
+  </body>
 </html>

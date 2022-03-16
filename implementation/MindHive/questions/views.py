@@ -1,3 +1,4 @@
+import json
 import sys
 
 from .forms import CreateQuestionForm, AddAnswerForm, CreateReportForm
@@ -6,7 +7,7 @@ from answers.models import Answer
 from comments.models import Comment
 from users.models import Report
 
-from django.http import HttpResponseRedirect, JsonResponse
+from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.urls import reverse
 from django.shortcuts import render, get_object_or_404
 from django.views.generic.edit import CreateView
@@ -60,9 +61,9 @@ def vote(request, question_id):
         return HttpResponseRedirect(reverse('users:login'))
     user = request.user
     if request.POST['obj_type'] == 'question':
-        object = get_object_or_404(Question, id=question_id)
+        object = get_object_or_404(Question, id=request.POST['obj_id'])
     else:
-        object = get_object_or_404(Answer, id=request.POST['answer_id'])
+        object = get_object_or_404(Answer, id=request.POST['obj_id'])
     vote = request.POST['vote']
     if vote == 'upvote':
         if object.likedBy.filter(id=user.id).exists():
@@ -78,7 +79,18 @@ def vote(request, question_id):
             object.dislikedBy.add(user.id)
             if object.likedBy.filter(id=user.id).exists():
                 object.likedBy.remove(user.id)
-    return HttpResponseRedirect(reverse('questions:view_question', args=[question_id]))
+    if object.likedBy.filter(id=user.id).exists():
+        status = 'liked'
+    elif object.dislikedBy.filter(id=user.id).exists():
+        status = 'disliked'
+    else:
+        status = 'none'
+    json_data = {
+        'likes': object.likedBy.count(),
+        'dislikes': object.dislikedBy.count(),
+        'status': status
+    }
+    return HttpResponse(json.dumps(json_data))
 
 
 def follow_bookmark(request, question_id):
