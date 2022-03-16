@@ -110,26 +110,7 @@ body{
 }
 
 /* ----left compponet */
-#left{
-    position: sticky;
-    float: left;
-    width: auto;
-    height: 90vh;
-    display: flex;
-    flex-direction: column;
-    margin-top: 0;
-    margin-left: 0;
-    background-color: whitesmoke;
-}
 
-
-#left a{
-    text-decoration: none;
-    text-align: left;
-    font-size: 1.6rem;
-    color: #171313;
-
-}
 #H-img{
     float: left;
 }
@@ -227,57 +208,4 @@ body{
 #Ch-file:hover{
     background-color: rgb(255, 254, 254);
 
-}
-
-#data{
-    /* border: 2px solid black; */
-    width: 60%;
-    margin: 28px;
-    display: flex;
-    flex-direction: column;
-}
-.data-input{
-    display: block;
-    padding: 0.5em 1em;
-    margin: 0em 1em;
-    font-size: xx-large;
-}
-.text-name{
-    margin:0em;
-    font-size: x-large;
-    font-weight: bold;
-    color: grey;
-}
-.text-input{
-    height: 60%;
-    padding: 0.1em;
-}
-.data-box{
-    display: flex;
-    /* border: 2px solid black; */
-    height: 15%;
-    margin: 1em;
-    width: 70%;
-}
-.data-box button{
-    display: block;
-    width: 50%;
-    margin: 1em 2em;
-    padding:0em 0em;
-    height: 50%;
-
-}
-#submit{
-    background-color: rgb(109, 109, 196);
-    cursor: pointer;
-    color: white;
-    font-weight: bold;
-}
-#submit:hover{
-    background-color: rgb(60, 67, 150);
-}
-#cancel{
-    background-color: whitesmoke;
-    cursor: pointer;
-    font-weight: bold;
 }

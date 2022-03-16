@@ -1,6 +1,6 @@
-{% extends "questions/base_ques_generic.html" %}
-
-{% block main_content %}
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+{% block insert_content %}
     <h1>{{question.title}}</h1>
     <p>
         Asked on {{question.pub_date}} by {{question.get_author_name}} | Viewed By {{question.viewedBy.count}} users<br><hr>

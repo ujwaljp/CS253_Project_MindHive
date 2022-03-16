@@ -165,14 +165,11 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 # EMAIL_USE_TLS = True
 # EMAIL_PORT = 587 # change to 465 for SSL
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = '127.0.0.1'
-EMAIL_PORT = 8001
-EMAIL_FROM_USER = 'mindhiveiitk@gmail.com'
-EMAIL_HOST_USER = ''
-EMAIL_HOST_PASSWORD = ''
-EMAIL_USE_TLS = False
-
-MESSAGE_STORAGE = 'django.contrib.messages.storage.session.SessionStorage'
-
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+# EMAIL_FROM_USER = 'mindhiveiitk@gmail.com'
+EMAIL_HOST_USER = 'mindhiveiitk@gmail.com'
+EMAIL_HOST_PASSWORD = 'Homesweethome'
+EMAIL_USE_TLS = True
 LOGIN_REDIRECT_URL = 'test'
 LOGOUT_REDIRECT_URL = 'thanks'
