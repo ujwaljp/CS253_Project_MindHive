@@ -13,4 +13,7 @@ class Question(Content):
         return self.title
     
     def get_absolute_url(self):
-        return reverse('questions:view_question', kwargs={'pk': self.pk})
+        return reverse('questions:view_question', args=[self.pk])
+    
+    class Meta:
+        ordering = ['-pub_date']
