@@ -1,5 +1,10 @@
-{% extends "questions/base_ques_generic.html" %}
+{% extends "base.html" %}
 {% load crispy_forms_tags %}
+
+{% block insert_title %}
+    {{ question.title }} - MindHive
+{% endblock %}
+
 {% block insert_content %}
     <h1>{{question.title}}</h1>
     <p>
