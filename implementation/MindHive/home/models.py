@@ -14,6 +14,9 @@ class Content(models.Model):
     def __str__(self):
         return self.text
     
+    class Meta:
+        ordering = ['-pub_date']
+    
     def show_description(self):
         return self.text[:70]
     
