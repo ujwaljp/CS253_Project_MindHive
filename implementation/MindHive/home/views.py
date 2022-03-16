@@ -26,13 +26,13 @@ def bookView(request):
     user = User.objects.filter(id = request.user.id).values_list('bookmarkQuestions')
     bookQuestions = Question.objects.filter(id__in = user).distinct()
     # Creturn HttpResponse(user)
-    return render(request, 'home/home.html', {'questions':bookQuestions})
+    return render(request, 'home/bookmark_questions.html', {'questions':bookQuestions})
 
 def folView(request):
     user = User.objects.filter(id = request.user.id).values_list('followingQuestions')
     folQuestions = Question.objects.filter(id__in = user).distinct()
     # Creturn HttpResponse(user)
-    return render(request, 'home/home.html', {'questions':folQuestions})
+    return render(request, 'home/follow_questions.html', {'questions':folQuestions})
 # class HomeView(generic.ListView):
 #     model = Question
 #     template_name = 'home/home.html'
