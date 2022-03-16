@@ -1,3 +1,4 @@
+from cProfile import label
 import sys
 
 from users.models import Report
@@ -47,11 +48,24 @@ class AddAnswerForm(forms.ModelForm):
 
 
 class CreateReportForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['reporter'].initial = 'reporter'
+        self.fields['reportedUser'].initial = 'reportedUser'
+        self.fields['reportedObjType'].initial = 'reportedObjType'
+        self.fields['reportedObjQ'].initial = 'reportedObjQ'
+        self.fields['reportedObjA'].initial = 'reportedObjA'
+        self.fields['reportedObjC'].initial = 'reportedObjC'
+        
+
     class Meta:
         model = Report
         fields = ["report_text", "reporter", "reportedUser", "reportedObjType",
                   "reportedObjQ", "reportedObjA", "reportedObjC"]
         report_text = forms.CharField(max_length=200)
+        labels = {
+            'report_text': '',
+        }
         widgets = {
             'reporter': forms.HiddenInput(),
             'reportedUser': forms.HiddenInput(),

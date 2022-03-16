@@ -61,9 +61,9 @@
             {% endif %}
         </form>
 
-        <form action="{% url 'questions:report' question.id %}" method="POST" style="display:inline">
+        <form action="{% url 'questions:report' question.id %}" method="GET" style="display:inline">
             {% csrf_token %}
-            <input type="hidden" name="obj_type" value="question">
+            <input type="hidden" name="obj_type" value="q">
             <button type="submit" name="id", value={{question.id}}>
                 <i class="fa-regular fa-circle-xmark"></i>
             </button>
@@ -109,7 +109,8 @@
                 {% if user == answer.author %}
                     | <a href="#">Edit</a>
                 {% endif %}
-                <form action="{% url 'questions:vote' question.id %}" method="POST">
+                <br>
+                <form action="{% url 'questions:vote' question.id %}" method="POST" style="display:inline;">
                     {% csrf_token %}
                     <input type="hidden" name="obj_type" value="answer">
                     <input type="hidden" name="answer_id" value={{answer.id}}>
@@ -130,6 +131,14 @@
                         {% endif %}
                     </button>
                 </form>
+                 | 
+                <form action="{% url 'questions:report' question.id %}" method="GET" style="display:inline">
+                    {% csrf_token %}
+                    <input type="hidden" name="obj_type" value="a">
+                    <button type="submit" name="id", value={{answer.id}}>
+                        <i class="fa-regular fa-circle-xmark"></i>
+                    </button>
+                </form>
                 <hr>
                 <ul>
                     {% for comment in answer.comment_set.all %}
@@ -139,6 +148,14 @@
                             {% if user == comment.author %}
                                 | <a href="#">Edit</a>
                             {% endif %}
+                             | 
+                            <form action="{% url 'questions:report' question.id %}" method="GET" style="display:inline">
+                                {% csrf_token %}
+                                <input type="hidden" name="obj_type" value="c">
+                                <button type="submit" name="id", value={{comment.id}}>
+                                    <i class="fa-regular fa-circle-xmark"></i>
+                                </button>
+                            </form>
                         </li>
                         <hr>
                     {% endfor %}
