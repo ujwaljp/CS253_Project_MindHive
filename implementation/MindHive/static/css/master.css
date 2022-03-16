@@ -87,6 +87,7 @@ body{
 }
 #id_tags {
     display: block;
+
     width: 200px;
     padding: .375rem .75rem;
     font-size: 1rem;
@@ -106,15 +107,21 @@ body{
     top: 90px;
   }
 .dropdown{
-    position: absolute;
-    left: 50px;
-    top: 7px;
+    display: block;
+    /* position: absolute; */
+    right:50px;
+    top: 23px;
 }
 /* Navigation Bar: List Styling */
 
 #navbar ul{
     display: flex;
 }
+#dropdownMenuButton {
+    position: relative;
+    left: 130px;
+    bottom: 20px;
+  }
 
 #navbar ul li{ 
     list-style: none;
@@ -216,8 +223,8 @@ input[type="search"]{
 
 .content {
     position: absolute;
-    top: 91px;
-left: 330px;
+    top: 99px;
+left: 360px;
     right: 5px;
   }
   .profile{
@@ -251,7 +258,6 @@ left: 330px;
 }
 
 form[view="profile"]{
-    position: absolute;
     left: 57px;
     font-size: x-large  ;
     font-family: sans-serif;
