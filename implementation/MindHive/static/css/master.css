@@ -123,6 +123,13 @@ body{
     bottom: 20px;
   }
 
+  .dropdown-menu.show {
+    left: 90px;
+  }
+#id_favouriteTags {
+    height: 600px;
+}
+
 #navbar ul li{ 
     list-style: none;
     font-size: 1.3rem;

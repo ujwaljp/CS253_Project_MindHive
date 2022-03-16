@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+{% extends "questions/base_ques_generic.html" %}
 {% load crispy_forms_tags %}
 {% block insert_content %}
     <h1>{{question.title}}</h1>
@@ -17,20 +17,21 @@
     </p> 
     <p>
         <!-- add buttons for up and downvotes -->
-        <form action="{% url 'questions:vote' question.id %}" method="POST" style="display: inline;">
+        <form class="vote_form" style="display: inline;">
             {% csrf_token %}
             <input type="hidden" name="obj_type" value="question">
+            <input type="hidden" name="obj_id" value="{{question.id}}">
             <!-- check if user has upvoted the question -->
-            <button type="submit", name="vote",  value="upvote">
-                <span style="color: green;">{{question.likedBy.count}}</span>
+            <button type="submit", class="upvote",  value="upvote">
+                <span class="like_count" style="color: green;">{{question.likedBy.count}}</span>
                 {% if user in question.likedBy.all %}
                     <i class="fa-solid fa-thumbs-up"></i>
                 {% else %}
                     <i class="fa-regular fa-thumbs-up"></i>
                 {% endif %}
             </button>
-            <button type="submit", name="vote",  value="downvote">
-                <span style="color: red;">{{question.dislikedBy.count}}</span>
+            <button type="submit", class="downvote",  value="downvote">
+                <span class="dislike_count" style="color: red;">{{question.dislikedBy.count}}</span>
                 {% if user in question.dislikedBy.all %}
                     <i class="fa-solid fa-thumbs-down"></i>
                 {% else %}
@@ -82,9 +83,6 @@
             <li>
                 <div style="background-color:#ddd;">{{comment.text|safe}}</div>
                 --- Commented on {{comment.pub_date}} by {{comment.author.name}}
-                {% if user == comment.author %}
-                    | <a href="#">Edit</a>
-                {% endif %}
             </li>
             <hr>
         {% endfor %}
@@ -105,25 +103,22 @@
         {% for answer in question.answer_set.all %}
             <li>
                 <div style="background-color:rgb(226, 233, 215);">{{answer.text|safe}}</div>
-                --- Answered on {{answer.pub_date}} by {{answer.get_author_name}} 
-                {% if user == answer.author %}
-                    | <a href="#">Edit</a>
-                {% endif %}
+                --- Answered on {{answer.pub_date}} by {{answer.get_author_name}}
                 <br>
-                <form action="{% url 'questions:vote' question.id %}" method="POST" style="display:inline;">
+                <form class="vote_form" style="display:inline;">
                     {% csrf_token %}
                     <input type="hidden" name="obj_type" value="answer">
-                    <input type="hidden" name="answer_id" value={{answer.id}}>
-                    <button type="submit", name="vote",  value="upvote">
-                        <span style="color: green;">{{answer.likedBy.count}}</span>
+                    <input type="hidden" name="obj_id" value={{answer.id}}>
+                    <button type="submit", class="upvote",  value="upvote">
+                        <span class="like_count" style="color: green;">{{answer.likedBy.count}}</span>
                         {% if user in answer.likedBy.all %}
                             <i class="fa-solid fa-thumbs-up"></i>
                         {% else %}
                             <i class="fa-regular fa-thumbs-up"></i>
                         {% endif %}
                     </button>
-                    <button type="submit", name="vote",  value="downvote">
-                        <span style="color: red;">{{answer.dislikedBy.count}}</span>
+                    <button type="submit", class="downvote",  value="downvote">
+                        <span class="dislike_count" style="color: red;">{{answer.dislikedBy.count}}</span>
                         {% if user in answer.dislikedBy.all %}
                             <i class="fa-solid fa-thumbs-down"></i>
                         {% else %}
@@ -145,9 +140,6 @@
                         <li>
                             <div style="background-color:#ddd;">{{comment.text|safe}}</div>
                             --- Commented on {{comment.pub_date}} by {{comment.author.name}}
-                            {% if user == comment.author %}
-                                | <a href="#">Edit</a>
-                            {% endif %}
                              | 
                             <form action="{% url 'questions:report' question.id %}" method="GET" style="display:inline">
                                 {% csrf_token %}
@@ -181,29 +173,39 @@
         <input type="submit" value="Post your answer">
     </form>
 
-
     <script>
-    if ( window.history.replaceState ) {
-        window.history.replaceState( null, null, window.location.href );
-    }
-    function submitVote(obj_type,id,vote){
-        $.ajax({
-            type : 'POST',
-            url  : "{% url 'questions:ajax_posting' %}",
-            data : {
-                'csrfmiddlewaretoken': '{{ csrf_token }}',
-                'obj_type' : obj_type,
-                'question_id' : id,
-                'answer_id' : id,
-                'vote' : vote,
-            },
-            success :  function(data){
-                $('#output').html(data.msg)
-            },
-            error : function(data){
-                console.log("error")
+        $(document).ready(function () {
+            if (window.history.replaceState) {
+                window.history.replaceState(null, null, window.location.href);
             }
-        });
-    }
+
+            $(".vote_form").find(':button').click(function(e) {
+                var form = $(this).closest('form');
+                var dataString = form.serializeArray();
+                dataString.push({name: 'vote', value: $(this).val()});
+                // alert(dataString); return false;
+                $.ajax({
+                    type: "POST",
+                    url: "{% url 'questions:vote' question.id%}",
+                    data: dataString,
+                    success: function (data) {
+                        var result = JSON.parse(data);
+                        form.find(".like_count").html(result.likes);
+                        form.find(".dislike_count").html(result.dislikes);
+                        form.find(".upvote i").removeClass("fa-solid").addClass("fa-regular");
+                        form.find(".downvote i").removeClass("fa-solid").addClass("fa-regular");
+                        if (result.status == "liked") {
+                            form.find(".upvote i").removeClass("fa-regular").addClass("fa-solid");
+                        } else if (result.status == "disliked") {
+                            form.find(".downvote i").removeClass("fa-regular").addClass("fa-solid");
+                        }
+                    },
+                    error: function () {
+                        alert("error");
+                    }
+                });
+                e.preventDefault();
+            })
+        })
     </script>
 {% endblock %}

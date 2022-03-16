@@ -1,3 +1,4 @@
+import json
 import sys
 
 from .forms import CreateQuestionForm, AddAnswerForm, CreateReportForm
@@ -6,7 +7,7 @@ from answers.models import Answer
 from comments.models import Comment
 from users.models import Report
 
-from django.http import HttpResponseRedirect, JsonResponse
+from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.urls import reverse
 from django.shortcuts import render, get_object_or_404
 from django.views.generic.edit import CreateView
@@ -58,27 +59,41 @@ def edit_question(request, question_id):
 def vote(request, question_id):
     if not request.user.is_authenticated:  # add blocked as well
         return HttpResponseRedirect(reverse('users:login'))
-    user = request.user
+    
     if request.POST['obj_type'] == 'question':
-        object = get_object_or_404(Question, id=question_id)
+        object = get_object_or_404(Question, id=request.POST['obj_id'])
     else:
-        object = get_object_or_404(Answer, id=request.POST['answer_id'])
+        object = get_object_or_404(Answer, id=request.POST['obj_id'])
+    
+    user = request.user
     vote = request.POST['vote']
+    liked = object.likedBy.filter(id=user.id).exists()
+    disliked = object.dislikedBy.filter(id=user.id).exists()
+    status = "none"
+
     if vote == 'upvote':
-        if object.likedBy.filter(id=user.id).exists():
+        if liked:
             object.likedBy.remove(user.id)
         else:
             object.likedBy.add(user.id)
-            if object.dislikedBy.filter(id=user.id).exists():
+            status = 'liked'
+            if disliked:
                 object.dislikedBy.remove(user.id)
     else:
-        if object.dislikedBy.filter(id=user.id).exists():
+        if disliked:
             object.dislikedBy.remove(user.id)
         else:
             object.dislikedBy.add(user.id)
-            if object.likedBy.filter(id=user.id).exists():
+            status = 'disliked'
+            if liked:
                 object.likedBy.remove(user.id)
-    return HttpResponseRedirect(reverse('questions:view_question', args=[question_id]))
+
+    json_data = {
+        'likes': object.likedBy.count(),
+        'dislikes': object.dislikedBy.count(),
+        'status': status
+    }
+    return HttpResponse(json.dumps(json_data))
 
 
 def follow_bookmark(request, question_id):
