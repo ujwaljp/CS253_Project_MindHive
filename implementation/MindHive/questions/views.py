@@ -21,7 +21,7 @@ def view_question(request, question_id):
     question = get_object_or_404(Question, id=question_id)
     if not question.viewedBy.filter(id=request.user.id).exists():
         question.viewedBy.add(request.user.id)
-    
+
     initial_ans_data = {
         'author': request.user,
         'to_question': question
@@ -107,7 +107,7 @@ def report(request, question_id):
         object = get_object_or_404(Answer, id=request.POST['answer_id'])
     else:
         object = get_object_or_404(Comment, id=request.POST['comment_id'])
-    
+
     if object.report_set.filter(reporter=request.user).exists():
         return JsonResponse({'status': 'already reported'})
     else:
@@ -178,7 +178,7 @@ class QuestionCreateView(CreateView):
     success_url = 'https://stackoverflow.com/a/60273100/7063031'
 
     def get_initial(self):
-        return {"author": self.kwargs.get("user_id")}
+        return {"author": self.request.user.id}
 
 
 def ajax_posting(request):
