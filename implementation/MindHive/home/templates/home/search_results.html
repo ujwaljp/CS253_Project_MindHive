@@ -1,0 +1,13 @@
+{{error}}
+
+{% if posts %}
+    <center> 
+        <h1> Search Result Found </h1>
+    </center>
+    <br/>
+{% for post in posts %}
+    {{post}}<br/>
+{%endfor%}
+    {%else%}
+    <center><h1>nothing found</h1></center>
+{%endif%}

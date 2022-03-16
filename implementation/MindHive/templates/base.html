@@ -31,8 +31,11 @@
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
                 <div class="collapse navbar-collapse" id="navbarResponsive">
 		                <ul class="navbar-nav ms-auto">
-                            <form class="inline-block">
-                                <input class="form-input" type="search" placeholder="Search" aria-placeholder="Search" length="50px">
+                            <form class="d-flex" method=get action="{% url  'home:search_results' %}">
+                                <input class="form-input" type="search" placeholder="Search" aria-placeholder="Search" length="45px" name="searched">
+                                <button class="btn btn-outline-secondary" type="button">
+                                    Search
+                                  </button>
                             </form>
                     <li class="nav-item">                        
                         <div class="dropdown">

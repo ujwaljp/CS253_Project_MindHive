@@ -28,8 +28,10 @@ def view(request):
 #         try:
 #             self.fav_questions = Questions.objects.filter()
 
-def searchbar(request):
+def search_results(request):
     if request.method == 'GET':
-        search = request.GET.get('search')
-        post = Question.object.all().filter(title=search)
-        return render(request, 'searchbar.html', {'post':post})
+        searched = request.GET['searched']
+        posts = Question.objects.all().filter(title__icontains=searched)
+        return render(request, 'search_results.html', {'searched':searched, 'posts':posts})
+    else:
+        return render(request, 'search_results.html', {})
