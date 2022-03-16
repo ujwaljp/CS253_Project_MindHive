@@ -1,10 +1,12 @@
 import sys
 
-from .forms import CreateQuestionForm, AddAnswerForm
+from .forms import CreateQuestionForm, AddAnswerForm, CreateReportForm
 from .models import Question
 from answers.models import Answer
+from comments.models import Comment
+from users.models import Report
 
-from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
+from django.http import HttpResponseRedirect, JsonResponse
 from django.urls import reverse
 from django.shortcuts import render, get_object_or_404
 from django.views.generic.edit import CreateView
@@ -101,13 +103,15 @@ def report(request, question_id):
         return HttpResponseRedirect(reverse('users:login'))
     if request.POST['obj_type'] == 'question':
         object = get_object_or_404(Question, id=question_id)
-    else:
+    elif request.POST['obj_type'] == 'answer':
         object = get_object_or_404(Answer, id=request.POST['answer_id'])
+    else:
+        object = get_object_or_404(Comment, id=request.POST['comment_id'])
     
     if object.report_set.filter(reporter=request.user).exists():
         return JsonResponse({'status': 'already reported'})
     else:
-        return HttpResponseRedirect(reverse('questions:ReportCreateView', args=[question_id]))
+        return HttpResponseRedirect(reverse('questions:add_report', args=[question_id, request.POST['obj_type'], object.id]))
 
 
 def add_comment(request, question_id):
@@ -138,6 +142,33 @@ def add_answer(request, question_id):
     if form.is_valid():
         form.save()
     return HttpResponseRedirect(reverse('questions:view_question', args=[question_id]))
+
+
+def add_report(request, question_id, reportedObjType, reportedObjId):
+    if not request.user.is_authenticated:
+        return HttpResponseRedirect(reverse('users:login'))
+
+    if request.method == 'POST':
+        form = CreateReportForm(request.POST)
+        if form.is_valid():
+            report = form.save(commit=False)
+            report.reporter = request.user
+            report.reportedObjType = reportedObjType
+            if reportedObjType == 'q':
+                report.reportedObjQ = Question.objects.get(id=reportedObjId)
+            elif reportedObjType == 'a':
+                report.reportedObjA = Answer.objects.get(id=reportedObjId)
+            else:
+                report.reportedObjC = Comment.objects.get(id=reportedObjId)
+            report.save()
+            return HttpResponseRedirect(reverse('questions:view_question', args=[question_id]))
+    else:
+        form = CreateReportForm()
+
+    context = {
+        'form': form,
+    }
+    return render(request, 'questions/reportform.html', context=context)
 
 
 class QuestionCreateView(CreateView):

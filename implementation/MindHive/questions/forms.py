@@ -25,7 +25,6 @@ class CreateQuestionForm(forms.ModelForm):
         )
 
 class AddAnswerForm(forms.ModelForm):
-
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields['text'].initial = ' '
@@ -52,3 +51,12 @@ class CreateReportForm(forms.ModelForm):
         model = Report
         fields = ["report_text", "reporter", "reportedUser", "reportedObjType",
                   "reportedObjQ", "reportedObjA", "reportedObjC"]
+        report_text = forms.CharField(max_length=200)
+        widgets = {
+            'reporter': forms.HiddenInput(),
+            'reportedUser': forms.HiddenInput(),
+            'reportedObjType': forms.HiddenInput(),
+            'reportedObjQ': forms.HiddenInput(),
+            'reportedObjA': forms.HiddenInput(),
+            'reportedObjC': forms.HiddenInput(),
+        }
