@@ -33,7 +33,7 @@
 {% endblock %}
     </div>
     <br>
-    <a href="{% url 'users:reset_password' %}">Forgot Password?</a>
+    {% comment %} <a href="{% url 'users:reset_password' %}">Forgot Password?</a> {% endcomment %}
     <br><br>
     <p>Don't have an account? <a href="{% url 'users:signup' %}">Sign up</a></p>
     </center>
