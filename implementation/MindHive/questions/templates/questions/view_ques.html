@@ -83,9 +83,6 @@
             <li>
                 <div style="background-color:#ddd;">{{comment.text|safe}}</div>
                 --- Commented on {{comment.pub_date}} by {{comment.author.name}}
-                {% if user == comment.author %}
-                    | <a href="#">Edit</a>
-                {% endif %}
             </li>
             <hr>
         {% endfor %}
@@ -106,10 +103,7 @@
         {% for answer in question.answer_set.all %}
             <li>
                 <div style="background-color:rgb(226, 233, 215);">{{answer.text|safe}}</div>
-                --- Answered on {{answer.pub_date}} by {{answer.get_author_name}} 
-                {% if user == answer.author %}
-                    | <a href="#">Edit</a>
-                {% endif %}
+                --- Answered on {{answer.pub_date}} by {{answer.get_author_name}}
                 <br>
                 <form class="vote_form" style="display:inline;">
                     {% csrf_token %}
@@ -146,9 +140,6 @@
                         <li>
                             <div style="background-color:#ddd;">{{comment.text|safe}}</div>
                             --- Commented on {{comment.pub_date}} by {{comment.author.name}}
-                            {% if user == comment.author %}
-                                | <a href="#">Edit</a>
-                            {% endif %}
                              | 
                             <form action="{% url 'questions:report' question.id %}" method="GET" style="display:inline">
                                 {% csrf_token %}
