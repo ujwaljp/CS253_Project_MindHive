@@ -296,3 +296,6 @@ form[view="profile"]{
     position: absolute;
     left: 600px;
 }
+.tag_questions{
+    color:black;
+}
