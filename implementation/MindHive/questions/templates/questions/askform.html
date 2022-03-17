@@ -1,5 +1,10 @@
 {% extends 'base.html' %}
 {% load crispy_forms_tags %}
+
+{% block insert_title %}
+    Ask Question - MindHive
+{% endblock %}
+
 {%block insert_content%}
 <div class="form-group" >
     <form method="post">{% csrf_token %}

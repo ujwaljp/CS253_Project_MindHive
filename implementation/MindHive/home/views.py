@@ -36,7 +36,7 @@ def folView(request):
 
 def allQuestionsView(request):
     questions = Question.objects.all()
-    return render(request, 'home/home.html', {'questions' : questions})    
+    return render(request, 'home/questions.html', {'questions' : questions})    
 
 # class HomeView(generic.ListView):
 #     model = Question

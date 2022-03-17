@@ -1,31 +1,30 @@
 {% extends 'base.html' %}
-    {%block insert_content%}
-    <section>
 
-    <div class="container">
+{% block insert_title %}
+    Search Result - MindHive
+{% endblock %}
+
+{%block insert_content%}
+<section>
+
+  <div class="container">
     {% if questions %}
     {%for ques in questions%}
     <div class="card" style="padding:5px">
       <a href="{% url 'questions:view_question' question_id=ques.id %}">
         <h2>{{ques.title}}</h2>
-        </a>
+      </a>
 
-        <h6>Asked by {{ques.get_author_name}} at {{ques.pub_date}}</h6>
-        <h6>{{ques.answer_set.all.count}} Answers</h6>
-        {% for ans in ques.answer_set.all|slice:":1" %}
-        <h6>{{ans.text|safe|truncatewords:20}}</h6>
-        <p style="color:black; font-family:Arial; font-size:11px; text-align: right;">Answered by {{ans.get_author_name}} on {{ans.pub_date}}</p>
-        <!-- <hr style="height:2px;border-width:0;color:gray;background-color:gray"> -->
-        <p>Total {{ques.answer_set.all.count}} answers</p>
-        {% endfor %}
+      <h6>Asked by {{ques.get_author_name}} at {{ques.pub_date}}</h6>
+      <h6>{{ques.answer_set.all.count}} Answers</h6>
 
     </div>
-    <br/>
+    <br />
     {%endfor%}
     {% else %}
     <h2>No questions to display.</h2>
     {% endif %}
 
-    </div>
-    </section>
-    {%endblock%}
+  </div>
+</section>
+{%endblock%}
