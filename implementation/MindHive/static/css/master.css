@@ -12,6 +12,7 @@
 }
 html{
     scroll-behavior: smooth;
+    zoom:80%;
 }
 
 /* CSS Variables */
@@ -21,7 +22,14 @@ html{
 body{
     background-color: whitesmoke(214, 210, 210);
 
+    position:fixed;
+    top:0;
+    bottom:0;
+    left:0;
+    right:0;
 }
+
+
 /* Navigation Bar */
 #navbar{
     z-index: 99999;
@@ -142,7 +150,7 @@ body{
     height: 600px;
 }
 
-#navbar ul li{ 
+#navbar ul li{
     list-style: none;
     font-size: 1.3rem;
 }
@@ -169,7 +177,7 @@ body{
     position: fixed;
 float: left;
 width: auto;
-height: 100vh;
+height: 100%;
 display: flex;
 flex-direction: column;
 margin-top: 85px;
