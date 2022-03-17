@@ -11,6 +11,8 @@ from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.urls import reverse
 from django.shortcuts import render, get_object_or_404
 from django.views.generic.edit import CreateView
+from users.models import User
+from notifications.models import Notification
 
 sys.path.append("..")
 
@@ -59,12 +61,12 @@ def edit_question(request, question_id):
 def vote(request, question_id):
     if not request.user.is_authenticated:  # add blocked as well
         return HttpResponseRedirect(reverse('users:login'))
-    
+
     if request.POST['obj_type'] == 'question':
         object = get_object_or_404(Question, id=request.POST['obj_id'])
     else:
         object = get_object_or_404(Answer, id=request.POST['obj_id'])
-    
+
     user = request.user
     vote = request.POST['vote']
     liked = object.likedBy.filter(id=user.id).exists()
@@ -139,8 +141,20 @@ def add_answer(request, question_id):
     form = AddAnswerForm(request.POST)
     if form.is_valid():
         form.save()
+        send_notification(request, question_id)
     return HttpResponseRedirect(reverse('questions:view_question', args=[question_id]))
 
+
+def send_notification(request, question_id):
+    question = Question.objects.get(pk=question_id)
+    receiver_id = question.author.id
+    receiver = User.objects.get(pk=receiver_id)
+    message = 'Someone just answered your question titled \"' + question.title + '\"'
+    # receiver.add_notification(message=message)
+    print(message)
+    notif = Notification.objects.create(receiver=receiver, text=message)
+    notif.save()
+    receiver.notifications.add(notif.id)
 
 def report(request, question_id):
     if not request.user.is_authenticated:
@@ -151,7 +165,7 @@ def report(request, question_id):
         if form.is_valid():
             form.save()
             return HttpResponseRedirect(reverse('questions:view_question', args=[question_id]))
-    
+
     reportedObjQ = None
     reportedObjA = None
     reportedObjC = None

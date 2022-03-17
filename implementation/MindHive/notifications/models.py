@@ -2,6 +2,7 @@ from django.db import models
 
 # Create your models here.
 class Notification(models.Model):
+    receiver = models.ForeignKey(to='users.User', on_delete=models.SET_NULL, related_name='receiver', null=True)
     text = models.CharField(max_length=200)
     timestamp = models.DateTimeField(auto_now_add=True)
     link = models.CharField(max_length=200)

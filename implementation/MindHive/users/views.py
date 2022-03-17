@@ -9,10 +9,19 @@ from django.views import generic
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import CreateView
 from django.contrib.auth import get_user_model
-
+from django.contrib.auth.decorators import login_required
+from notifications.models import Notification
 # Create your views here.
 
 User = get_user_model()
+
+@login_required(login_url='/users/login')
+def notifs_display(request):
+    notifs = Notification.objects.filter(receiver__pk = request.user.id)
+    # print(Notification.objects.all()[0].receiver)
+    print(len(notifs))
+    return render(request, 'users/notifs.html', {'notifications': notifs})
+
 
 class SignUp(CreateView):
     form_class = UserCreateForm
