@@ -21,9 +21,16 @@
             <div class="container px-4 text-center">
                 <h1 class="fw-bolder">Welcome to MindHive</h1>
                 <p class="lead">A QnA platform for the IITK community</p>
+                <div class="container">
+                {% if user.is_authenticated %}
+                <a class="btn btn-lg btn-light" href="{% url 'users:logout' %}">Logout</a>
+                {% else%}
                 <a class="btn btn-lg btn-light" href="{% url 'users:signup' %}">Signup</a>
+                <!-- <p></p> -->
+                <a class="btn btn-lg btn-light" href="{% url 'users:login' %}" >Signin</a>
+                {% endif %}
                 <p></p>
-                <a class="btn btn-lg btn-light" href="{% url 'users:login' %}" style="margin-bottom:5px">Signin</a>
+            </div>
             </div>
         </header>
         <!-- About section-->
@@ -35,7 +42,7 @@
                         <p class="lead">Our website is made using Django and HTML, CSS mainly</p>
                         <ul>
                             <li>IT was made under the course project of CS253 under the guidance of professor Indranil saha and our TA Madhav</li>
-                            <li>Our Team Include: Harsh Trivedi, L gokulnath, Rishav Bakrwar, Ujwal Jyot Panda,Parth Maniar, Adi Pratap Singh, Sahil Bansal, Bhavya Garg, Gavish Garg, Aakash Trivedi.</li>
+                            <li>Our Team Include: Harsh Trivedi, L Gokulnath, Rishav Bakrwar, Ujwal Jyot Panda,Parth Maniar, Adi Pratap Singh, Sahil Bansal, Bhavya Garg, Gavish Garg, Aakash Trivedi.</li>
                         </ul>
                     </div>
                 </div>
