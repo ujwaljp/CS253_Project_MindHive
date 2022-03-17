@@ -68,6 +68,6 @@ def search_results(request):
             searched_ques = Question.objects.filter(Q(title__icontains=searched) | Q(text__icontains=searched)).distinct()
             return render(request, 'home/search_results.html', {"searched":searched, 'questions':searched_ques})
         else:
-            return render(request, 'home/base.html')
+            return render(request, 'base.html')
     else:
         return render(request, 'home/search_results.html')
