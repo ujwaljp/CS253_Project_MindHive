@@ -176,8 +176,8 @@ html{
 #left{
     position: fixed;
 float: left;
-width: auto;
-height: 100%;
+width: 20%;
+height: 95%;
 display: flex;
 flex-direction: column;
 margin-top: 85px;

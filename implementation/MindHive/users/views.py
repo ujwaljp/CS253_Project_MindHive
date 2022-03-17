@@ -20,6 +20,8 @@ def notifs_display(request):
     notifs = Notification.objects.filter(receiver__pk = request.user.id)
     # print(Notification.objects.all()[0].receiver)
     print(len(notifs))
+    Notification.objects.filter(receiver__pk=request.user.id).delete()
+    print("deleted notifications")
     return render(request, 'users/notifs.html', {'notifications': notifs})
 
 
