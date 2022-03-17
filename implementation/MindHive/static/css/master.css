@@ -19,7 +19,7 @@ html{
 :root{
     --navbar-height: 59px;
 }
-body{
+/* body{
     background-color: whitesmoke(214, 210, 210);
 
     position:fixed;
@@ -27,7 +27,7 @@ body{
     bottom:0;
     left:0;
     right:0;
-}
+} */
 
 
 /* Navigation Bar */
@@ -127,7 +127,7 @@ body{
 }
 #dropdownMenuButton {
     position: relative;
-    left: 300px;
+    left: 250px;
     bottom: 20px;
   }
 
