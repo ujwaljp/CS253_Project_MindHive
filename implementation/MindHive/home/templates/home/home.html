@@ -14,7 +14,7 @@ Home - MindHive
         <h2>{{ques.title}}</h2>
       </a>
 
-      <h6>Asked by {{ques.get_author_name}} on {{ques.pub_date}}
+      <h6>Asked by <a href="{% url "users:view_user" pk=ques.get_author_id %}">{{ques.get_author_name}}</a> on {{ques.pub_date}}
         | Viewed by {{ques.viewedBy.all.count}} users
       </h6>
       <h6>{{ques.answer_set.all.count}} Answers</h6>
