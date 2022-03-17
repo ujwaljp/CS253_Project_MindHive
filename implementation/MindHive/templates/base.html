@@ -34,7 +34,7 @@
 		                <ul class="navbar-nav ms-auto">
                             <form class="inline-block" method=get action="{% url  'home:search_results' %}">
                                 <input class="form-input" type="search" placeholder="Search" aria-placeholder="Search" name="searched">
-                                <button class="btn btn-outline-secondary" type="button" id="search">
+                                <button class="btn btn-outline-secondary" type="submit" id="search">
                                     Search
                                   </button>
                             </form>
@@ -47,7 +47,7 @@
                                 {% if user.is_authenticated %}
                               <a class="dropdown-item" href="{% url 'users:edit_users' %}">Edit Your Profile</a>
             
-                              <a class="dropdown-item" href="#">Change Password</a>
+                              <a class="dropdown-item" href="{% url 'users:reset_password' %">Change Password</a>
                               <a class="dropdown-item" href="{% url 'users:logout' %}">Logout</a>
                               {% else %}
                               <a class="dropdown-item" href="{% url 'users:login' %}">Login</a></li>
@@ -75,10 +75,12 @@
                 <img id="T-img" src="" />
                 <div class="comp">Tags</div>
             </a>
+            {% if user.id %}
             <a href="{% url 'users:view_user' user.id%}" class="sect">
                 <img id="U-img" src="" />
                 <div class="comp">View Profile</div>
             </a>
+            {% endif %}
             <a href="{%url 'home:following'%}" class="sect">
                 <div class="comp">Followings</div>
             </a>
