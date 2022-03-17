@@ -185,11 +185,12 @@ class QuestionCreateView(CreateView):
     model = Question
     form_class = CreateQuestionForm
     template_name = "questions/askform.html"
-    success_url = 'https://youtu.be/dQw4w9WgXcQ'
+    # success_url = reverse('questions:view_question', args=[self.object.id])
 
     def get_initial(self):
         return {"author": self.request.user.id}
-
+    def get_success_url(self):
+        return reverse('questions:view_question', args=[self.object.id])
 
 def ajax_posting(request):
     response = {
