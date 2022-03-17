@@ -171,5 +171,5 @@ EMAIL_PORT = 587
 EMAIL_HOST_USER = 'mindhiveiitk@gmail.com'
 EMAIL_HOST_PASSWORD = 'Homesweethome'
 EMAIL_USE_TLS = True
-LOGIN_REDIRECT_URL = 'test'
-LOGOUT_REDIRECT_URL = 'thanks'
+LOGIN_REDIRECT_URL = 'home:view_home'
+LOGOUT_REDIRECT_URL = 'index'
