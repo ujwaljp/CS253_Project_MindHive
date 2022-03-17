@@ -99,6 +99,15 @@
             <a href="{%url 'home:bookmarks'%}" class="sect">
                 <div class="comp">Bookmarks</div>
             </a>
+            {% if user.notifications.count %}
+            <a href="{% url 'users:notifs' %}" class="sect">
+              <div class="comp">View notifications ({{user.notifications.all.count}})</div>
+            </a>
+            {% else %}
+            <a href="{% url 'users:notifs' %}" class="sect">
+              <div class="comp">No new Notifications</div>
+            </a>
+            {% endif %}
             {% if user.id %}
             <a href="{% url 'users:view_user' user.id%}" class="sect">
                 <img id="U-img" src="" />
