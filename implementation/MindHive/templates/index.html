@@ -24,6 +24,7 @@
                 <div class="container">
                 {% if user.is_authenticated %}
                 <a class="btn btn-lg btn-light" href="{% url 'users:logout' %}">Logout</a>
+                <a class="btn btn-lg btn-light" href="{% url 'home:view_questions' %}">Home Page</a>
                 {% else%}
                 <a class="btn btn-lg btn-light" href="{% url 'users:signup' %}">Signup</a>
                 <!-- <p></p> -->
