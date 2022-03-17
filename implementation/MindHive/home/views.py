@@ -45,6 +45,11 @@ def tagView(request,tagname):
     tagQues = Question.objects.filter(tags__in = tagSel).distinct()
     return render(request, 'home/home.html', {'questions':tagQues})
 
+def autQues(request):
+    user = User.objects.filter(id = request.user.id)
+    autQuestions = Question.objects.filter(author__in = user).distinct()
+    return render(request, 'home/home.html', {'questions':autQuestions})
+
 # class HomeView(generic.ListView):
 #     model = Question
 #     template_name = 'home/home.html'

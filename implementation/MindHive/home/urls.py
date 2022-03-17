@@ -12,5 +12,6 @@ urlpatterns = [
     path('bookmarks/', views.bookView, name='bookmarks'),
     # use home/tags/python for questions related to python
     path('tags/<tagname>', views.tagView, name='tags'),
+    path('authorQuestions', views.autQues, name='authorQuestions'),
     path('following/', views.folView, name='following'),
 ]
