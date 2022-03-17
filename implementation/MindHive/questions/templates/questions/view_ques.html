@@ -8,7 +8,13 @@
 {% block insert_content %}
     <h1>{{question.title}}</h1>
     <p>
-        Asked on {{question.pub_date}} by <a href="{% url "users:view_user" pk=question.get_author_id %}">{{question.get_author_name}}</a>| Viewed By {{question.viewedBy.count}} users<br><hr>
+        Asked on {{question.pub_date}} by 
+            {% if question.get_author_name == 'Anonymous User' %}
+                {{question.get_author_name}}
+            {% else %}
+                <a href="{% url "users:view_user" pk=question.get_author_id %}">{{question.get_author_name}}</a>
+            {% endif %}
+            | Viewed By {{question.viewedBy.count}} users<br><hr>
         <div style="background-color:rgb(222, 237, 241);">{{question.text|safe}}</div>
          
         {% for tag in question.tags.all %}
@@ -87,7 +93,12 @@
         {% for comment in question.comment_set.all %}
             <li>
                 <div style="background-color:#ddd;">{{comment.text|safe}}</div>
-                --- Commented on {{comment.pub_date}} by <a href="{% url "users:view_user" pk=comment.get_author_id %}">{{comment.get_author_name}}</a>
+                --- Commented on {{comment.pub_date}} by 
+                {% if comment.get_author_name == 'Anonymous User' %}
+                    {{comment.get_author_name}}
+                {% else %}
+                    <a href="{% url "users:view_user" pk=comment.get_author_id %}">{{comment.get_author_name}}</a>
+                {% endif %}
             </li>
             <hr>
         {% endfor %}
@@ -108,7 +119,12 @@
         {% for answer in question.answer_set.all %}
             <li>
                 <div style="background-color:rgb(226, 233, 215);">{{answer.text|safe}}</div>
-                --- Answered on {{answer.pub_date}} by <a href="{% url "users:view_user" pk=answer.author_id %}">{{answer.get_author_name}}</a>
+                --- Answered on {{answer.pub_date}} by 
+                    {% if answer.get_author_name == 'Anonymous User' %}
+                        {{answer.get_author_name}}
+                    {% else %}
+                        <a href="{% url "users:view_user" pk=answer.author_id %}">{{answer.get_author_name}}</a>
+                    {% endif %}
                 <br>
                 <form class="vote_form" style="display:inline;">
                     {% csrf_token %}
@@ -144,7 +160,12 @@
                     {% for comment in answer.comment_set.all %}
                         <li>
                             <div style="background-color:#ddd;">{{comment.text|safe}}</div>
-                            --- Commented on {{comment.pub_date}} by <a href="{% url "users:view_user" pk=comment.author_id %}">{{comment.get_author_name}}</a>
+                            --- Commented on {{comment.pub_date}} by 
+                            {% if comment.get_author_name == 'Anonymous User' %}
+                                {{comment.get_author_name}}
+                            {% else %}
+                                <a href="{% url "users:view_user" pk=comment.get_author_id %}">{{comment.get_author_name}}</a>
+                            {% endif %}
                              | 
                             <form action="{% url 'questions:report' question.id %}" method="GET" style="display:inline">
                                 {% csrf_token %}

@@ -22,6 +22,7 @@ class Content(models.Model):
             return 'Anonymous User'
         else:
             return self.author.name
+
     def get_author_id(self):
         if self.anonymous:
             return 'Anonymous User'

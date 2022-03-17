@@ -1,18 +1,17 @@
 {% extends 'base.html'%}
 {% load crispy_forms_tags %}
-
+{% load static %}
 
 {% block insert_title %}
     {{ usr.name }} - MindHive
 {% endblock %}
-
 
 {%block insert_content%}
 
 <div class="profile">
     <div id="photo">
         <div id="center-photo">
-            <img src="{{usr.profile_image.url}}" alt="No profile image uploaded" />
+            <img src="{{usr.profile_image.url}}" alt="Image not found" />
         </div>
     </div>
     <div id="data">
