@@ -1,8 +1,10 @@
 from tkinter import NONE
 from django.http import HttpResponse
 from django.shortcuts import render
+from django.test import tag
 from questions.models import Question
 from users.models import User
+from tags.models import Tag
 from django.contrib.auth.decorators import login_required
 from questions.models import Question
 from django.db.models import Q
@@ -38,7 +40,17 @@ def folView(request):
 
 def allQuestionsView(request):
     questions = Question.objects.all()
-    return render(request, 'home/questions.html', {'questions' : questions})    
+    return render(request, 'home/questions.html', {'questions' : questions})  
+
+def tagView(request,tagname):
+    tagSel = Tag.objects.filter(name = tagname)#request.POST['tags'])
+    tagQues = Question.objects.filter(tags__in = tagSel).distinct()
+    return render(request, 'home/home.html', {'questions':tagQues})
+
+def autQues(request):
+    user = User.objects.filter(id = request.user.id)
+    autQuestions = Question.objects.filter(author__in = user).distinct()
+    return render(request, 'home/home.html', {'questions':autQuestions})
 
 # class HomeView(generic.ListView):
 #     model = Question

@@ -22,4 +22,5 @@ urlpatterns = [
     path('password_reset_complete/',auth_views.PasswordResetCompleteView.as_view(template_name='users/password_reset_done.html')),
     path('edit/', UserEditView.as_view(), name='edit_users'),
     path('addtags/',views.addTagsView.as_view(), name='addtags'),
+    path('notifications/', views.notifs_display, name='notifs'),
 ]

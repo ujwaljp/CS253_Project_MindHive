@@ -1,0 +1,9 @@
+<div class="container">
+  {% for notifs in notifications %}
+    <div class="card" style="padding:5px">
+      {{notif.timestamp}}<br>{{notifs.text}}
+    </div>
+    <hr>
+    {% endfor %}
+
+</div>

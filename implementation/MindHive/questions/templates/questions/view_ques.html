@@ -12,14 +12,14 @@
             {% if question.get_author_name == 'Anonymous User' %}
                 {{question.get_author_name}}
             {% else %}
-                <a href="{% url "users:view_user" pk=question.get_author_id %}">{{question.get_author_name}}</a>
+                <a href="{% url "users:view_user" pk=question.get_author_id %}" >{{question.get_author_name}}</a>
             {% endif %}
             | Viewed By {{question.viewedBy.count}} users<br><hr>
-        <div style="background-color:rgb(222, 237, 241);">{{question.text|safe}}</div>
-         
+        <div style="background-color:rgb(222, 237, 241); padding:5px;">{{question.text|safe}}</div>
+         <br>
         {% for tag in question.tags.all %}
             <button type="submit" style="background-color: #ffc368;">
-                <i>{{tag.name}}</i>
+                <i><a href="{% url "home:tags" tagname=tag.name %}" class="tag_questions">{{tag.name}}</a></i>
             </button>
         {% endfor %}
         {% if user == question.author %}

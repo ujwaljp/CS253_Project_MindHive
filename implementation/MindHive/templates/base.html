@@ -22,7 +22,9 @@
         {% comment %} <link rel="stylesheet" href="{% static '/css/style.css' %}"> {% endcomment %}
     </head>
     <body id="page-top">
-        <!-- Navigation-->
+
+
+
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top" id="mainNav">
             <div class="container px-4">
                 <a href="{% url 'home:view_home'%}" id="logo">
@@ -33,12 +35,12 @@
                 <div class="collapse navbar-collapse" id="navbarResponsive">
 		                <ul class="navbar-nav ms-auto">
                             <form class="inline-block" method=get action="{% url  'home:search_results' %}">
-                                <input class="form-input" type="search" placeholder="Search" aria-placeholder="Search" name="searched">
-                                <button class="btn btn-outline-secondary" type="submit" id="search">
-                                    Search
-                                  </button>
+                                <input class="form-input" type="search" placeholder="Search" aria-placeholder="Search" name="searched" style="width: 1000px">
+                                <input type="submit" class="btn btn-fill btn-primary" value="Search" id="search">
+
+                                  <!-- </button> -->
                             </form>
-                    <li class="nav-item">                        
+                    <li class="nav-item">
                         <div class="dropdown">
                             <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                               Settings
@@ -46,7 +48,7 @@
                             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                                 {% if user.is_authenticated %}
                               <a class="dropdown-item" href="{% url 'users:edit_users' %}">Edit Your Profile</a>
-            
+
                               <a class="dropdown-item" href="{% url 'users:reset_password' %}">Change Password</a>
                               <a class="dropdown-item" href="{% url 'users:logout' %}">Logout</a>
                               {% else %}
@@ -61,6 +63,7 @@
                 </div>
             </div>
         </nav>
+          </div>
         <div id="left">
 
             <a href="{% url 'home:view_home'%}" class="sect">
@@ -71,9 +74,9 @@
                 <img id="Q-img" src="" />
                 <div class="comp">Ask Question</div>
             </a>
-            
+
             <hr color="white" style="border: 0.5px solid rgb(255, 255, 255);"/>
-            
+
             <a href="{% url 'home:view_questions' %}" class="sect">
                 <img id="T-img" src="" />
                 <div class="comp">Questions</div>
@@ -87,9 +90,9 @@
                 <img id="T-img" src="" />
                 <div class="comp">Users</div>
             </a>
-            
+
             <hr color="white" style="border: 0.5px solid rgb(255, 255, 255);"/>
-            
+
             <a href="{%url 'home:following'%}" class="sect">
                 <div class="comp">Following</div>
             </a>
