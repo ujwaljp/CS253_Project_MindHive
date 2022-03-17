@@ -33,6 +33,11 @@ def folView(request):
     folQuestions = Question.objects.filter(id__in = user).distinct()
     # Creturn HttpResponse(user)
     return render(request, 'home/follow_questions.html', {'questions':folQuestions})
+
+def allQuestionsView(request):
+    questions = Question.objects.all()
+    return render(request, 'home/home.html', {'questions' : questions})    
+
 # class HomeView(generic.ListView):
 #     model = Question
 #     template_name = 'home/home.html'

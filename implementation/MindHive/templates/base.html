@@ -47,7 +47,7 @@
                                 {% if user.is_authenticated %}
                               <a class="dropdown-item" href="{% url 'users:edit_users' %}">Edit Your Profile</a>
             
-                              <a class="dropdown-item" href="{% url 'users:reset_password' %">Change Password</a>
+                              <a class="dropdown-item" href="{% url 'users:reset_password' %}">Change Password</a>
                               <a class="dropdown-item" href="{% url 'users:logout' %}">Logout</a>
                               {% else %}
                               <a class="dropdown-item" href="{% url 'users:login' %}">Login</a></li>
@@ -71,9 +71,30 @@
                 <img id="Q-img" src="" />
                 <div class="comp">Ask Question</div>
             </a>
+            
+            <hr color="white" style="border: 0.5px solid rgb(255, 255, 255);"/>
+            
+            <a href="{% url 'home:view_questions' %}" class="sect">
+                <img id="T-img" src="" />
+                <div class="comp">Questions</div>
+            </a>
             <a href="{% url 'users:addtags' %}" class="sect">
                 <img id="T-img" src="" />
                 <div class="comp">Tags</div>
+            </a>
+            <!--  url 'home:view_users'  -->
+            <a href="#" class="sect">
+                <img id="T-img" src="" />
+                <div class="comp">Users</div>
+            </a>
+            
+            <hr color="white" style="border: 0.5px solid rgb(255, 255, 255);"/>
+            
+            <a href="{%url 'home:following'%}" class="sect">
+                <div class="comp">Following</div>
+            </a>
+            <a href="{%url 'home:bookmarks'%}" class="sect">
+                <div class="comp">Bookmarks</div>
             </a>
             {% if user.id %}
             <a href="{% url 'users:view_user' user.id%}" class="sect">
@@ -81,12 +102,6 @@
                 <div class="comp">View Profile</div>
             </a>
             {% endif %}
-            <a href="{%url 'home:following'%}" class="sect">
-                <div class="comp">Followings</div>
-            </a>
-            <a href="{%url 'home:bookmarks'%}" class="sect">
-                <div class="comp">Bookmarks</div>
-            </a>
         </div>
         <div class="content">
         {% block insert_content %}
