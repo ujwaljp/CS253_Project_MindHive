@@ -1,3 +1,4 @@
+from tkinter import NONE
 from django.http import HttpResponse
 from django.shortcuts import render
 from questions.models import Question
@@ -5,6 +6,7 @@ from users.models import User
 from django.contrib.auth.decorators import login_required
 from questions.models import Question
 from django.db.models import Q
+from django.contrib import messages
 # Create your views here.
 @login_required(login_url='users:login')
 def view(request):
@@ -49,7 +51,11 @@ def allQuestionsView(request):
 def search_results(request):
     if request.method == 'GET':
         searched = request.GET['searched']
-        searched_ques = Question.objects.filter(Q(title__icontains=searched) | Q(text__icontains=searched)).distinct()
-        return render(request, 'home/search_results.html', {'searched':searched, 'questions':searched_ques})
+        #q=searched.split()
+        if searched:
+            searched_ques = Question.objects.filter(Q(title__icontains=searched) | Q(text__icontains=searched)).distinct()
+            return render(request, 'home/search_results.html', {"searched":searched, 'questions':searched_ques})
+        else:
+            return render(request, 'home/base.html')
     else:
-        return render(request, 'home/search_results.html', {})
+        return render(request, 'home/search_results.html')
