@@ -124,24 +124,19 @@ html {
 }
 #dropdownMenuButton {
   position: relative;
-  left: 250px;
-  bottom: 20px;
+  left: 245px;
+  bottom: 22px;
+  margin-right: 10px;
 }
 
 .dropdown-menu.show {
-  left: 250px;
+    left: 187px;
+    top: 25px;
 }
 #search {
-  left: 1350px;
+  left: 1310px;
   position: absolute;
-  top: 26px;
-}
-#search {
-  background-color: grey;
-  color: white;
-}
-#search:hover {
-  background-color: darkgrey;
+  top: 24.5px;
 }
 #id_favouriteTags {
   height: 600px;
@@ -241,13 +236,14 @@ html {
 }
 
 input[type="search"] {
-  margin-left: 30px;
+  margin-left: 50px;
+  border-radius: 5px;
 }
 
 .content {
   position: absolute;
-  top: 99px;
-  left: 25%;
+  top: 105px;
+  left: 140px;
   right: 5px;
 }
 

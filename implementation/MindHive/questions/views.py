@@ -149,7 +149,7 @@ def send_notification(request, question_id):
     question = Question.objects.get(pk=question_id)
     receiver_id = question.author.id
     receiver = User.objects.get(pk=receiver_id)
-    message = 'Someone just answered your question titled \"' + question.title + '\"'
+    message = 'Someone answered the question "' + question.title[:30] + '..."'
     # receiver.add_notification(message=message)
     print(message)
     notif = Notification.objects.create(receiver=receiver, text=message)
