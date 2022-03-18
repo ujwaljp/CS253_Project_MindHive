@@ -251,7 +251,7 @@ input[type="search"]{
 .content {
     position: absolute;
     top: 99px;
-left: 360px;
+left: 25%;
     right: 5px;
   }
   .profile{
