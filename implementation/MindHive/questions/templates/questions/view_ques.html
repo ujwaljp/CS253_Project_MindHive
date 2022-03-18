@@ -17,11 +17,17 @@
             | Viewed By {{question.viewedBy.count}} users<br><hr>
         <div style="background-color:rgb(222, 237, 241); padding:5px;">{{question.text|safe}}</div>
          <br>
+        
         {% for tag in question.tags.all %}
-            <button type="submit" style="background-color: #ffc368;">
-                <i><a href="{% url "home:tags" tagname=tag.name %}" class="tag_questions">{{tag.name}}</a></i>
-            </button>
+            {% if tag in user.favouriteTags.all %}
+                <button type="submit" style="background-color: #b9ffa3;">
+            {% else %}
+                <button type="submit" style="background-color: #ffd992;">
+            {% endif %}
+                    <i><a href="#" class="tag_questions">{{tag.name}}</a></i>
+                </button>
         {% endfor %}
+        
         {% if user == question.author %}
             | <a href="/questions/{{question.id}}/edit">Edit Question</a>
         {% endif %}

@@ -1,31 +1,9 @@
-{% extends 'base.html' %}
+{% extends 'questions_list.html' %}
 
 {% block insert_title %}
-Home - MindHive
+  Questions - MindHive
 {% endblock %}
 
-{%block insert_content%}
-<section>
-  <div class="container">
-    {% if questions %}
-    {%for ques in questions%}
-    <div class="card" style="padding:5px">
-      <a href="{% url 'questions:view_question' question_id=ques.id %}">
-        <h2>{{ques.title}}</h2>
-      </a>
-
-      <h6>Asked by <a href="{% url "users:view_user" pk=ques.get_author_id %}">{{ques.get_author_name}}</a> on {{ques.pub_date}}
-        | Viewed by {{ques.viewedBy.all.count}} users
-      </h6>
-      <h6>{{ques.answer_set.all.count}} Answers</h6>
-
-    </div>
-    <br />
-    {%endfor%}
-    {% else %}
-    <h2>No questions to display. Please select your favouriteTags</h2>
-    {% endif %}
-
-  </div>
-</section>
+{%block empty_message%}
+  No questions to display. Please select your favouriteTags
 {%endblock%}
