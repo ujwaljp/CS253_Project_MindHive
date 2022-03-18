@@ -5,10 +5,13 @@ Questions - MindHive
 {% endblock %}
 
 {% block insert_content %}
+<h1>
 {% block heading %}
-    <h1>Questions</h1>
-    <br>
+    Questions
 {% endblock %}
+</h1>
+
+<br>
 
 <div class="containers">
     {% if questions %}
@@ -52,6 +55,8 @@ Questions - MindHive
         {% endblock %}
     </h2>
     {% endif %}
-
 </div>
+{% block script %}
+
+{% endblock %}
 {% endblock %}

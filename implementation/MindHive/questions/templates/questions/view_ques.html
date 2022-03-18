@@ -2,90 +2,92 @@
 {% load crispy_forms_tags %}
 
 {% block insert_title %}
-    {{ question.title }} - MindHive
+{{ question.title }} - MindHive
 {% endblock %}
 
 {% block insert_content %}
-    <h1>{{question.title}}</h1>
-    <p>
-        Asked on {{question.pub_date}} by 
-            {% if question.get_author_name == 'Anonymous User' %}
-                {{question.get_author_name}}
-            {% else %}
-                <a href="{% url "users:view_user" pk=question.get_author_id %}" >{{question.get_author_name}}</a>
-            {% endif %}
-            | Viewed By {{question.viewedBy.count}} users<br><hr>
-        <div style="background-color:rgb(222, 237, 241); padding:5px;">{{question.text|safe}}</div>
-         <br>
-        
-        {% for tag in question.tags.all %}
-            {% if tag in user.favouriteTags.all %}
-                <button type="submit" style="background-color: #b9ffa3;">
-            {% else %}
-                <button type="submit" style="background-color: #ffd992;">
-            {% endif %}
-                    <i><a href="#" class="tag_questions">{{tag.name}}</a></i>
-                </button>
-        {% endfor %}
-        
-        {% if user == question.author %}
-            | <a href="/questions/{{question.id}}/edit">Edit Question</a>
-        {% endif %}
-    </p> 
-    <p>
-        <!-- add buttons for up and downvotes -->
-        <form class="vote_form" style="display: inline;">
-            {% csrf_token %}
-            <input type="hidden" name="obj_type" value="question">
-            <input type="hidden" name="obj_id" value="{{question.id}}">
-            <!-- check if user has upvoted the question -->
-            <button type="submit", class="upvote",  value="upvote">
-                <span class="like_count" style="color: green;">{{question.likedBy.count}}</span>
-                {% if user in question.likedBy.all %}
-                    <i class="fa-solid fa-thumbs-up"></i>
-                {% else %}
-                    <i class="fa-regular fa-thumbs-up"></i>
-                {% endif %}
-            </button>
-            <button type="submit", class="downvote",  value="downvote">
-                <span class="dislike_count" style="color: red;">{{question.dislikedBy.count}}</span>
-                {% if user in question.dislikedBy.all %}
-                    <i class="fa-solid fa-thumbs-down"></i>
-                {% else %}
-                    <i class="fa-regular fa-thumbs-down"></i>
-                {% endif %}
-            </button>
-        </form>
-         | 
-        <form action="{% url 'questions:follow_bookmark' question.id %}" method="POST" style="display:inline">
-            {% csrf_token %}
-            {% if user in question.users_bookmarked.all %}
-                <button type="submit", name="action", value="unbookmark">
-                    <i class="fa-solid fa-bookmark"></i>
-                </button>
-            {% else %}
-                <button type="submit" name="action", value="bookmark">
-                    <i class="fa-regular fa-bookmark"></i>
-                </button>
-            {% endif %}
-            {% if user in question.users_following.all %}
-                <button type="submit" name="action", value="unfollow">
-                    <i class="fa-solid fa-star"></i>
-                </button>
-            {% else %}
-                <button type="submit" name="action", value="follow">
-                    <i class="fa-regular fa-star"></i>
-                </button>
-            {% endif %}
-        </form>
+<h1>{{question.title}}</h1>
+<p>
+    Asked on {{question.pub_date}} by
+    {% if question.get_author_name == 'Anonymous User' %}
+    {{question.get_author_name}}
+    {% else %}
+    <a href="{% url 'users:view_user' pk=question.get_author_id %}">{{question.get_author_name}}</a>
+    {% endif %}
+    | Viewed By {{question.viewedBy.count}} users<br>
+    <hr>
+<div style="background-color:rgb(222, 237, 241); padding:5px;">{{question.text|safe}}</div>
+<br>
 
-        <form action="{% url 'questions:report' question.id %}" method="GET" style="display:inline">
-            {% csrf_token %}
-            <input type="hidden" name="obj_type" value="q">
-            <button type="submit" name="id", value={{question.id}}>
-                <i class="fa-regular fa-circle-xmark"></i>
-            </button>
-        </form>
+{% for tag in question.tags.all %}
+{% if tag in user.favouriteTags.all %}
+<button type="submit" style="background-color: #b9ffa3;">
+    {% else %}
+    <button type="submit" style="background-color: #ffd992;">
+        {% endif %}
+        <i><a href="#" class="tag_questions">{{tag.name}}</a></i>
+    </button>
+    {% endfor %}
+
+    {% if user == question.author %}
+    | <a href="/questions/{{question.id}}/edit">Edit Question</a>
+    {% endif %}
+    </p>
+    
+    <p>
+    <!-- add buttons for up and downvotes -->
+    <form class="vote_form" style="display: inline;">
+        {% csrf_token %}
+        <input type="hidden" name="obj_type" value="question">
+        <input type="hidden" name="obj_id" value="{{question.id}}">
+        <!-- check if user has upvoted the question -->
+        <button type="submit" , class="upvote" , value="upvote">
+            <span class="like_count" style="color: green;">{{question.likedBy.count}}</span>
+            {% if user in question.likedBy.all %}
+            <i class="fa-solid fa-thumbs-up"></i>
+            {% else %}
+            <i class="fa-regular fa-thumbs-up"></i>
+            {% endif %}
+        </button>
+        <button type="submit" , class="downvote" , value="downvote">
+            <span class="dislike_count" style="color: red;">{{question.dislikedBy.count}}</span>
+            {% if user in question.dislikedBy.all %}
+            <i class="fa-solid fa-thumbs-down"></i>
+            {% else %}
+            <i class="fa-regular fa-thumbs-down"></i>
+            {% endif %}
+        </button>
+    </form>
+    |
+    <form action="{% url 'questions:follow_bookmark' question.id %}" method="POST" style="display:inline">
+        {% csrf_token %}
+        {% if user in question.users_bookmarked.all %}
+        <button type="submit" , name="action" , value="unbookmark">
+            <i class="fa-solid fa-bookmark"></i>
+        </button>
+        {% else %}
+        <button type="submit" name="action" , value="bookmark">
+            <i class="fa-regular fa-bookmark"></i>
+        </button>
+        {% endif %}
+        {% if user in question.users_following.all %}
+        <button type="submit" name="action" , value="unfollow">
+            <i class="fa-solid fa-star"></i>
+        </button>
+        {% else %}
+        <button type="submit" name="action" , value="follow">
+            <i class="fa-regular fa-star"></i>
+        </button>
+        {% endif %}
+    </form>
+
+    <form action="{% url 'questions:report' question.id %}" method="GET" style="display:inline">
+        {% csrf_token %}
+        <input type="hidden" name="obj_type" value="q">
+        <button type="submit" name="id" , value={{question.id}}>
+            <i class="fa-regular fa-circle-xmark"></i>
+        </button>
+    </form>
     </p>
     <!-- <form id="vote_form" method="POST">
         {% csrf_token %}
@@ -97,23 +99,23 @@
 
     <ul id="q_comments">
         {% for comment in question.comment_set.all %}
-            <li>
-                <div style="background-color:#ddd;">{{comment.text|safe}}</div>
-                --- Commented on {{comment.pub_date}} by 
-                {% if comment.get_author_name == 'Anonymous User' %}
-                    {{comment.get_author_name}}
-                {% else %}
-                    <a href="{% url "users:view_user" pk=comment.get_author_id %}">{{comment.get_author_name}}</a>
-                {% endif %}
-            </li>
-            <hr>
+        <li>
+            <div style="background-color:#ddd;">{{comment.text|safe}}</div>
+            --- Commented on {{comment.pub_date}} by
+            {% if comment.get_author_name == 'Anonymous User' %}
+            {{comment.get_author_name}}
+            {% else %}
+            <a href="{% url 'users:view_user' pk=comment.get_author_id %}">{{comment.get_author_name}}</a>
+            {% endif %}
+        </li>
+        <hr>
         {% endfor %}
 
         <form action="{% url 'questions:add_comment' question.id %}" method="POST">
             {% csrf_token %}
             <input type="text" maxlength="200" name="comment_text" placeholder="Add a comment">
             <input type="hidden" name="obj_type" value="question">
-            <button type="submit", name="question_id",  value={{question.id}}>Comment</button>
+            <button type="submit" , name="question_id" , value={{question.id}}>Comment</button>
         </form>
     </ul>
 
@@ -123,80 +125,80 @@
     </h2>
     <ul>
         {% for answer in question.answer_set.all %}
-            <li>
-                <div style="background-color:rgb(226, 233, 215);">{{answer.text|safe}}</div>
-                --- Answered on {{answer.pub_date}} by 
-                    {% if answer.get_author_name == 'Anonymous User' %}
-                        {{answer.get_author_name}}
+        <li>
+            <div style="background-color:rgb(226, 233, 215);">{{answer.text|safe}}</div>
+            --- Answered on {{answer.pub_date}} by
+            {% if answer.get_author_name == 'Anonymous User' %}
+            {{answer.get_author_name}}
+            {% else %}
+            <a href="{% url 'users:view_user' pk=answer.author_id %}">{{answer.get_author_name}}</a>
+            {% endif %}
+            <br>
+            <form class="vote_form" style="display:inline;">
+                {% csrf_token %}
+                <input type="hidden" name="obj_type" value="answer">
+                <input type="hidden" name="obj_id" value={{answer.id}}>
+                <button type="submit" , class="upvote" , value="upvote">
+                    <span class="like_count" style="color: green;">{{answer.likedBy.count}}</span>
+                    {% if user in answer.likedBy.all %}
+                    <i class="fa-solid fa-thumbs-up"></i>
                     {% else %}
-                        <a href="{% url "users:view_user" pk=answer.author_id %}">{{answer.get_author_name}}</a>
+                    <i class="fa-regular fa-thumbs-up"></i>
                     {% endif %}
-                <br>
-                <form class="vote_form" style="display:inline;">
+                </button>
+                <button type="submit" , class="downvote" , value="downvote">
+                    <span class="dislike_count" style="color: red;">{{answer.dislikedBy.count}}</span>
+                    {% if user in answer.dislikedBy.all %}
+                    <i class="fa-solid fa-thumbs-down"></i>
+                    {% else %}
+                    <i class="fa-regular fa-thumbs-down"></i>
+                    {% endif %}
+                </button>
+            </form>
+            |
+            <form action="{% url 'questions:report' question.id %}" method="GET" style="display:inline">
+                {% csrf_token %}
+                <input type="hidden" name="obj_type" value="a">
+                <button type="submit" name="id" , value={{answer.id}}>
+                    <i class="fa-regular fa-circle-xmark"></i>
+                </button>
+            </form>
+            <hr>
+            <ul>
+                {% for comment in answer.comment_set.all %}
+                <li>
+                    <div style="background-color:#ddd;">{{comment.text|safe}}</div>
+                    --- Commented on {{comment.pub_date}} by
+                    {% if comment.get_author_name == 'Anonymous User' %}
+                    {{comment.get_author_name}}
+                    {% else %}
+                    <a href="{% url 'users:view_user' pk=comment.get_author_id %}">{{comment.get_author_name}}</a>
+                    {% endif %}
+                    |
+                    <form action="{% url 'questions:report' question.id %}" method="GET" style="display:inline">
+                        {% csrf_token %}
+                        <input type="hidden" name="obj_type" value="c">
+                        <button type="submit" name="id" , value={{comment.id}}>
+                            <i class="fa-regular fa-circle-xmark"></i>
+                        </button>
+                    </form>
+                </li>
+                <hr>
+                {% endfor %}
+                <form action="{% url 'questions:add_comment' question.id %}" method="POST">
                     {% csrf_token %}
+                    <input type="text" maxlength="200" name="comment_text" placeholder="Add a comment">
                     <input type="hidden" name="obj_type" value="answer">
-                    <input type="hidden" name="obj_id" value={{answer.id}}>
-                    <button type="submit", class="upvote",  value="upvote">
-                        <span class="like_count" style="color: green;">{{answer.likedBy.count}}</span>
-                        {% if user in answer.likedBy.all %}
-                            <i class="fa-solid fa-thumbs-up"></i>
-                        {% else %}
-                            <i class="fa-regular fa-thumbs-up"></i>
-                        {% endif %}
-                    </button>
-                    <button type="submit", class="downvote",  value="downvote">
-                        <span class="dislike_count" style="color: red;">{{answer.dislikedBy.count}}</span>
-                        {% if user in answer.dislikedBy.all %}
-                            <i class="fa-solid fa-thumbs-down"></i>
-                        {% else %}
-                            <i class="fa-regular fa-thumbs-down"></i>
-                        {% endif %}
-                    </button>
-                </form>
-                 | 
-                <form action="{% url 'questions:report' question.id %}" method="GET" style="display:inline">
-                    {% csrf_token %}
-                    <input type="hidden" name="obj_type" value="a">
-                    <button type="submit" name="id", value={{answer.id}}>
-                        <i class="fa-regular fa-circle-xmark"></i>
-                    </button>
+                    <button type="submit" , name="answer_id" , value={{answer.id}}>Comment</button>
                 </form>
                 <hr>
-                <ul>
-                    {% for comment in answer.comment_set.all %}
-                        <li>
-                            <div style="background-color:#ddd;">{{comment.text|safe}}</div>
-                            --- Commented on {{comment.pub_date}} by 
-                            {% if comment.get_author_name == 'Anonymous User' %}
-                                {{comment.get_author_name}}
-                            {% else %}
-                                <a href="{% url "users:view_user" pk=comment.get_author_id %}">{{comment.get_author_name}}</a>
-                            {% endif %}
-                             | 
-                            <form action="{% url 'questions:report' question.id %}" method="GET" style="display:inline">
-                                {% csrf_token %}
-                                <input type="hidden" name="obj_type" value="c">
-                                <button type="submit" name="id", value={{comment.id}}>
-                                    <i class="fa-regular fa-circle-xmark"></i>
-                                </button>
-                            </form>
-                        </li>
-                        <hr>
-                    {% endfor %}
-                    <form action="{% url 'questions:add_comment' question.id %}" method="POST">
-                        {% csrf_token %}
-                        <input type="text" maxlength="200" name="comment_text" placeholder="Add a comment">
-                        <input type="hidden" name="obj_type" value="answer">
-                        <button type="submit", name="answer_id",  value={{answer.id}}>Comment</button>
-                    </form>
-                    <hr>
-                </ul>
-            </li>
+            </ul>
+        </li>
         {% endfor %}
     </ul>
-    
+
     <hr>
-    
+
     <h2>Your answer</h2>
     <form action="{% url 'questions:add_answer' question.id %}" method="POST">
         {% csrf_token %}
@@ -211,10 +213,12 @@
                 window.history.replaceState(null, null, window.location.href);
             }
 
-            $(".vote_form").find(':button').click(function(e) {
+            $("#questionButton").closest('a').addClass("active");
+
+            $(".vote_form").find(':button').click(function (e) {
                 var form = $(this).closest('form');
                 var dataString = form.serializeArray();
-                dataString.push({name: 'vote', value: $(this).val()});
+                dataString.push({ name: 'vote', value: $(this).val() });
                 // alert(dataString); return false;
                 $.ajax({
                     type: "POST",
@@ -240,4 +244,4 @@
             })
         })
     </script>
-{% endblock %}
+    {% endblock %}
