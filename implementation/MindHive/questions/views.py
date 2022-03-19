@@ -7,7 +7,7 @@ from .models import Question
 from answers.models import Answer
 from comments.models import Comment
 
-from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
+from django.http import HttpResponse, HttpResponseRedirect
 from django.urls import reverse
 from django.shortcuts import render, get_object_or_404
 from django.views.generic.edit import CreateView
@@ -101,21 +101,30 @@ def vote(request, question_id):
     return HttpResponse(json.dumps(json_data))
 
 
-def follow_bookmark(request, question_id):
+def follow_bookmark(request):
     if not request.user.is_authenticated:
         return HttpResponseRedirect(reverse('users:login'))
+    
     user = request.user
-    question = get_object_or_404(Question, id=question_id)
+    question = get_object_or_404(Question, id=request.POST['question_id'])
     action = request.POST['action']
-    if action == 'unbookmark':
-        question.users_bookmarked.remove(user.id)
-    elif action == 'bookmark':
-        question.users_bookmarked.add(user.id)
-    elif action == 'unfollow':
-        question.users_following.remove(user.id)
-    elif action == 'follow':
-        question.users_following.add(user.id)
-    return HttpResponseRedirect(reverse('questions:view_question', args=[question_id]))
+    
+    if action == 'bookmark':
+        if user in question.users_bookmarked.all():
+            question.users_bookmarked.remove(user.id)
+            status = 'unbookmarked'
+        else:
+            question.users_bookmarked.add(user.id)
+            status = 'bookmarked'
+    else:
+        if user in question.users_following.all():
+            question.users_following.remove(user.id)
+            status = 'unfollowed'
+        else:
+            question.users_following.add(user.id)
+            status = 'followed'
+    
+    return HttpResponse(json.dumps({'status': status}))
 
 
 def add_comment(request, question_id):

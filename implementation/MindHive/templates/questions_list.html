@@ -32,27 +32,25 @@ Questions - MindHive
 
             <div class="d-flex flex-row">
                 <span>
-                    <form class="icon-only-buttons" action="{% url 'questions:follow_bookmark' question.id %}"
-                        method="POST" style="display:inline">
+                    <form class="follow-bookmark-form icon-only-buttons" style="display:inline">
                         {% csrf_token %}
-                        {% if user in question.users_bookmarked.all %}
-                        <button type="submit" , name="action" , value="unbookmark">
+                        <input type="hidden" name="question_id" value="{{question.id}}">
+
+                        <button type="submit" class="bookmark" name="action" , value="bookmark">
+                            {% if user in question.users_bookmarked.all %}
                             <i class="fa-solid fa-bookmark"></i>
-                        </button>
-                        {% else %}
-                        <button type="submit" name="action" , value="bookmark">
+                            {% else %}
                             <i class="fa-regular fa-bookmark"></i>
+                            {% endif %}
                         </button>
-                        {% endif %}
-                        {% if user in question.users_following.all %}
-                        <button type="submit" name="action" , value="unfollow">
+
+                        <button type="submit" class="follow" name="action" , value="follow">
+                            {% if user in question.users_following.all %}
                             <i class="fa-solid fa-star"></i>
-                        </button>
-                        {% else %}
-                        <button type="submit" name="action" , value="follow">
+                            {% else %}
                             <i class="fa-regular fa-star"></i>
+                            {% endif %}
                         </button>
-                        {% endif %}
                     </form>
 
                     <form class="icon-only-buttons" action="{% url 'questions:report' question.id %}" method="GET"
@@ -69,7 +67,8 @@ Questions - MindHive
                     {% if tag in user.favouriteTags.all %}
                     <a class="btn btn-success" style="padding: 0px 8px;" href="#" class="tag_questions">{{tag.name}}</a>
                     {% else %}
-                    <a class="btn btn-light" style="padding: 0px 8px; background-color: rgb(255, 227, 189);" href="#" class="tag_questions">{{tag.name}}</a>
+                    <a class="btn btn-light" style="padding: 0px 8px; background-color: rgb(255, 227, 189);" href="#"
+                        class="tag_questions">{{tag.name}}</a>
                     {% endif %}
                     {% endfor %}
                 </span>
@@ -99,6 +98,39 @@ Questions - MindHive
     {% endif %}
 </div>
 
+<script>
+    $(document).ready(function () {
+        $(".follow-bookmark-form").find(':button').click(function (e) {
+            var form = $(this).closest('form');
+            var dataString = form.serializeArray();
+            dataString.push({ name: 'action', value: $(this).val() });
+            $.ajax({
+                type: "POST",
+                url: "{% url 'questions:follow_bookmark' %}",
+                data: dataString,
+                success: function (data) {
+                    var result = JSON.parse(data);
+                    if (result['status'] == 'followed') {
+                        form.find('.follow i').removeClass("fa-regular").addClass("fa-solid");
+                    }
+                    else if (result['status'] == 'bookmarked') {
+                        form.find('.bookmark i').removeClass("fa-regular").addClass("fa-solid");
+                    }
+                    else if (result['status'] == 'unfollowed') {
+                        form.find('.follow i').removeClass("fa-solid").addClass("fa-regular");
+                    }
+                    else {
+                        form.find('.bookmark i').removeClass("fa-solid").addClass("fa-regular");
+                    }
+                },
+                error: function () {
+                    alert("error");
+                }
+            });
+            e.preventDefault();
+        });
+    });
+</script>
 {% block script %}
 
 {% endblock %}
