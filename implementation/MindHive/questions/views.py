@@ -35,6 +35,10 @@ def view_question(request, question_id):
         'user': request.user,
         'form': AddAnswerForm(initial_ans_data),
     }
+    for notif in request.user.notifications.filter(target_question=question):
+        notif.receivers.remove(request.user.id)
+        if notif.receivers.count() == 0:
+            notif.delete()
     return render(request, 'questions/view_ques.html', context)
 
 
@@ -171,7 +175,10 @@ def send_notification(objType, objId, question_id, author, author_id):
     elif objType == 'commentA':
         notif.receivers.add(receivers)
     notif.receivers.remove(author_id)
-    notif.save()
+    if notif.receivers.count == 0:
+        notif.delete()
+    else:
+        notif.save()
 
 
 def report(request, question_id):
