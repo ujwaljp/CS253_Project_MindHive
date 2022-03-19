@@ -1,3 +1,4 @@
+from email import message
 import json
 import sys
 
@@ -123,10 +124,12 @@ def add_comment(request, question_id):
         object = get_object_or_404(Question, id=request.POST['question_id'])
         parentObjQ = object
         parentObjA = None
+        send_notification('commentQ', request.POST['question_id'], question_id, user.name, user.id)
     else:
         object = get_object_or_404(Answer, id=request.POST['answer_id'])
         parentObjQ = None
         parentObjA = object
+        send_notification('commentA', request.POST['answer_id'], question_id, user.name, user.id)
     object.comment_set.create(
         text = request.POST['comment_text'],
         author = user,
@@ -141,20 +144,35 @@ def add_answer(request, question_id):
     form = AddAnswerForm(request.POST)
     if form.is_valid():
         form.save()
-        send_notification(request, question_id)
+        author = Answer.objects.get(id=form.instance.id).get_author_name()
+        author_id = Answer.objects.get(id=form.instance.id).author.id
+        send_notification('answer', form.instance.id, question_id, author, author_id)
     return HttpResponseRedirect(reverse('questions:view_question', args=[question_id]))
 
 
-def send_notification(request, question_id):
-    question = Question.objects.get(pk=question_id)
-    receiver_id = question.author.id
-    receiver = User.objects.get(pk=receiver_id)
-    message = 'Someone answered the question "' + question.title[:30] + '..."'
-    # receiver.add_notification(message=message)
-    print(message)
-    notif = Notification.objects.create(receiver=receiver, text=message)
+def send_notification(objType, objId, question_id, author, author_id):
+    target_question = Question.objects.get(pk=question_id)
+    if objType == 'answer':
+        message = author + ' answered the question "' + target_question.title[:25] + '..?"'
+        receivers = target_question.users_following.all()
+    elif objType == 'commentQ':
+        message = author + ' commented on the question "' + target_question.title[:25] + '..?"'
+        receivers = target_question.users_following.all()
+    elif objType == 'commentA':
+        answer = Answer.objects.get(pk=objId)
+        message = author + ' commented on your answer "' + answer.text[:25] + '..."'
+        receivers = answer.author
+    
+    notif = Notification.objects.create(text=message, target_question=target_question)
+    if objType == 'answer' or objType == 'commentQ':
+        for receiver in receivers:
+            notif.receivers.add(receiver)
+        notif.receivers.add(target_question.author)
+    elif objType == 'commentA':
+        notif.receivers.add(receivers)
+    notif.receivers.remove(author_id)
     notif.save()
-    receiver.notifications.add(notif.id)
+
 
 def report(request, question_id):
     if not request.user.is_authenticated:

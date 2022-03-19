@@ -1,4 +1,3 @@
-from cProfile import label
 import sys
 
 from users.models import Report

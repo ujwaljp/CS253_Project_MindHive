@@ -82,16 +82,13 @@
                             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                                 {% if user.notifications.count %}
                                 {% for notification in user.notifications.all %}
-                                <a class="dropdown-item" href="#">
-                                    {{notif.timestamp}} &nbsp; {{notif.text}}
+                                <a class="dropdown-item" href="{% url 'questions:view_question' notification.target_question.id %}">
+                                    {{notification.text}} on {{notification.timestamp}}
                                 </a>
                                 {% endfor %}
-
                                 {% else %}
-                                &nbsp; No new notifications  basjdb adjbj sabjd absdjbj asj asd bjs a bjsdbja sdahbjs asdbh&nbsp;
-                                {% endif %}
-                                <hr>
-                                <a class="dropdown-item" href="#">Contact Us</a>
+                                &nbsp; No new notifications &nbsp;
+                                {% endif %}>
                             </div>
                         </div>
                     </li>
