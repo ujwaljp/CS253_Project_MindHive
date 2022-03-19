@@ -8,22 +8,23 @@
 {% block insert_content %}
 
 <h1>{{question.title}}</h1>
-<p class="container">
+<div class="container">
     Asked on {{question.pub_date}} by
     {% if question.get_author_name == 'Anonymous User' %}
     {{question.get_author_name}}
     {% else %}
-    <a href="{% url 'users:view_user' pk=question.get_author_id %}">{{question.get_author_name}}</a>
+    <a href="{% url 'users:view_user' pk=question.get_author_id %}"
+        style="text-decoration: none;">{{question.get_author_name}}</a>
     {% endif %}
-    | Viewed By {{question.viewedBy.count}} users<br>
+    &nbsp; &nbsp;
+    Viewed By {{question.viewedBy.count}} users<br>
     <hr>
-<div class="container" style="background-color:rgb(222, 237, 241); padding:5px; overflow: hidden;">
-    {{question.text|safe}}</div>
-</p>
+</div>
 
-<div class="container">
+<div class="container question-view" style="font-size: 19px;">{{question.text|safe}}</div>
 
-    <!-- add buttons for up and downvotes -->
+<div class="container" style="padding-left: 20px;">
+    <!-- buttons for up and downvotes -->
     <form class="vote_form" style="display: inline;">
         {% csrf_token %}
         <input type="hidden" name="obj_type" value="question">
@@ -94,22 +95,27 @@
     &nbsp; &nbsp;
     <a href="/questions/{{question.id}}/edit">Edit Question</a>
     {% endif %}
-
 </div>
 
-<ul id="q_comments">
+<hr>
+
+<ul class="list-group ques-comments">
     {% for comment in question.comment_set.all %}
-    <li>
-        <div style="background-color:#ddd;">{{comment.text|safe}}</div>
-        --- Commented on {{comment.pub_date}} by
-        {% if comment.get_author_name == 'Anonymous User' %}
-        {{comment.get_author_name}}
-        {% else %}
-        <a href="{% url 'users:view_user' pk=comment.get_author_id %}">{{comment.get_author_name}}</a>
-        {% endif %}
+    <li class="list-group-item">
+        <div class="d-inline">{{comment.get_text}}
+            - {% if comment.get_author_name == 'Anonymous User' %}
+            {{comment.get_author_name}}
+            {% else %}
+            <a href="{% url 'users:view_user' pk=comment.get_author_id %}">{{comment.get_author_name}}</a>
+            {% endif %}
+        </div>
+        <div class="d-inline" style="position: absolute; right: 10px;">
+            <small>{{comment.pub_date}}</small>
+        </div>
     </li>
-    <hr>
     {% endfor %}
+
+    <span style="font-size: 8px;"><br></span>
 
     <form action="{% url 'questions:add_comment' question.id %}" method="POST">
         {% csrf_token %}

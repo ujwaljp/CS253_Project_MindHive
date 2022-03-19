@@ -1,3 +1,5 @@
+import re
+
 from django.db import models
 from home.models import Content
 
@@ -13,3 +15,7 @@ class Comment(Content):
 
     class Meta:
         ordering = ['pub_date']
+    
+
+    def get_text(self):
+        return re.sub(r'<[^>]*?>', '', self.text)

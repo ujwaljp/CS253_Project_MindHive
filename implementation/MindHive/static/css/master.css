@@ -348,3 +348,13 @@ form[view="profile"] {
   text-align: right;
   padding-right: 25px;
 }
+
+.question-view {
+  padding: 2px 20px;
+  overflow: hidden;
+  margin-bottom: 5px;
+}
+
+.ques-comments {
+  padding-left: 60px;
+}
