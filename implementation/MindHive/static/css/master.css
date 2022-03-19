@@ -130,9 +130,11 @@ html {
 }
 
 .dropdown-menu.show {
-    left: 187px;
-    top: 25px;
+  right: -236px;
+  top: 25px;
+  background-color: rgb(218, 169, 105);
 }
+
 #search {
   left: 1310px;
   position: absolute;
@@ -221,7 +223,9 @@ html {
   color: whitesmoke;
   transition-duration: 0.4s;
 }
-.comp:hover, .sect.active, .sect.active div {
+.comp:hover,
+.sect.active,
+.sect.active div {
   color: #171313;
   background-color: whitesmoke;
 }

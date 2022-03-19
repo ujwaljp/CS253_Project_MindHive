@@ -1,18 +1,16 @@
-from email import message
 import json
 import sys
+import re
 
 from .forms import CreateQuestionForm, AddAnswerForm, CreateReportForm
 from .models import Question
 from answers.models import Answer
 from comments.models import Comment
-from users.models import Report
 
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.urls import reverse
 from django.shortcuts import render, get_object_or_404
 from django.views.generic.edit import CreateView
-from users.models import User
 from notifications.models import Notification
 
 sys.path.append("..")
@@ -167,7 +165,10 @@ def send_notification(objType, objId, question_id, author, author_id):
         message = author + ' commented on your answer "' + answer.text[:25] + '..."'
         receivers = answer.author
     
+    cleanr = re.compile('<.*?>')
+    message = re.sub(cleanr, '', message)
     notif = Notification.objects.create(text=message, target_question=target_question)
+    
     if objType == 'answer' or objType == 'commentQ':
         for receiver in receivers:
             notif.receivers.add(receiver)

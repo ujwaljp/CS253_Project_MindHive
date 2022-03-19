@@ -16,8 +16,9 @@ class CreateQuestionForm(forms.ModelForm):
         self.fields['tags'].required = True   
     class Meta:
         model = Question
-        fields = ["title","text","tags","author"] 
-        title = forms.CharField()  
+        fields = ["title","text","tags","author","anonymous"]
+        labels = {"anonymous" : "Ask Anonymously?"} 
+        title = forms.CharField()
         widgets = {
             'author': forms.HiddenInput(),
             'text': RichTextFormField()
@@ -26,6 +27,7 @@ class CreateQuestionForm(forms.ModelForm):
             queryset=Tag.objects.all(),
             widget=forms.CheckboxSelectMultiple,
         )
+        anonymous = forms.BooleanField(required=False)
 
 class AddAnswerForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
