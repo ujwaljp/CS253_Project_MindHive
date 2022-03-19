@@ -6,6 +6,7 @@
 {% endblock %}
 
 {% block insert_content %}
+
 <h1>{{question.title}}</h1>
 <p class="container">
     Asked on {{question.pub_date}} by
@@ -16,84 +17,85 @@
     {% endif %}
     | Viewed By {{question.viewedBy.count}} users<br>
     <hr>
-<div class="container" style="background-color:rgb(222, 237, 241); padding:5px;">{{question.text|safe}}</div>
+<div class="container" style="background-color:rgb(222, 237, 241); padding:5px; overflow: hidden;">
+    {{question.text|safe}}</div>
 </p>
 
-<p class="container">
+<div class="container">
+
     <!-- add buttons for up and downvotes -->
-<form class="vote_form" style="display: inline;">
-    {% csrf_token %}
-    <input type="hidden" name="obj_type" value="question">
-    <input type="hidden" name="obj_id" value="{{question.id}}">
-    <!-- check if user has upvoted the question -->
-    <button type="submit" , class="upvote" , value="upvote">
-        <span class="like_count" style="color: green;">{{question.likedBy.count}}</span>
-        {% if user in question.likedBy.all %}
-        <i class="fa-solid fa-thumbs-up"></i>
-        {% else %}
-        <i class="fa-regular fa-thumbs-up"></i>
-        {% endif %}
-    </button>
-    <button type="submit" , class="downvote" , value="downvote">
-        <span class="dislike_count" style="color: red;">{{question.dislikedBy.count}}</span>
-        {% if user in question.dislikedBy.all %}
-        <i class="fa-solid fa-thumbs-down"></i>
-        {% else %}
-        <i class="fa-regular fa-thumbs-down"></i>
-        {% endif %}
-    </button>
-</form>
+    <form class="vote_form" style="display: inline;">
+        {% csrf_token %}
+        <input type="hidden" name="obj_type" value="question">
+        <input type="hidden" name="obj_id" value="{{question.id}}">
+        <!-- check if user has upvoted the question -->
+        <button type="submit" , class="upvote" , value="upvote">
+            <span class="like_count" style="color: green;">{{question.likedBy.count}}</span>
+            {% if user in question.likedBy.all %}
+            <i class="fa-solid fa-thumbs-up"></i>
+            {% else %}
+            <i class="fa-regular fa-thumbs-up"></i>
+            {% endif %}
+        </button>
+        <button type="submit" , class="downvote" , value="downvote">
+            <span class="dislike_count" style="color: red;">{{question.dislikedBy.count}}</span>
+            {% if user in question.dislikedBy.all %}
+            <i class="fa-solid fa-thumbs-down"></i>
+            {% else %}
+            <i class="fa-regular fa-thumbs-down"></i>
+            {% endif %}
+        </button>
+    </form>
 
-&nbsp; &nbsp;
+    &nbsp; &nbsp;
 
-<form class="follow-bookmark-form icon-only-buttons" style="display:inline">
-    {% csrf_token %}
-    <input type="hidden" name="question_id" value="{{question.id}}">
+    <form class="follow-bookmark-form icon-only-buttons" style="display:inline">
+        {% csrf_token %}
+        <input type="hidden" name="question_id" value="{{question.id}}">
 
-    <button type="submit" class="bookmark" name="action" , value="bookmark">
-        {% if user in question.users_bookmarked.all %}
-        <i class="fa-solid fa-bookmark"></i>
-        {% else %}
-        <i class="fa-regular fa-bookmark"></i>
-        {% endif %}
-    </button>
+        <button type="submit" class="bookmark" name="action" , value="bookmark">
+            {% if user in question.users_bookmarked.all %}
+            <i class="fa-solid fa-bookmark"></i>
+            {% else %}
+            <i class="fa-regular fa-bookmark"></i>
+            {% endif %}
+        </button>
 
-    <button type="submit" class="follow" name="action" , value="follow">
-        {% if user in question.users_following.all %}
-        <i class="fa-solid fa-star"></i>
-        {% else %}
-        <i class="fa-regular fa-star"></i>
-        {% endif %}
-    </button>
-</form>
+        <button type="submit" class="follow" name="action" , value="follow">
+            {% if user in question.users_following.all %}
+            <i class="fa-solid fa-star"></i>
+            {% else %}
+            <i class="fa-regular fa-star"></i>
+            {% endif %}
+        </button>
+    </form>
 
-<form class="icon-only-buttons" action="{% url 'questions:report' question.id %}" method="GET" style="display:inline">
-    {% csrf_token %}
-    <input type="hidden" name="obj_type" value="q">
-    <button type="submit" name="id" , value={{question.id}}>
-        <i class="fa-solid fa-ban"></i>
-    </button>
-</form>
+    <form class="icon-only-buttons" action="{% url 'questions:report' question.id %}" method="GET"
+        style="display:inline">
+        {% csrf_token %}
+        <input type="hidden" name="obj_type" value="q">
+        <button type="submit" name="id" , value={{question.id}}>
+            <i class="fa-solid fa-ban"></i>
+        </button>
+    </form>
 
-&nbsp; &nbsp;
+    &nbsp; &nbsp;
 
-{% for tag in question.tags.all %}
-{% if tag in user.favouriteTags.all %}
-<button type="submit" style="background-color: #b9ffa3;">
+    {% for tag in question.tags.all %}
+    {% if tag in user.favouriteTags.all %}
+    <a class="btn btn-success" style="padding: 0px 8px;" href="#" class="tag_questions">{{tag.name}}</a>
     {% else %}
-    <button type="submit" style="background-color: #ffd992;">
-        {% endif %}
-        <i><a href="#" class="tag_questions">{{tag.name}}</a></i>
-    </button>
+    <a class="btn btn-light" style="padding: 0px 8px; background-color: rgb(255, 227, 189);" href="#"
+        class="tag_questions">{{tag.name}}</a>
+    {% endif %}
     {% endfor %}
-</button>
 
-{% if user == question.author %}
-&nbsp; &nbsp;
-<a href="/questions/{{question.id}}/edit">Edit Question</a>
-{% endif %}
+    {% if user == question.author %}
+    &nbsp; &nbsp;
+    <a href="/questions/{{question.id}}/edit">Edit Question</a>
+    {% endif %}
 
-</p>
+</div>
 
 <ul id="q_comments">
     {% for comment in question.comment_set.all %}
@@ -153,12 +155,13 @@
                 {% endif %}
             </button>
         </form>
-        |
-        <form action="{% url 'questions:report' question.id %}" method="GET" style="display:inline">
+        &nbsp;
+        <form class="icon-only-buttons" action="{% url 'questions:report' question.id %}" method="GET"
+            style="display:inline">
             {% csrf_token %}
             <input type="hidden" name="obj_type" value="a">
             <button type="submit" name="id" , value={{answer.id}}>
-                <i class="fa-regular fa-circle-xmark"></i>
+                <i class="fa-solid fa-ban"></i>
             </button>
         </form>
         <hr>
