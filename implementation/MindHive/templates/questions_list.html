@@ -5,46 +5,88 @@ Questions - MindHive
 {% endblock %}
 
 {% block insert_content %}
-<h1>
-{% block heading %}
+<h1 class="container">
+    {% block heading %}
     Questions
-{% endblock %}
+    {% endblock %}
 </h1>
 
 <br>
 
-<div class="containers">
+<div class="container">
     {% if questions %}
-    {%for ques in questions%}
-    <div class="card" style="padding:5px">
-        <a href="{% url 'questions:view_question' question_id=ques.id %}">
-            <h2>{{ques.title}}</h2>
-        </a>
+    {%for question in questions%}
+    <div class="card d-flex flex-row ">
+        <div class="d-flex flex-column align-middle ques-stats">
+            <span>{{question.viewedBy.count}} views</span>
+            <span>{{question.get_votes}} votes</span>
+            <span>{{question.answer_set.count}} answers</span>
+        </div>
 
-        <h6>Asked by
-            {% if ques.get_author_name == 'Anonymous User' %}
-            {{ques.get_author_name}}
-            {% else %}
-            <a href="{% url 'users:view_user' pk=ques.get_author_id %}">{{ques.get_author_name}}</a>
-            {% endif %}
-            on {{ques.pub_date}}
-            | Viewed by {{ques.viewedBy.all.count}} users
-        </h6>
-        
-        <h6>
-            {{ques.answer_set.all.count}} Answers
-            &nbsp; &nbsp;
-            {% for tag in ques.tags.all %}
-            {% if tag in user.favouriteTags.all %}
-            <button type="submit" style="background-color: #b9ffa3;">
-                {% else %}
-                <button type="submit" style="background-color: #ffd992;">
+        <div class="d-flex flex-column">
+            <a href="{% url 'questions:view_question' question_id=question.id %}" style="text-decoration: none;">
+                <h5 style="margin-bottom: 4px;">{{question.title}}</h5>
+            </a>
+
+            <div style="margin-bottom: 4px;">{{question.get_summary_text}}</div>
+
+            <div class="d-flex flex-row">
+                <span>
+                    <form class="icon-only-buttons" action="{% url 'questions:follow_bookmark' question.id %}"
+                        method="POST" style="display:inline">
+                        {% csrf_token %}
+                        {% if user in question.users_bookmarked.all %}
+                        <button type="submit" , name="action" , value="unbookmark">
+                            <i class="fa-solid fa-bookmark"></i>
+                        </button>
+                        {% else %}
+                        <button type="submit" name="action" , value="bookmark">
+                            <i class="fa-regular fa-bookmark"></i>
+                        </button>
+                        {% endif %}
+                        {% if user in question.users_following.all %}
+                        <button type="submit" name="action" , value="unfollow">
+                            <i class="fa-solid fa-star"></i>
+                        </button>
+                        {% else %}
+                        <button type="submit" name="action" , value="follow">
+                            <i class="fa-regular fa-star"></i>
+                        </button>
+                        {% endif %}
+                    </form>
+
+                    <form class="icon-only-buttons" action="{% url 'questions:report' question.id %}" method="GET"
+                        style="display:inline">
+                        {% csrf_token %}
+                        <input type="hidden" name="obj_type" value="q">
+                        <button type="submit" name="id" , value={{question.id}}>
+                            <i class="fa-solid fa-ban"></i>
+                        </button>
+                    </form>
+                    &nbsp; &nbsp;
+
+                    {% for tag in question.tags.all %}
+                    {% if tag in user.favouriteTags.all %}
+                    <a class="btn btn-success" style="padding: 0px 8px;" href="#" class="tag_questions">{{tag.name}}</a>
+                    {% else %}
+                    <a class="btn btn-light" style="padding: 0px 8px; background-color: rgb(255, 227, 189);" href="#" class="tag_questions">{{tag.name}}</a>
                     {% endif %}
-                    <i><a href="#" class="tag_questions">{{tag.name}}</a></i>
-                </button>
-                {% endfor %}
-        </h6>
+                    {% endfor %}
+                </span>
 
+                <div class="text-right" style="position: absolute; right: 16px; color: rgb(94, 94, 94);">Asked by
+                    {% if question.get_author_name == 'Anonymous User' %}
+                    someone
+                    {% else %}
+                    <a href="{% url 'users:view_user' pk=question.get_author_id %}" style="text-decoration: none;">
+                        <i class="fa-solid fa-circle-user"></i>
+                        {{question.author.username}}
+                    </a>
+                    {% endif %}
+                    on {{question.pub_date}}
+                </div>
+            </div>
+        </div>
     </div>
     <br />
     {%endfor%}
@@ -56,6 +98,7 @@ Questions - MindHive
     </h2>
     {% endif %}
 </div>
+
 {% block script %}
 
 {% endblock %}

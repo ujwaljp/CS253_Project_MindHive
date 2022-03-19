@@ -231,31 +231,3 @@ class QuestionCreateView(CreateView):
         return {"author": self.request.user.id}
     def get_success_url(self):
         return reverse('questions:view_question', args=[self.object.id])
-
-def ajax_posting(request):
-    response = {
-        'msg':'Your form has been submitted successfully' # response message
-    }
-    if not request.user.is_authenticated:  # add blocked as well
-        return HttpResponseRedirect(reverse('users:login'))
-    user = request.user
-    if request.POST['obj_type'] == 'question':
-        object = get_object_or_404(Question, id=request.POST['question_id'])
-    else:
-        object = get_object_or_404(Answer, id=request.POST['answer_id'])
-    vote = request.POST['vote']
-    if vote == 'upvote':
-        if object.likedBy.filter(id=user.id).exists():
-            object.likedBy.remove(user.id)
-        else:
-            object.likedBy.add(user.id)
-            if object.dislikedBy.filter(id=user.id).exists():
-                object.dislikedBy.remove(user.id)
-    else:
-        if object.dislikedBy.filter(id=user.id).exists():
-            object.dislikedBy.remove(user.id)
-        else:
-            object.dislikedBy.add(user.id)
-            if object.likedBy.filter(id=user.id).exists():
-                object.likedBy.remove(user.id)
-    return JsonResponse(response) # return response as JSON

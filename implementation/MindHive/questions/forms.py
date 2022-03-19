@@ -18,7 +18,7 @@ class CreateQuestionForm(forms.ModelForm):
         model = Question
         fields = ["title","text","tags","author","anonymous"]
         labels = {"anonymous" : "Ask Anonymously?"} 
-        title = forms.CharField()
+        title = forms.CharField(max_length=100)
         widgets = {
             'author': forms.HiddenInput(),
             'text': RichTextFormField()

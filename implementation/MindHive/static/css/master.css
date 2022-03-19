@@ -11,7 +11,7 @@
 }
 html {
   scroll-behavior: smooth;
-  zoom: 80%;
+  zoom: 90%;
 }
 
 /* CSS Variables */
@@ -112,10 +112,11 @@ html {
   top: 90px;
 }
 .dropdown {
-  display: block;
+  display: flex;
   /* position: absolute; */
-  right: 50px;
+  right: 72px;
   top: 23px;
+  margin-right: 10px;
 }
 /* Navigation Bar: List Styling */
 
@@ -132,13 +133,13 @@ html {
 .dropdown-menu.show {
   right: -236px;
   top: 25px;
-  background-color: rgba(255, 248, 209, 0.98);
+  background-color: rgba(255, 243, 176, 0.98);
   /* border: 2px solid #b3b3b3; */
   box-shadow: 2px 2px #3b3b3b;
 }
 
 .notif-head {
-  font-size: 17px;
+  font-size: 18px;
   font-weight: bold;
   background-color: #ffffff;
 }
@@ -173,12 +174,12 @@ html {
   background-color: white;
 }
 
-/* ----left compponet */
+/* ----left component */
 #left {
   position: fixed;
   float: left;
-  width: 20%;
-  height: 95%;
+  width: 340px;
+  height: 100%;
   display: flex;
   flex-direction: column;
   padding-top: 1%;
@@ -258,8 +259,9 @@ input[type="search"] {
 .content {
   position: absolute;
   top: 105px;
-  left: 140px;
-  right: 5px;
+  left: 355px;
+  min-width: 100px !important;
+  max-width: 1000px !important;
 }
 
 .profile {
@@ -310,4 +312,39 @@ form[view="profile"] {
 
 .tag_questions {
   color: black;
+}
+
+.icon-only-buttons button {
+  background-color: transparent;
+  border: none;
+  color: black;
+  padding: 0;
+  margin: 0;
+}
+
+.icon-only-buttons .fa-ban {
+  color: rgb(255, 0, 0);
+}
+.icon-only-buttons .fa-bookmark {
+  color: goldenrod;
+}
+.icon-only-buttons .fa-star {
+  color: lightseagreen;
+}
+.fa-thumbs-up {
+  color: rgb(0, 160, 0);
+}
+.fa-thumbs-down {
+  color: rgb(160, 0, 0);
+}
+.card {
+  padding: 10px;
+  border: 3px solid rgb(201, 201, 201);
+}
+
+.ques-stats span {
+  width: 25%;
+  min-width: 140px;
+  text-align: right;
+  padding-right: 25px;
 }
