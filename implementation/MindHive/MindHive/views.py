@@ -26,10 +26,7 @@ from django.contrib.auth.hashers import check_password
 4.
 
 '''
-
-
 from django.views.generic import TemplateView
-
 
 class TestPage(TemplateView):
     template_name = 'test.html'
@@ -74,6 +71,7 @@ class HomePage(TemplateView):
 #
 # # def otp(request, uid_b64e, token):
 # def otp(request):
+#     # retreving back session variable
 #     username = request.session['username']
 #     password = request.session['password']
 #     email = request.session['email']
@@ -115,7 +113,7 @@ def createuser(request):
         return render(request, 'sign_up.html', {'errors' : msg})
 
     elif password == password2:
-        # Email verification
+        # Start Email verification
         new_user = User(username=username, name=name,
                         email=email ,roll_no=roll_no)
         new_user.set_password(password)
@@ -128,6 +126,7 @@ def createuser(request):
         # signer = Signer(settings.SECRET_KEY)
         # value = signer.sign(OTP)
         # msg = 'Please check your inbox for the OTP'
+        ## Storing values into session variable
         # request.session['username'] = username
         # request.session['password'] = password
         # request.session['email'] = email
@@ -139,21 +138,3 @@ def createuser(request):
 
 def thanks(request):
     return render(request, 'thanks.html')
-
-
-        # email = request.POST['email']
-        # password = request.POST['password']
-        #
-        # if User.objects.filter(email=email).exists():
-        #     user = User.objects.get(email=email)
-        #     # ToDo: if no match with uid
-        #     if user.password == password:
-        #         return render(request, 'index.html', {'error' : 'login is working'})
-        #     else:
-        #         msg = 'Incorrect Password!'
-        #         return render(request, 'index.html', {'error' : msg})
-        # else:
-        #     msg = 'Email not registered. Try Signing up'
-
-    # else:
-    #     return render(request, 'index.html')
