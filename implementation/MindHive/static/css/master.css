@@ -132,7 +132,18 @@ html {
 .dropdown-menu.show {
   right: -236px;
   top: 25px;
-  background-color: rgb(218, 169, 105);
+  background-color: rgba(255, 248, 209, 0.98);
+  /* border: 2px solid #b3b3b3; */
+  box-shadow: 2px 2px #3b3b3b;
+}
+
+.notif-head {
+  font-size: 17px;
+  font-weight: bold;
+  background-color: #ffffff;
+}
+.notif-time {
+  font-size: 12px;
 }
 
 #search {

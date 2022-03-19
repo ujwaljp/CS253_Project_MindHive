@@ -80,13 +80,16 @@
                                 <i class="fa-solid fa-bell"></i>
                             </button>
                             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                <a class="dropdown-item notif-head" href="#dropdownMenuButton">NOTIFICATIONS</a>
                                 {% if user.notifications.count %}
                                 {% for notification in user.notifications.all %}
+                                <hr style="margin: 0;">
                                 <a class="dropdown-item" href="{% url 'questions:view_question' notification.target_question.id %}">
-                                    {{notification.text}} on {{notification.timestamp}}
+                                    {{notification.text}} &nbsp; <span class="notif-time">{{notification.timestamp}}</short>
                                 </a>
                                 {% endfor %}
                                 {% else %}
+                                <hr style="margin: 0;">
                                 &nbsp; No new notifications &nbsp;
                                 {% endif %}
                             </div>
