@@ -1,10 +1,14 @@
+from tkinter import NONE
 from django.http import HttpResponse
 from django.shortcuts import render
+from django.test import tag
 from questions.models import Question
 from users.models import User
+from tags.models import Tag
 from django.contrib.auth.decorators import login_required
 from questions.models import Question
 from django.db.models import Q
+from django.contrib import messages
 # Create your views here.
 @login_required(login_url='users:login')
 def view(request):
@@ -33,6 +37,21 @@ def folView(request):
     folQuestions = Question.objects.filter(id__in = user).distinct()
     # Creturn HttpResponse(user)
     return render(request, 'home/follow_questions.html', {'questions':folQuestions})
+
+def allQuestionsView(request):
+    questions = Question.objects.all()
+    return render(request, 'home/questions.html', {'questions' : questions})  
+
+def tagView(request,tagname):
+    tagSel = Tag.objects.filter(name = tagname)#request.POST['tags'])
+    tagQues = Question.objects.filter(tags__in = tagSel).distinct()
+    return render(request, 'home/home.html', {'questions':tagQues})
+
+def autQues(request):
+    user = User.objects.filter(id = request.user.id)
+    autQuestions = Question.objects.filter(author__in = user).distinct()
+    return render(request, 'home/home.html', {'questions':autQuestions})
+
 # class HomeView(generic.ListView):
 #     model = Question
 #     template_name = 'home/home.html'
@@ -44,7 +63,11 @@ def folView(request):
 def search_results(request):
     if request.method == 'GET':
         searched = request.GET['searched']
-        searched_ques = Question.objects.filter(Q(title__icontains=searched) | Q(text__icontains=searched)).distinct()
-        return render(request, 'home/search_results.html', {'searched':searched, 'questions':searched_ques})
+        #q=searched.split()
+        if searched:
+            searched_ques = Question.objects.filter(Q(title__icontains=searched) | Q(text__icontains=searched)).distinct()
+            return render(request, 'home/search_results.html', {"searched":searched, 'questions':searched_ques})
+        else:
+            return render(request, 'base.html')
     else:
-        return render(request, 'home/search_results.html', {})
+        return render(request, 'home/search_results.html')

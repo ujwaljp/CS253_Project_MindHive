@@ -1,4 +1,3 @@
-from cProfile import label
 import sys
 
 from users.models import Report
@@ -11,7 +10,10 @@ from .models import Question
 
 from ckeditor.fields import RichTextFormField
 
-class CreateQuestionForm(forms.ModelForm):    
+class CreateQuestionForm(forms.ModelForm): 
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['tags'].required = True   
     class Meta:
         model = Question
         fields = ["title","text","tags","author"] 

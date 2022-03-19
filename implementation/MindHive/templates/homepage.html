@@ -1,18 +1,17 @@
 {% extends 'base.html'%}
 {% load crispy_forms_tags %}
-
+{% load static %}
 
 {% block insert_title %}
-    {{ usr.name }} - MindHive
+{{ usr.name }} - MindHive
 {% endblock %}
-
 
 {%block insert_content%}
 
 <div class="profile">
     <div id="photo">
         <div id="center-photo">
-            <img src="{{usr.profile_image.url}}" alt="No profile image uploaded" />
+            <img src="{{usr.profile_image.url}}" alt="Image not found" />
         </div>
     </div>
     <div id="data">
@@ -35,7 +34,24 @@
             Email<br>
             <x class="test">{{usr.email}}</x>
         </form>
-        </div>
+        <p></p>
+        <form class="data-input" action="" view="profile">
+            <a href="{% url 'home:authorQuestions' %}">Questions Asked</a><br>
+        </form>
     </div>
 </div>
+</div>
+{% if usr == request.user %}
+<script>
+    $(document).ready(function () {
+        $("#profileButton").closest('a').addClass("active");
+    })
+</script>
+{% else %}
+<script>
+    $(document).ready(function () {
+        $("#usersButton").closest('a').addClass("active");
+    })
+</script>
+{% endif %}
 {% endblock %}

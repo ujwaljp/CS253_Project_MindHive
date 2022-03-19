@@ -1,21 +1,21 @@
 {% extends 'questions_list.html' %}
 
 {% block insert_title %}
-Following - MindHive
+Questions - MindHive
 {% endblock %}
 
 {% block heading %}
-Following Questions
+All Questions
 {% endblock %}
 
 {%block empty_message%}
-You haven't followed any question.
-{%endblock%}
+No questions to display.
+{% endblock %}
 
 {% block script %}
 <script>
   $(document).ready(function () {
-    $("#followingButton").closest('a').addClass("active");
+    $("#questionButton").closest('a').addClass("active");
   })
 </script>
-{% endblock %}
+{%endblock%}

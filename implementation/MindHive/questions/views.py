@@ -1,3 +1,4 @@
+from email import message
 import json
 import sys
 
@@ -11,6 +12,8 @@ from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.urls import reverse
 from django.shortcuts import render, get_object_or_404
 from django.views.generic.edit import CreateView
+from users.models import User
+from notifications.models import Notification
 
 sys.path.append("..")
 
@@ -32,6 +35,10 @@ def view_question(request, question_id):
         'user': request.user,
         'form': AddAnswerForm(initial_ans_data),
     }
+    for notif in request.user.notifications.filter(target_question=question):
+        notif.receivers.remove(request.user.id)
+        if notif.receivers.count() == 0:
+            notif.delete()
     return render(request, 'questions/view_ques.html', context)
 
 
@@ -59,12 +66,12 @@ def edit_question(request, question_id):
 def vote(request, question_id):
     if not request.user.is_authenticated:  # add blocked as well
         return HttpResponseRedirect(reverse('users:login'))
-    
+
     if request.POST['obj_type'] == 'question':
         object = get_object_or_404(Question, id=request.POST['obj_id'])
     else:
         object = get_object_or_404(Answer, id=request.POST['obj_id'])
-    
+
     user = request.user
     vote = request.POST['vote']
     liked = object.likedBy.filter(id=user.id).exists()
@@ -121,10 +128,12 @@ def add_comment(request, question_id):
         object = get_object_or_404(Question, id=request.POST['question_id'])
         parentObjQ = object
         parentObjA = None
+        send_notification('commentQ', request.POST['question_id'], question_id, user.name, user.id)
     else:
         object = get_object_or_404(Answer, id=request.POST['answer_id'])
         parentObjQ = None
         parentObjA = object
+        send_notification('commentA', request.POST['answer_id'], question_id, user.name, user.id)
     object.comment_set.create(
         text = request.POST['comment_text'],
         author = user,
@@ -139,7 +148,37 @@ def add_answer(request, question_id):
     form = AddAnswerForm(request.POST)
     if form.is_valid():
         form.save()
+        author = Answer.objects.get(id=form.instance.id).get_author_name()
+        author_id = Answer.objects.get(id=form.instance.id).author.id
+        send_notification('answer', form.instance.id, question_id, author, author_id)
     return HttpResponseRedirect(reverse('questions:view_question', args=[question_id]))
+
+
+def send_notification(objType, objId, question_id, author, author_id):
+    target_question = Question.objects.get(pk=question_id)
+    if objType == 'answer':
+        message = author + ' answered the question "' + target_question.title[:25] + '..?"'
+        receivers = target_question.users_following.all()
+    elif objType == 'commentQ':
+        message = author + ' commented on the question "' + target_question.title[:25] + '..?"'
+        receivers = target_question.users_following.all()
+    elif objType == 'commentA':
+        answer = Answer.objects.get(pk=objId)
+        message = author + ' commented on your answer "' + answer.text[:25] + '..."'
+        receivers = answer.author
+    
+    notif = Notification.objects.create(text=message, target_question=target_question)
+    if objType == 'answer' or objType == 'commentQ':
+        for receiver in receivers:
+            notif.receivers.add(receiver)
+        notif.receivers.add(target_question.author)
+    elif objType == 'commentA':
+        notif.receivers.add(receivers)
+    notif.receivers.remove(author_id)
+    if notif.receivers.count == 0:
+        notif.delete()
+    else:
+        notif.save()
 
 
 def report(request, question_id):
@@ -151,7 +190,7 @@ def report(request, question_id):
         if form.is_valid():
             form.save()
             return HttpResponseRedirect(reverse('questions:view_question', args=[question_id]))
-    
+
     reportedObjQ = None
     reportedObjA = None
     reportedObjC = None
@@ -185,11 +224,12 @@ class QuestionCreateView(CreateView):
     model = Question
     form_class = CreateQuestionForm
     template_name = "questions/askform.html"
-    success_url = 'https://youtu.be/dQw4w9WgXcQ'
+    # success_url = reverse('questions:view_question', args=[self.object.id])
 
     def get_initial(self):
         return {"author": self.request.user.id}
-
+    def get_success_url(self):
+        return reverse('questions:view_question', args=[self.object.id])
 
 def ajax_posting(request):
     response = {
