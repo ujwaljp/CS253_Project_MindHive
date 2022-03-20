@@ -14,7 +14,7 @@
     <img src="/media/default.jpg" width="20" height="20" style="border-radius: 50%;"> &nbsp;
     {{question.get_author_name}}
     {% else %}
-    <a style="text-decoration: none;" href="{% url 'users:view_user' question.get_author_id %}">
+    <a style="text-decoration: none;" href="{% url 'users:view_user' question.author.id %}">
         <img src="{{question.author.profile_image.url}}" width="20" height="20" style="border-radius: 50%;">
         {{question.get_author_name}}</a>
     {% endif %}
@@ -111,7 +111,7 @@
             <img src="/media/default.jpg" width="20" height="20" style="border-radius: 50%;"> &nbsp;
             {{comment.get_author_name}}
             {% else %}
-            <a style="text-decoration: none;" href="{% url 'users:view_user' pk=comment.get_author_id %}">
+            <a style="text-decoration: none;" href="{% url 'users:view_user' pk=comment.author.id %}">
                 <img src="{{comment.author.profile_image.url}}" width="20" height="20" style="border-radius: 50%;">
                 {{comment.get_author_name}}</a>
             {% endif %}
@@ -183,7 +183,7 @@
                 <img src="/media/default.jpg" width="20" height="20" style="border-radius: 50%;"> &nbsp;
                 {{answer.get_author_name}}
                 {% else %}
-                <a style="text-decoration: none;" href="{% url 'users:view_user' answer.get_author_id %}">
+                <a style="text-decoration: none;" href="{% url 'users:view_user' answer.author.id %}">
                     <img src="{{answer.author.profile_image.url}}" width="20" height="20" style="border-radius: 50%;">
                     {{answer.get_author_name}}</a>
                 {% endif %}
@@ -202,7 +202,7 @@
                     <img src="/media/default.jpg" width="20" height="20" style="border-radius: 50%;"> &nbsp;
                     {{comment.get_author_name}}
                     {% else %}
-                    <a style="text-decoration: none;" href="{% url 'users:view_user' pk=comment.get_author_id %}">
+                    <a style="text-decoration: none;" href="{% url 'users:view_user' pk=comment.author.id %}">
                         <img src="{{comment.author.profile_image.url}}" width="20" height="20"
                             style="border-radius: 50%;">
                         {{comment.get_author_name}}</a>

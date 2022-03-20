@@ -9,14 +9,16 @@ from django.conf.urls.static import static
 from . import views
 
 
+# urlpatterns to match the urls with the views
 urlpatterns = [
-    path('', views.HomePage.as_view(), name='index'),
-    path('admin/', admin.site.urls),
-    path('questions/', include('questions.urls',namespace='questions')),
-    path('users/', include('users.urls', namespace='users')),
-    path('home/', include('home.urls', namespace='home')),
-    path('test/', views.TestPage.as_view(), name='test'),
-    path('thanks/', views.ThanksPage.as_view(), name='thanks')
+    path('', views.HomePage.as_view(), name='index'),          # index page
+    path('admin/', admin.site.urls),                           # admin page
+    path('questions/', include('questions.urls',
+         namespace='questions')),                              # questions app urls
+    path('users/', include('users.urls', namespace='users')),  # users app urls
+    path('home/', include('home.urls', namespace='home'))      # home app urls
 ]
 
-urlpatterns = urlpatterns + static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)
+# add the media files to the urlpatterns
+urlpatterns = urlpatterns + \
+    static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

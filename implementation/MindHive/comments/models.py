@@ -18,6 +18,6 @@ class Comment(Content):
     class Meta:
         ordering = ['pub_date']
     
-    # get_text method to return the text of the comment by removing html tags
     def get_text(self):
+        """returns the text of the comment after removing html tags"""
         return re.sub(r'<[^>]*?>', '', self.text)

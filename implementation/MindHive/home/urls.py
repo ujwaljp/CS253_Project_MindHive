@@ -1,17 +1,16 @@
 from django.urls import path
 from . import views
 
+
+# define the namespace for the below urls
 app_name='home'
 
 urlpatterns = [
-    path('', views.view, name='view_home'),
-    path('questions', views.allQuestionsView, name='view_questions'),
-    path('search_results', views.search_results, name='search_results'),
-    # path('bookmarks', views.bookView, name='bookmarks'),
-    # path('following', views.folView, name='following'),
-    path('bookmarks/', views.bookView, name='bookmarks'),
-    # use home/tags/python for questions related to python
-    path('tags/<tagname>', views.tagView, name='tags'),
-    path('authorQuestions', views.autQues, name='authorQuestions'),
-    path('following/', views.folView, name='following'),
+    path('', views.view, name='view_home'),                              # home page
+    path('questions', views.allQuestionsView, name='view_questions'),    # all questions page
+    path('search_results', views.search_results, name='search_results'), # search results page
+    path('following/', views.folView, name='following'),                 # following page
+    path('bookmarks/', views.bookView, name='bookmarks'),                # bookmarks page
+    path('tags/<tagname>', views.tagView, name='tags'),                  # tag questions page
+    path('authorQuestions', views.autQues, name='authorQuestions')       # author questions page
 ]

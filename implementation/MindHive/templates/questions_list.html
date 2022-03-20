@@ -79,7 +79,7 @@ Questions - MindHive
                     {% if question.get_author_name == 'Anonymous User' %}
                     someone
                     {% else %}
-                    <a href="{% url 'users:view_user' pk=question.get_author_id %}" style="text-decoration: none;">
+                    <a href="{% url 'users:view_user' pk=question.author.id %}" style="text-decoration: none;">
                         <i class="fa-solid fa-circle-user"></i>
                         {{question.author.username}}
                     </a>
