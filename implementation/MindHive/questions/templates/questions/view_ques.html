@@ -84,7 +84,7 @@
 
     {% for tag in question.tags.all %}
     {% if tag in user.favouriteTags.all %}
-    <a class="btn btn-success" style="padding: 0px 8px;" href="#" class="tag_questions">{{tag.name}}</a>
+    <a class="btn btn-success" style="padding: 0px 8px;" href="{% url 'home:tags' tagname=tag.name%}" class="tag_questions">{{tag.name}}</a>
     {% else %}
     <a class="btn btn-light" style="padding: 0px 8px; background-color: rgb(255, 227, 189);" href="#"
         class="tag_questions">{{tag.name}}</a>

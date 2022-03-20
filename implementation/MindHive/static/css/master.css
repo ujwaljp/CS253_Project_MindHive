@@ -92,7 +92,7 @@ html {
 }
 #id_tags {
   display: block;
-
+  position: absolute;
   width: 200px;
   padding: 0.375rem 0.75rem;
   font-size: 1rem;
