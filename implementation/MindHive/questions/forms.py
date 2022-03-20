@@ -43,12 +43,12 @@ class AddAnswerForm(forms.ModelForm):
             'text': RichTextFormField(),
             'author': forms.HiddenInput(),
             'to_question': forms.HiddenInput(),
+            'anonymous': forms.CheckboxInput(attrs={'class': 'form-check-input'}),
         }
         labels = {
             'text': '',
             'anonymous': 'Answer anonymously?',
         }
-        anonymous = forms.BooleanField(required=False)
 
 
 class CreateReportForm(forms.ModelForm):

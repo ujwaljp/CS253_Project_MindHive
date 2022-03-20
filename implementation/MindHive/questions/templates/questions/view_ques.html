@@ -11,10 +11,12 @@
 <div class="container">
     Asked on {{question.pub_date}} by
     {% if question.get_author_name == 'Anonymous User' %}
+    <img src="/media/default.jpg" width="20" height="20" style="border-radius: 50%;"> &nbsp;
     {{question.get_author_name}}
     {% else %}
-    <a href="{% url 'users:view_user' pk=question.get_author_id %}"
-        style="text-decoration: none;">{{question.get_author_name}}</a>
+    <a style="text-decoration: none;" href="{% url 'users:view_user' question.get_author_id %}">
+        <img src="{{question.author.profile_image.url}}" width="20" height="20" style="border-radius: 50%;">
+        {{question.get_author_name}}</a>
     {% endif %}
     &nbsp; &nbsp;
     Viewed By {{question.viewedBy.count}} users<br>
@@ -25,7 +27,7 @@
 
 <div class="container" style="padding-left: 20px;">
     <!-- buttons for up and downvotes -->
-    <form class="vote_form" style="display: inline;">
+    <form class="vote_form icon-only-buttons" style="display: inline;">
         {% csrf_token %}
         <input type="hidden" name="obj_type" value="question">
         <input type="hidden" name="obj_id" value="{{question.id}}">
@@ -38,8 +40,9 @@
             <i class="fa-regular fa-thumbs-up"></i>
             {% endif %}
         </button>
+        &nbsp;
         <button type="submit" , class="downvote" , value="downvote">
-            <span class="dislike_count" style="color: red;">{{question.dislikedBy.count}}</span>
+            <span class="dislike_count" style="color:rgb(180, 0, 0);">{{question.dislikedBy.count}}</span>
             {% if user in question.dislikedBy.all %}
             <i class="fa-solid fa-thumbs-down"></i>
             {% else %}
@@ -48,7 +51,7 @@
         </button>
     </form>
 
-    &nbsp; &nbsp;
+    &nbsp; &nbsp; &nbsp;
 
     <form class="follow-bookmark-form icon-only-buttons" style="display:inline">
         {% csrf_token %}
@@ -84,7 +87,8 @@
 
     {% for tag in question.tags.all %}
     {% if tag in user.favouriteTags.all %}
-    <a class="btn btn-success" style="padding: 0px 8px;" href="{% url 'home:tags' tagname=tag.name%}" class="tag_questions">{{tag.name}}</a>
+    <a class="btn btn-success" style="padding: 0px 8px;" href="{% url 'home:tags' tagname=tag.name%}"
+        class="tag_questions">{{tag.name}}</a>
     {% else %}
     <a class="btn btn-light" style="padding: 0px 8px; background-color: rgb(255, 227, 189);" href="#"
         class="tag_questions">{{tag.name}}</a>
@@ -104,12 +108,15 @@
     <li class="list-group-item">
         <div class="d-inline">{{comment.get_text}}
             - {% if comment.get_author_name == 'Anonymous User' %}
+            <img src="/media/default.jpg" width="20" height="20" style="border-radius: 50%;"> &nbsp;
             {{comment.get_author_name}}
             {% else %}
-            <a href="{% url 'users:view_user' pk=comment.get_author_id %}">{{comment.get_author_name}}</a>
+            <a style="text-decoration: none;" href="{% url 'users:view_user' pk=comment.get_author_id %}">
+                <img src="{{comment.author.profile_image.url}}" width="20" height="20" style="border-radius: 50%;">
+                {{comment.get_author_name}}</a>
             {% endif %}
         </div>
-        <div class="d-inline" style="position: absolute; right: 10px;">
+        <div class="d-inline text-muted" style="position: absolute; right: 10px;">
             <small>{{comment.pub_date}}</small>
         </div>
     </li>
@@ -119,95 +126,116 @@
 
     <form action="{% url 'questions:add_comment' question.id %}" method="POST">
         {% csrf_token %}
-        <input type="text" maxlength="200" name="comment_text" placeholder="Add a comment">
+        <input class="form-control" type="text" maxlength="200" name="comment_text" placeholder="Add a comment"
+            style="padding: 6px 16px;" required>
         <input type="hidden" name="obj_type" value="question">
-        <button type="submit" , name="question_id" , value={{question.id}}>Comment</button>
+        <input type="hidden" name="question_id" , value={{question.id}}></button>
     </form>
 </ul>
 
 <hr>
 
-<h2>{{ question.answer_set.count }} Answer{% if question.answer_set.count > 1 %}s{% endif %}
-</h2>
-<ul>
+<br>
+<h2>{{ question.answer_set.count }} Answer{% if question.answer_set.count > 1 %}s{% endif %} </h2>
+<br>
+
+<ul class="list-group">
     {% for answer in question.answer_set.all %}
-    <li>
-        <div style="background-color:rgb(226, 233, 215);">{{answer.text|safe}}</div>
-        --- Answered on {{answer.pub_date}} by
-        {% if answer.get_author_name == 'Anonymous User' %}
-        {{answer.get_author_name}}
-        {% else %}
-        <a href="{% url 'users:view_user' pk=answer.author_id %}">{{answer.get_author_name}}</a>
-        {% endif %}
-        <br>
-        <form class="vote_form" style="display:inline;">
-            {% csrf_token %}
-            <input type="hidden" name="obj_type" value="answer">
-            <input type="hidden" name="obj_id" value={{answer.id}}>
-            <button type="submit" , class="upvote" , value="upvote">
-                <span class="like_count" style="color: green;">{{answer.likedBy.count}}</span>
-                {% if user in answer.likedBy.all %}
-                <i class="fa-solid fa-thumbs-up"></i>
+    <li class="list-group-item" style="padding: 15px 20px;">
+        <div class="d-flex flex-column" style="font-size: 19px;">{{answer.text|safe}}</div>
+
+        <div class="d-flex flex-row">
+            <form class="vote_form icon-only-buttons" style="display:inline;">
+                {% csrf_token %}
+                <input type="hidden" name="obj_type" value="answer">
+                <input type="hidden" name="obj_id" value={{answer.id}}>
+                <button type="submit" , class="upvote" , value="upvote">
+                    <span class="like_count" style="color: green;">{{answer.likedBy.count}}</span>
+                    {% if user in answer.likedBy.all %}
+                    <i class="fa-solid fa-thumbs-up"></i>
+                    {% else %}
+                    <i class="fa-regular fa-thumbs-up"></i>
+                    {% endif %}
+                </button>
+                &nbsp;
+                <button type="submit" , class="downvote" , value="downvote">
+                    <span class="dislike_count" style="color:rgb(180, 0, 0);">{{answer.dislikedBy.count}}</span>
+                    {% if user in answer.dislikedBy.all %}
+                    <i class="fa-solid fa-thumbs-down"></i>
+                    {% else %}
+                    <i class="fa-regular fa-thumbs-down"></i>
+                    {% endif %}
+                </button>
+            </form>
+            &nbsp; &nbsp; &nbsp;
+            <form class="icon-only-buttons" action="{% url 'questions:report' question.id %}" method="GET"
+                style="display:inline">
+                {% csrf_token %}
+                <input type="hidden" name="obj_type" value="a">
+                <button type="submit" name="id" , value={{answer.id}}>
+                    <i class="fa-solid fa-ban"></i>
+                    Report
+                </button>
+            </form>
+
+            <div class="d-flex flex-row" style="position: absolute; right: 20px;">
+                {% if answer.get_author_name == 'Anonymous User' %}
+                <img src="/media/default.jpg" width="20" height="20" style="border-radius: 50%;"> &nbsp;
+                {{answer.get_author_name}}
                 {% else %}
-                <i class="fa-regular fa-thumbs-up"></i>
+                <a style="text-decoration: none;" href="{% url 'users:view_user' answer.get_author_id %}">
+                    <img src="{{answer.author.profile_image.url}}" width="20" height="20" style="border-radius: 50%;">
+                    {{answer.get_author_name}}</a>
                 {% endif %}
-            </button>
-            <button type="submit" , class="downvote" , value="downvote">
-                <span class="dislike_count" style="color: red;">{{answer.dislikedBy.count}}</span>
-                {% if user in answer.dislikedBy.all %}
-                <i class="fa-solid fa-thumbs-down"></i>
-                {% else %}
-                <i class="fa-regular fa-thumbs-down"></i>
-                {% endif %}
-            </button>
-        </form>
-        &nbsp;
-        <form class="icon-only-buttons" action="{% url 'questions:report' question.id %}" method="GET"
-            style="display:inline">
-            {% csrf_token %}
-            <input type="hidden" name="obj_type" value="a">
-            <button type="submit" name="id" , value={{answer.id}}>
-                <i class="fa-solid fa-ban"></i>
-            </button>
-        </form>
+                &nbsp; &nbsp;
+                <span class="text-muted">{{answer.pub_date}}</short>
+            </div>
+        </div>
+
         <hr>
-        <ul>
+
+        <ul class="list-group ques-comments">
             {% for comment in answer.comment_set.all %}
-            <li>
-                <div style="background-color:#ddd;">{{comment.text|safe}}</div>
-                --- Commented on {{comment.pub_date}} by
-                {% if comment.get_author_name == 'Anonymous User' %}
-                {{comment.get_author_name}}
-                {% else %}
-                <a href="{% url 'users:view_user' pk=comment.get_author_id %}">{{comment.get_author_name}}</a>
-                {% endif %}
-                |
-                <form action="{% url 'questions:report' question.id %}" method="GET" style="display:inline">
-                    {% csrf_token %}
-                    <input type="hidden" name="obj_type" value="c">
-                    <button type="submit" name="id" , value={{comment.id}}>
-                        <i class="fa-regular fa-circle-xmark"></i>
-                    </button>
-                </form>
+            <li class="list-group-item">
+                <div class="d-inline">{{comment.get_text}}
+                    - {% if comment.get_author_name == 'Anonymous User' %}
+                    <img src="/media/default.jpg" width="20" height="20" style="border-radius: 50%;"> &nbsp;
+                    {{comment.get_author_name}}
+                    {% else %}
+                    <a style="text-decoration: none;" href="{% url 'users:view_user' pk=comment.get_author_id %}">
+                        <img src="{{comment.author.profile_image.url}}" width="20" height="20"
+                            style="border-radius: 50%;">
+                        {{comment.get_author_name}}</a>
+                    {% endif %}
+                </div>
+                <div class="d-inline text-muted" style="position: absolute; right: 10px;">
+                    <small>{{comment.pub_date}}</small>
+                </div>
             </li>
-            <hr>
             {% endfor %}
+
+            {% if answer.comment_set.count %}
+            <span style="font-size: 8px;"><br></span>
+            {% endif %}
+
             <form action="{% url 'questions:add_comment' question.id %}" method="POST">
                 {% csrf_token %}
-                <input type="text" maxlength="200" name="comment_text" placeholder="Add a comment">
+                <input class="form-control" type="text" maxlength="200" name="comment_text" placeholder="Add a comment"
+                    style="padding: 6px 16px;" required>
                 <input type="hidden" name="obj_type" value="answer">
-                <button type="submit" , name="answer_id" , value={{answer.id}}>Comment</button>
+                <inout type="hidden" , name="answer_id" , value={{answer.id}}></button>
             </form>
-            <hr>
         </ul>
     </li>
+
+    <br>
     {% endfor %}
 </ul>
 
 <hr>
-
+<br>
 <h2>Your answer</h2>
-<form action="{% url 'questions:add_answer' question.id %}" method="POST">
+<form class="container" style="padding: 12px;" action="{% url 'questions:add_answer' question.id %}" method="POST">
     {% csrf_token %}
     {{ form.as_p }}
     {{ form.media }}

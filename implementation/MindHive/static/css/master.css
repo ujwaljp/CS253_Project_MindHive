@@ -358,3 +358,6 @@ form[view="profile"] {
 .ques-comments {
   padding-left: 60px;
 }
+.errorlist {
+  display: none;
+}
