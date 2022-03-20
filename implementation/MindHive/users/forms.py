@@ -8,8 +8,10 @@ from django.contrib.auth import get_user_model
 from django.contrib.auth.forms import UserCreationForm
 from tags.models import Tag
 
+# form for signing up
 class UserCreateForm(UserCreationForm):
     class Meta:
+        # declare the approproate fields
         fields = ('username', 'name', 'email', 'password1', 'password2')
         model = get_user_model()
 
@@ -18,7 +20,7 @@ class UserCreateForm(UserCreationForm):
         self.fields['username'].label = 'Display Name'
         self.fields['email'].label = 'Email Address'
 
-
+# form for editing the username and the profile image
 class UpdateUserInfo(forms.ModelForm):
     class Meta:
         model = User
@@ -28,6 +30,7 @@ class UpdateUserInfo(forms.ModelForm):
         }
         profile_image=forms.ImageField()
 
+# form for adding the favourite tags
 class addTagsForm(forms.ModelForm):
     class Meta:
         model = User

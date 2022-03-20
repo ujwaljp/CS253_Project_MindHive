@@ -15,6 +15,7 @@ from notifications.models import Notification
 
 User = get_user_model()
 
+# view function for showing the notifications
 @login_required(login_url='/users/login')
 def notifs_display(request):
     notifs = Notification.objects.filter(receiver__pk = request.user.id)
@@ -24,12 +25,13 @@ def notifs_display(request):
     print("deleted notifications")
     return render(request, 'users/notifs.html', {'notifications': notifs})
 
-
+# class-based view for signing up
 class SignUp(CreateView):
     form_class = UserCreateForm
     success_url = reverse_lazy('users:login')
     template_name = 'users/sign_up.html'
 
+# class-based view to add favourite tags
 class addTagsView(LoginRequiredMixin, generic.UpdateView):
     model = User
     form_class= addTagsForm
@@ -44,7 +46,7 @@ class addTagsView(LoginRequiredMixin, generic.UpdateView):
     def get_success_url(self):
         return reverse('users:view_user', kwargs={'pk': self.object.id})
 
-
+# view function to view profile
 def profile(request,pk):
     usr = User.objects.get(pk=pk)
     if request.user.is_authenticated:
@@ -55,15 +57,7 @@ def profile(request,pk):
 def testview(request):
     return HttpResponse('<h1>Test page</h1>')
 
-# def edit(request):
-#     if request.method:
-#         usr = User.objects.get(id=user_id)
-#
-#         return render(request, 'edit_profile.html', {'usr': usr})
-#     else:
-#         return HttpResponse('You must be logged in')
-
-
+# view function to edit the user info
 class UserEditView(LoginRequiredMixin ,generic.UpdateView):
     model = User
     fields=["username","profile_image"]
