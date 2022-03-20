@@ -22,6 +22,7 @@ MindHive is a portal where community members can help each other by clearing dou
 Clone the repository-
 ```
 git clone https://github.com/ujwaljp/CS253_Project_MindHive.git
+cd CS253_Project_MindHive
 ```
 ```
 cd implementation
