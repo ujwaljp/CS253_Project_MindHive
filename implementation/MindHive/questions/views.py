@@ -152,7 +152,7 @@ def add_comment(request, question_id):
 
 
 def add_answer(request, question_id):
-    form = AddAnswerForm(request.POST)
+    form = AddAnswerForm(request.POST, use_required_attribute=False)
     if form.is_valid():
         form.save()
         author = Answer.objects.get(id=form.instance.id).get_author_name()
