@@ -3,7 +3,7 @@ from .models import Answer
 from comments.models import Comment
 
 
-# ContentInlineForAns class provides a list of comments under a question in the admin view
+# ContentInlineForAns class provides a list of comments under an answer in the admin view
 class CommentInlineForAns(admin.TabularInline):
     model = Comment
     fk_name = 'parentObjA'

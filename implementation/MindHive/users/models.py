@@ -1,6 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
-from django.contrib.auth.models import BaseUserManager, AbstractBaseUser, AbstractUser
+from django.contrib.auth.models import BaseUserManager, AbstractUser
 
 # declare the userInfo model manager
 class UserInfoManager(BaseUserManager):

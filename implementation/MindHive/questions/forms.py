@@ -10,6 +10,8 @@ from .models import Question
 
 from ckeditor.fields import RichTextFormField
 
+
+# form to create a new or edit a question
 class CreateQuestionForm(forms.ModelForm): 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -29,6 +31,8 @@ class CreateQuestionForm(forms.ModelForm):
         )
         anonymous = forms.BooleanField(required=False)
 
+
+# form to create a new or edit an answer
 class AddAnswerForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -51,6 +55,7 @@ class AddAnswerForm(forms.ModelForm):
         }
 
 
+# form to create a report
 class CreateReportForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
