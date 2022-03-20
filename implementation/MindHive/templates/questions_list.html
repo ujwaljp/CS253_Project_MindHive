@@ -16,7 +16,8 @@ Questions - MindHive
 <div class="container">
     {% if questions %}
     {%for question in questions%}
-    <div class="card d-flex flex-row ">
+    <div class="card d-flex flex-row "
+        style="box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset, 0 0 8px rgba(146, 146, 146, 0.6);">
         <div class="d-flex flex-column align-middle ques-stats">
             <span>{{question.viewedBy.count}} views</span>
             <span>{{question.get_votes}} votes</span>
@@ -65,10 +66,11 @@ Questions - MindHive
 
                     {% for tag in question.tags.all %}
                     {% if tag in user.favouriteTags.all %}
-                    <a class="btn btn-success" style="padding: 0px 8px;" href="{% url 'home:tags' tagname=tag.name%}" class="tag_questions">{{tag.name}}</a>
-                    {% else %}
-                    <a class="btn btn-light" style="padding: 0px 8px; background-color: rgb(255, 227, 189);" href="{% url 'home:tags' tagname=tag.name%}"
+                    <a class="btn btn-success" style="padding: 0px 8px;" href="{% url 'home:tags' tagname=tag.name%}"
                         class="tag_questions">{{tag.name}}</a>
+                    {% else %}
+                    <a class="btn btn-light" style="padding: 0px 8px; background-color: rgb(255, 227, 189);"
+                        href="{% url 'home:tags' tagname=tag.name%}" class="tag_questions">{{tag.name}}</a>
                     {% endif %}
                     {% endfor %}
                 </span>
@@ -134,4 +136,39 @@ Questions - MindHive
 {% block script %}
 
 {% endblock %}
+{% endblock %}
+
+{% block insert_right_bar %}
+<br> <br> <br>
+<div class="fav-tags" style="box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset, 0 0 8px rgba(146, 146, 146, 0.6);">
+    <div class="tags-box">Favourite Tags
+        <a href="{% url 'users:addtags' %}" style="position: absolute; right: 28px; font-size: 15px;">Manage</span>
+    </div>
+    <div style="padding: 12px;">
+        {% for tag in user.favouriteTags.all %}
+        <a class="btn btn-success" style="padding: 0px 8px; margin: 3px 0px;"
+            href="{% url 'home:tags' tagname=tag.name%}" class="tag_questions">{{tag.name}}
+        </a>
+        {% endfor %}
+    </div>
+</div>
+<br>
+<div class="fav-tags" style="box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset, 0 0 8px rgba(146, 146, 146, 0.6);">
+    <div class="tags-box">Popular Tags
+        <a href="{% url 'users:addtags' %}" style="position: absolute; right: 28px; font-size: 15px;">Manage</span>
+    </div>
+    <div style="padding: 12px;">
+        {% for tag in pop_tags %}
+        {% if tag in user.favouriteTags.all %}
+        <a class="btn btn-success" style="padding: 0px 8px; margin: 3px 0px;"
+            href="{% url 'home:tags' tagname=tag.name%}" class="tag_questions">{{tag.name}}
+        </a>
+        {% else %}
+        <a class="btn btn-light" style="padding: 0px 8px; background-color: rgb(255, 227, 189);"
+            href="{% url 'home:tags' tagname=tag.name%}" class="tag_questions">{{tag.name}}
+        </a>
+        {% endif %}
+        {% endfor %}
+    </div>
+</div>
 {% endblock %}
