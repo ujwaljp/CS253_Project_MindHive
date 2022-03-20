@@ -1,7 +1,7 @@
 # CS253 Project MindHive
 -Prof. Indranil Saha
 
-## Group Deatils
+## Group Details
 | Name | Roll no. | Email Id | 
 | --- | --- | --- |
 |Sahil Bansal | 200836  | sbansal.sb2002@gmail.com |
@@ -53,6 +53,7 @@ Two more folders are present-
 Clone the repository-
 ```
 git clone https://github.com/ujwaljp/CS253_Project_MindHive.git
+cd CS253_Project_MindHive
 ```
 ```
 cd implementation
