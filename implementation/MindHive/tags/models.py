@@ -1,8 +1,9 @@
 from django.db import models
 
+# Tag model
 class Tag(models.Model):
     name = models.CharField(max_length=50)
-    # users_lst=models.ManyToManyField(to='users.User', related_name='favourite_of', blank=True)
 
+    # __str__ method to return the name of the tag on calling str(tag)
     def __str__(self):
         return self.name
