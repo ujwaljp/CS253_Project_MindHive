@@ -70,3 +70,6 @@ Run the server-
 python manage.py runserver
 ```
 Go on the localhost web address which must have been printed on the terminal
+
+## Demo run
+![Screenshot](mindhive_screenshot.png)
