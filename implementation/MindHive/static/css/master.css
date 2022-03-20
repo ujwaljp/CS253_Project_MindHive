@@ -223,6 +223,23 @@ html {
   box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
 }
 
+#right {
+  position: fixed;
+  right: 0px;
+  float: left;
+  width: 340px;
+  padding-top: 1%;
+  margin-top: 89px;
+  margin-left: -0.6%;
+}
+
+.tags-box {
+  padding: 8px 20px;
+  font-size: 20px;
+  background-color: rgb(241, 241, 241);
+  border: 2px solid rgb(204, 204, 204);
+}
+
 .sect {
   margin: 6px 12px;
   padding: 6px 13px;
@@ -259,7 +276,7 @@ input[type="search"] {
 .content {
   position: absolute;
   top: 105px;
-  left: 355px;
+  left: 350px;
   min-width: 100px !important;
   max-width: 1000px !important;
 }

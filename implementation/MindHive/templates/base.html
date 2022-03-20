@@ -130,7 +130,7 @@
         </div>
     </nav>
 
-    <!-- side bar -->
+    <!-- left side bar -->
     <div class='container' id="left">
         <a href="{% url 'home:view_home'%}" class="sect">
             <div class="comp" id="homeButton">
@@ -196,6 +196,13 @@
     <div class="content container">
         {% block insert_content %}
         <!-- ADD CONTENT HERE -->
+        {% endblock %}
+    </div>
+
+    <!-- right side bar -->
+    <div class='container d-flex flex-column h-100' id="right">
+        {% block insert_right_bar %}
+        
         {% endblock %}
     </div>
 
