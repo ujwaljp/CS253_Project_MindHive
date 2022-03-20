@@ -1,6 +1,8 @@
 from django.contrib import admin
 from .models import Comment
-# Register your models here.
+
+
+# Register the Comment model with the admin site and customise its admin view
 @admin.register(Comment)
 class CommentAdmin(admin.ModelAdmin):
     list_display = ('show_description', 'author', 'pub_date', 'parentObjType')
