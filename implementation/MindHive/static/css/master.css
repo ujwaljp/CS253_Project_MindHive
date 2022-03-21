@@ -392,3 +392,6 @@ form[view="profile"] {
 .errorlist {
   display: none;
 }
+.title-mindhive:hover {
+  text-decoration: none;
+}

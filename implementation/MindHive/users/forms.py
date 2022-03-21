@@ -1,4 +1,3 @@
-from cProfile import label
 import sys
 
 from django import forms
@@ -17,12 +16,18 @@ class UserCreateForm(UserCreationForm):
     class Meta:
         # declare the approproate fields
         fields = ('username', 'name', 'email', 'password1', 'password2')
+        widgets = {
+            'username': forms.TextInput(attrs={'placeholder': 'Username'}),
+            'name': forms.TextInput(attrs={'placeholder': 'Full Name'}),
+            'email': forms.EmailInput(attrs={'placeholder': 'Email Address'}),
+        }
         model = get_user_model()
 
     def __init__(self,*args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.fields['username'].label = 'Display Name'
-        self.fields['email'].label = 'Email Address'
+        self.fields['email'].label = ''
+        self.fields['username'].label = ''
+        self.fields['name'].label = ''
 
 
 # form for editing the username and the profile image
