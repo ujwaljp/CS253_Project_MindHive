@@ -23,12 +23,11 @@ class CreateQuestionForm(forms.ModelForm):
         title = forms.CharField(max_length=100)
         widgets = {
             'author': forms.HiddenInput(),
-            'text': RichTextFormField()
-        }  
-        tags = forms.ModelMultipleChoiceField(
-            queryset=Tag.objects.all(),
-            widget=forms.CheckboxSelectMultiple,
-        )
+            'text': RichTextFormField(),
+            'tags': forms.CheckboxSelectMultiple(attrs={
+                'class': 'form-check-input form-check-inline',
+                }),
+        }
         anonymous = forms.BooleanField(required=False)
 
 
