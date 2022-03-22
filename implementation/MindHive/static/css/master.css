@@ -179,7 +179,11 @@ html {
   position: fixed;
   float: left;
   width: 340px;
-  height: 100%;
+  top: 0;
+  bottom: 0;
+  overflow-y: scroll;
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
   display: flex;
   flex-direction: column;
   padding-top: 1%;
@@ -187,7 +191,9 @@ html {
   margin-left: -0.6%;
   background-color: #412c49;
 }
-
+#left::-webkit-scrollbar {
+  display: none;
+}
 #left a {
   text-decoration: none;
   text-align: left;
@@ -226,11 +232,19 @@ html {
 #right {
   position: fixed;
   right: 0px;
+  top: 0;
+  bottom: 0;
+  overflow-y: scroll;
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
   float: left;
   width: 340px;
   padding-top: 1%;
   margin-top: 89px;
   margin-left: -0.6%;
+}
+#right::-webkit-scrollbar {
+  display: none;
 }
 
 .tags-box {
@@ -377,4 +391,7 @@ form[view="profile"] {
 }
 .errorlist {
   display: none;
+}
+.title-mindhive:hover {
+  text-decoration: none;
 }

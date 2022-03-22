@@ -14,7 +14,7 @@
     <img src="/media/default.jpg" width="20" height="20" style="border-radius: 50%;"> &nbsp;
     {{question.get_author_name}}
     {% else %}
-    <a style="text-decoration: none;" href="{% url 'users:view_user' question.get_author_id %}">
+    <a style="text-decoration: none;" href="{% url 'users:view_user' question.author.id %}">
         <img src="{{question.author.profile_image.url}}" width="20" height="20" style="border-radius: 50%;">
         {{question.get_author_name}}</a>
     {% endif %}
@@ -31,6 +31,14 @@
         {% csrf_token %}
         <input type="hidden" name="obj_type" value="question">
         <input type="hidden" name="obj_id" value="{{question.id}}">
+
+        <!-- check if user is blocked -->
+        {% if user.blocked %}
+        <input type="hidden" name="blocked_user" value="true">
+        {% else %}
+        <input type="hidden" name="blocked_user" value="false">
+        {% endif %}
+
         <!-- check if user has upvoted the question -->
         <button type="submit" , class="upvote" , value="upvote">
             <span class="like_count" style="color: green;">{{question.likedBy.count}}</span>
@@ -74,6 +82,7 @@
         </button>
     </form>
 
+    {% if user != answer.author and not user.blocked %}
     <form class="icon-only-buttons" action="{% url 'questions:report' question.id %}" method="GET"
         style="display:inline">
         {% csrf_token %}
@@ -82,6 +91,7 @@
             <i class="fa-solid fa-ban"></i>
         </button>
     </form>
+    {% endif %}
 
     &nbsp; &nbsp;
 
@@ -111,7 +121,7 @@
             <img src="/media/default.jpg" width="20" height="20" style="border-radius: 50%;"> &nbsp;
             {{comment.get_author_name}}
             {% else %}
-            <a style="text-decoration: none;" href="{% url 'users:view_user' pk=comment.get_author_id %}">
+            <a style="text-decoration: none;" href="{% url 'users:view_user' pk=comment.author.id %}">
                 <img src="{{comment.author.profile_image.url}}" width="20" height="20" style="border-radius: 50%;">
                 {{comment.get_author_name}}</a>
             {% endif %}
@@ -124,6 +134,7 @@
 
     <span style="font-size: 8px;"><br></span>
 
+    {% if not user.blocked %}
     <form action="{% url 'questions:add_comment' question.id %}" method="POST">
         {% csrf_token %}
         <input class="form-control" type="text" maxlength="200" name="comment_text" placeholder="Add a comment"
@@ -131,6 +142,7 @@
         <input type="hidden" name="obj_type" value="question">
         <input type="hidden" name="question_id" value="{{question.id}}">
     </form>
+    {% endif %}
 </ul>
 
 <hr>
@@ -149,6 +161,13 @@
                 {% csrf_token %}
                 <input type="hidden" name="obj_type" value="answer">
                 <input type="hidden" name="obj_id" value={{answer.id}}>
+
+                {% if user.blocked %}
+                <input type="hidden" name="blocked_user" value="true">
+                {% else %}
+                <input type="hidden" name="blocked_user" value="false">
+                {% endif %}
+                
                 <button type="submit" , class="upvote" , value="upvote">
                     <span class="like_count" style="color: green;">{{answer.likedBy.count}}</span>
                     {% if user in answer.likedBy.all %}
@@ -168,6 +187,7 @@
                 </button>
             </form>
             &nbsp; &nbsp; &nbsp;
+            {% if user != answer.author and not user.blocked%}
             <form class="icon-only-buttons" action="{% url 'questions:report' question.id %}" method="GET"
                 style="display:inline">
                 {% csrf_token %}
@@ -177,13 +197,14 @@
                     Report
                 </button>
             </form>
+            {% endif %}
 
             <div class="d-flex flex-row" style="position: absolute; right: 20px;">
                 {% if answer.get_author_name == 'Anonymous User' %}
                 <img src="/media/default.jpg" width="20" height="20" style="border-radius: 50%;"> &nbsp;
                 {{answer.get_author_name}}
                 {% else %}
-                <a style="text-decoration: none;" href="{% url 'users:view_user' answer.get_author_id %}">
+                <a style="text-decoration: none;" href="{% url 'users:view_user' answer.author.id %}">
                     <img src="{{answer.author.profile_image.url}}" width="20" height="20" style="border-radius: 50%;">
                     {{answer.get_author_name}}</a>
                 {% endif %}
@@ -202,7 +223,7 @@
                     <img src="/media/default.jpg" width="20" height="20" style="border-radius: 50%;"> &nbsp;
                     {{comment.get_author_name}}
                     {% else %}
-                    <a style="text-decoration: none;" href="{% url 'users:view_user' pk=comment.get_author_id %}">
+                    <a style="text-decoration: none;" href="{% url 'users:view_user' pk=comment.author.id %}">
                         <img src="{{comment.author.profile_image.url}}" width="20" height="20"
                             style="border-radius: 50%;">
                         {{comment.get_author_name}}</a>
@@ -218,6 +239,7 @@
             <span style="font-size: 8px;"><br></span>
             {% endif %}
 
+            {% if not user.blocked %}
             <form action="{% url 'questions:add_comment' question.id %}" method="POST">
                 {% csrf_token %}
                 <input class="form-control" type="text" maxlength="200" name="comment_text" placeholder="Add a comment"
@@ -225,6 +247,7 @@
                 <input type="hidden" name="obj_type" value="answer">
                 <input type="hidden" name="answer_id" value="{{answer.id}}">
             </form>
+            {% endif %}
         </ul>
     </li>
 
@@ -234,6 +257,8 @@
 
 <hr>
 <br>
+
+{% if not user.blocked %}
 <h2>Your answer</h2>
 <form class="container" style="padding: 12px;" action="{% url 'questions:add_answer' question.id %}" method="POST">
     {% csrf_token %}
@@ -241,6 +266,7 @@
     {{ form.media }}
     <input type="submit" value="Post your answer">
 </form>
+{% endif %}
 
 <script>
     $(document).ready(function () {
@@ -283,6 +309,10 @@
         $(".vote_form").find(':button').click(function (e) {
             var form = $(this).closest('form');
             var dataString = form.serializeArray();
+            if (dataString[3]['value'] == 'true') {
+                alert("You can not vote while blocked.");
+                return false;
+            }
             dataString.push({ name: 'vote', value: $(this).val() });
             $.ajax({
                 type: "POST",

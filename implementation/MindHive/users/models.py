@@ -1,9 +1,10 @@
 from django.db import models
 from django.contrib.auth.models import User
-from django.contrib.auth.models import BaseUserManager, AbstractBaseUser, AbstractUser
+from django.contrib.auth.models import BaseUserManager, AbstractUser
 
-
+# declare the userInfo model manager
 class UserInfoManager(BaseUserManager):
+    # function for creating a normal user
     def create_user(self, email, username, name, password,roll_no=None, ):
         if not email:
             raise ValueError('User must have an email address')
@@ -17,7 +18,7 @@ class UserInfoManager(BaseUserManager):
         user.set_password(password)
         user.save(using=self._db)
         return user
-
+    # function for creating an admin user
     def create_superuser(self, email, username, password, name=None, roll_no=None):
         user = self.create_user(email=email, username=username, name=name,
                                 roll_no=roll_no, password=password)
@@ -25,8 +26,10 @@ class UserInfoManager(BaseUserManager):
         user.is_staff = True
 
         user.save(using=self._db)
+
         return user
 
+# declare the main User model by inheriting the AbstractUser model of Django
 class User(AbstractUser):
 
     username = models.CharField(max_length=20,blank=False)
@@ -53,6 +56,8 @@ class User(AbstractUser):
 
     def __str__(self):
         return self.username
+
+# model for reporting a question/user
 class Report(models.Model):
     report_text = models.CharField(max_length=200)
     reporter = models.ForeignKey(User, on_delete=models.CASCADE)

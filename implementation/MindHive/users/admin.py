@@ -3,5 +3,12 @@ from django.contrib import admin
 from .models import User, Report
 
 # Register your models here.
-admin.site.register(User)
-admin.site.register(Report)
+@admin.register(User)
+class UserAdmin(admin.ModelAdmin):
+    list_display = ('username', 'name', 'email', 'roll_no', 'blocked', 'date_joined')
+    exclude = ('groups', 'user_permissions', 'first_name', 'last_name')
+
+@admin.register(Report)
+class ReportAdmin(admin.ModelAdmin):
+    list_display = ('report_text', 'reporter', 'reportedUser', 'reportedObjType')
+    list_filter = ('reportedUser',)

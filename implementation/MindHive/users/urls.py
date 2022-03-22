@@ -1,4 +1,4 @@
-
+# declare the various endpoints of users/
 from django.urls import path, include
 from .views import UserEditView
 from . import views

@@ -54,6 +54,7 @@ Questions - MindHive
                         </button>
                     </form>
 
+                    {% if not user.blocked %}
                     <form class="icon-only-buttons" action="{% url 'questions:report' question.id %}" method="GET"
                         style="display:inline">
                         {% csrf_token %}
@@ -62,6 +63,7 @@ Questions - MindHive
                             <i class="fa-solid fa-ban"></i>
                         </button>
                     </form>
+                    {% endif %}
                     &nbsp; &nbsp;
 
                     {% for tag in question.tags.all %}
@@ -79,7 +81,7 @@ Questions - MindHive
                     {% if question.get_author_name == 'Anonymous User' %}
                     someone
                     {% else %}
-                    <a href="{% url 'users:view_user' pk=question.get_author_id %}" style="text-decoration: none;">
+                    <a href="{% url 'users:view_user' pk=question.author.id %}" style="text-decoration: none;">
                         <i class="fa-solid fa-circle-user"></i>
                         {{question.author.username}}
                     </a>

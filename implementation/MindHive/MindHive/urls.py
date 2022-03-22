@@ -1,41 +1,24 @@
-"""MindHive URL Configuration
+# MindHive URL Configuration
+# The `urlpatterns` list routes URLs to views.
 
-The `urlpatterns` list routes URLs to views. For more information please see:
-    https://docs.djangoproject.com/en/3.2/topics/http/urls/
-Examples:
-Function views
-    1. Add an import:  from my_app import views
-    2. Add a URL to urlpatterns:  path('', views.home, name='home')
-Class-based views
-    1. Add an import:  from other_app.views import Home
-    2. Add a URL to urlpatterns:  path('', Home.as_view(), name='home')
-Including another URLconf
-    1. Import the include() function: from django.urls import include, path
-    2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
-"""
 from django.contrib import admin
 from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
+
 from . import views
-from django.contrib.auth import views as auth_views
 
+
+# urlpatterns to match the urls with the views
 urlpatterns = [
-    path('questions/', include('questions.urls',namespace='questions')),
-    path('users/', include('users.urls', namespace='users')),
-
-    path('home/', include('home.urls', namespace='home')),
-    path('admin/', admin.site.urls),
-    path('', views.HomePage.as_view(), name='index'),
-    # path('sign_up/', views.signup, name='signup'),
-    # path('login/',
-    #     auth_views.LoginView.as_view(template_name='login.html'), name='login'),
-    # path('logout/', auth_views.LogoutView.as_view(),
-    #     name='logout'),
-    # path('sign_up/createuser', views.createuser, name='createuser'),
-    path('test/', views.TestPage.as_view(), name='test'),
-    path('thanks/', views.ThanksPage.as_view(), name='thanks'),
-    # path('thanks',views.thanks, name='thanks'),
+    path('', views.HomePage.as_view(), name='index'),          # index page
+    path('admin/', admin.site.urls),                           # admin page
+    path('questions/', include('questions.urls',
+         namespace='questions')),                              # questions app urls
+    path('users/', include('users.urls', namespace='users')),  # users app urls
+    path('home/', include('home.urls', namespace='home'))      # home app urls
 ]
 
-urlpatterns = urlpatterns + static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)
+# add the media files to the urlpatterns
+urlpatterns = urlpatterns + \
+    static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
