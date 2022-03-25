@@ -30,4 +30,6 @@ class QuestionModelTest(TestCase):
         notification =  Notification.objects.get(id=1)
         max_length = notification._meta.get_field('text').max_length
         self.assertEqual(max_length, 200)
+
+    
     

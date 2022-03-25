@@ -12,5 +12,6 @@ urlpatterns = [
     path('following/', views.folView, name='following'),                 # following page
     path('bookmarks/', views.bookView, name='bookmarks'),                # bookmarks page
     path('tags/<tagname>', views.tagView, name='tags'),                  # tag questions page
-    path('authorQuestions', views.autQues, name='authorQuestions')       # author questions page
+    path('authorQuestions', views.autQues, name='authorQuestions'),         # author questions page
+    path('otherauthorQuestions', views.otautQues, name='otherauthorQuestions') ,      # author questions page
 ]
