@@ -1,8 +1,15 @@
 from django.db import models
+from django.core.validators import RegexValidator
 from django.contrib.auth.models import User
 from django.contrib.auth.models import BaseUserManager, AbstractUser
 
 # declare the userInfo model manager
+
+class EmailValidator(RegexValidator):
+    regex = '@iitk.ac.in$'
+    message = 'Enter a valid email address'
+    code = 'invalid_email'
+
 class UserInfoManager(BaseUserManager):
     # function for creating a normal user
     def create_user(self, email, username, name, password,roll_no=None, ):
@@ -38,6 +45,7 @@ class User(AbstractUser):
         max_length=255,
         unique=True,
         blank=False,
+        validators=[EmailValidator()]
     )
 
     name = models.CharField(max_length=20, blank=True, null=True)
