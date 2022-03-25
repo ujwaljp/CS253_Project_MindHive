@@ -9,11 +9,13 @@ class QuestionModelTest(TestCase):
     @classmethod
     def setUpTestData(cls):
         text_content=RichTextField("So I have a question")
-        user1 = User.objects.create(email="example@iitk.ac.in", username="eg", password="example",name="harish")
-        user2 = User.objects.create(email="example2@iitk.ac.in", username="eg2", password="example2",name="harish2")
-        user3 = User.objects.create(email="example3@iitk.ac.in", username="eg3", password="example3",name="harish3")
+        user1 = User(email="example@iitk.ac.in", username="eg", password="example",name="harish")
+        user2 = User(email="example2@iitk.ac.in", username="eg2", password="example2",name="harish2")
+        user3 = User(email="example3@iitk.ac.in", username="eg3", password="example3",name="harish3")
         tag=Tag.objects.create(name="tag1")
-        User.objects.create(email="example@example.com", username="eg", password="example")
+        user1.save()
+        user2.save()
+        user3.save()
         question1=Question.objects.create(text=text_content, author=user1, anonymous=False, pub_date=datetime(2020,1,1,0,0,0,tzinfo=pytz.UTC),title="How to do this?")
         question2=Question.objects.create(text=text_content, author=user2, anonymous=True, pub_date=datetime(2020,1,1,1,1,1,tzinfo=pytz.UTC),title="I am anonymous")
         question1.likedBy.add(user1)

@@ -10,7 +10,7 @@ class QuestionModelTest(TestCase):
     @classmethod
     def setUpTestData(cls):
         text_content=RichTextField("So I have a question")
-        notification1 = Notification.objects.create(text="This question has been answered by sharma ji",timestamp=datetime(2017,12,3,4,tzinfo=pytz.UTC))
+        notification1 = Notification.objects.create(text="This question has been answered by sharma ji")
         user1 = User.objects.create(email="example@iitk.ac.in", username="eg", password="example",name="harish")
         user2 = User.objects.create(email="example2@iitk.ac.in", username="eg2", password="example2",name="harish2")
         user3 = User.objects.create(email="example3@iitk.ac.in", username="eg3", password="example3",name="harish3")
@@ -22,6 +22,7 @@ class QuestionModelTest(TestCase):
         question1.viewedBy.add(user1)
         question1.tags.add(tag)
         notification1.receivers.add(user2)
+        notification1.receivers.add(user3)
         notification1.target_question=question1
         notification1.save()
         question1.save()
@@ -30,6 +31,23 @@ class QuestionModelTest(TestCase):
         notification =  Notification.objects.get(id=1)
         max_length = notification._meta.get_field('text').max_length
         self.assertEqual(max_length, 200)
+    
+    def test_text_content(self):
+        notification =  Notification.objects.get(id=1)
+        self.assertEqual(str(notification), "This question has been answered by sharma ji")
 
+    def test_timestamp_content(self):
+        notification =  Notification.objects.get(id=1)
+        self.assertEqual(notification.timestamp.date(),datetime.now().date())
+
+    def test_receivers_content(self):
+        notification =  Notification.objects.get(id=1)
+        value_recieved = notification.receivers.all()[0].username
+        self.assertEqual(value_recieved, "eg2")
+
+    def test_target_questions(self):
+        notification =  Notification.objects.get(id=1)
+        value_recieved = notification.target_question.title
+        self.assertEqual(value_recieved, "How to do this?")
     
     

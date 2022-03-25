@@ -39,7 +39,7 @@ class UserInfoManager(BaseUserManager):
 # declare the main User model by inheriting the AbstractUser model of Django
 class User(AbstractUser):
 
-    username = models.CharField(max_length=20,blank=False)
+    username = models.CharField(max_length=20,blank=False,unique=True)
     email = models.EmailField(
         verbose_name='email address',
         max_length=255,
