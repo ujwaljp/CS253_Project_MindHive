@@ -395,3 +395,8 @@ form[view="profile"] {
 .title-mindhive:hover {
   text-decoration: none;
 }
+
+.user-box {
+  padding: 5px;
+
+}

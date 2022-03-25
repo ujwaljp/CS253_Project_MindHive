@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+
+{% block insert_title %}
+Users - MindHive
+{% endblock %}
+
+{% block insert_content %}
+<h1 class="container">
+    {% block heading %}
+    Users
+    {% endblock %}
+</h1>
+
+<br>
+
+<div class="container">
+    {%for user_row in users%}
+    <div class="d-flex justify-content-between">
+        {%for user in user_row%}
+        <a class="col" href="{% url 'users:view_user' user.id %}" style="text-decoration: none; box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset, 0 0 8px rgba(146, 146, 146, 0.6); max-width: 32%;">
+            <div class="d-flex flex-row user-box">
+                <div class="d-flex flex-column justify-content-center" style="padding: 5px;">
+                    <img src="{{user.profile_image.url}}" width="50" height="50" style="border-radius: 50%;">
+                </div>
+                <div class="d-flex flex-column w-100" style="padding: 10px;">
+                    {{user.name}} <br>
+                    {{user.email}} <br>
+
+                </div>
+            </div>
+        </a>
+        {%endfor%}
+    </div>
+    <br />
+    {%endfor%}
+</div>
+{% endblock %}

@@ -57,6 +57,18 @@ def profile(request,pk):
 def testview(request):
     return HttpResponse('<h1>Test page</h1>')
 
+def users_list_view(request):
+    users = []
+    cnt = 0
+    user_row = []
+    for user in User.objects.all():
+        user_row.append(user)
+        cnt += 1
+        if cnt % 3 == 0 or cnt == User.objects.count():
+            users.append(user_row)
+            user_row = []
+    return render(request, 'users/users_list.html', {'users': users})
+
 # view function to edit the user info
 class UserEditView(LoginRequiredMixin ,generic.UpdateView):
     model = User

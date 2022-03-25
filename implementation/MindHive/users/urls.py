@@ -23,4 +23,5 @@ urlpatterns = [
     path('edit/', UserEditView.as_view(), name='edit_users'),
     path('addtags/',views.addTagsView.as_view(), name='addtags'),
     path('notifications/', views.notifs_display, name='notifs'),
+    path('users/', views.users_list_view, name='users_list'),
 ]

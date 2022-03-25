@@ -81,10 +81,9 @@ Questions - MindHive
                     {% if question.get_author_name == 'Anonymous User' %}
                     someone
                     {% else %}
-                    <a href="{% url 'users:view_user' pk=question.author.id %}" style="text-decoration: none;">
-                        <i class="fa-solid fa-circle-user"></i>
-                        {{question.author.username}}
-                    </a>
+                    <a style="text-decoration: none;" href="{% url 'users:view_user' question.author.id %}">
+                        <img src="{{question.author.profile_image.url}}" width="20" height="20" style="border-radius: 50%;">
+                        {{question.author.username}}</a>
                     {% endif %}
                     on {{question.pub_date}}
                 </div>
@@ -155,7 +154,7 @@ Questions - MindHive
     </div>
 </div>
 <br>
-<div class="fav-tags" style="box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset, 0 0 8px rgba(146, 146, 146, 0.6);">
+<div class="popular-tags" style="box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset, 0 0 8px rgba(146, 146, 146, 0.6);">
     <div class="tags-box">Popular Tags</div>
     <div style="padding: 12px;">
         {% for tag in pop_tags %}
