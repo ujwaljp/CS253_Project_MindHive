@@ -44,7 +44,7 @@ class addTagsView(LoginRequiredMixin, generic.UpdateView):
         form.instance.user = self.request.user
         return super().form_valid(form)
     def get_success_url(self):
-        return reverse('users:view_user', kwargs={'pk': self.object.id})
+        return reverse('home:view_home', )
 
 # view function to view profile
 def profile(request,pk):
