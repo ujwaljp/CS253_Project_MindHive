@@ -65,5 +65,10 @@ class AnswerModelTest(TestCase):
         answer2 = Answer.objects.all()[1]
         expected_object_name = answer2.get_author_name()
         self.assertEqual(expected_object_name, 'Anonymous User')
+    
+    def test_vote_count(self):
+        answer = Answer.objects.all()[0]
+        expected_object_name = answer.likedBy.count()-answer.dislikedBy.count()
+        self.assertEqual(expected_object_name, 1)
 
     
