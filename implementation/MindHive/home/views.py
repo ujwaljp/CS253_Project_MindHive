@@ -14,7 +14,7 @@ from django.db.models import Q
 def view(request):
     """home page view"""
     user = User.objects.filter(id=request.user.id).values_list('favouriteTags')
-    if not (us is None for us in user):
+    if not (user.first()==(None,)):
         interestQues = Question.objects.filter(tags__in=user).distinct()
     else:
         interestQues = Question.objects.filter(tags__in=get_popular_tags()).distinct()
@@ -22,7 +22,7 @@ def view(request):
         'questions': interestQues,
         'pop_tags': get_popular_tags()
     }
-    #return HttpResponse(user)
+    #return HttpResponse((user.first()==(None,)))
     return render(request, 'home/home.html', context=context)
 
 
