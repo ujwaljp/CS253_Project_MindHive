@@ -1,3 +1,4 @@
+from django.http import HttpRequest, HttpResponse
 from django.shortcuts import render
 from questions.models import Question
 from users.models import User
@@ -13,11 +14,15 @@ from django.db.models import Q
 def view(request):
     """home page view"""
     user = User.objects.filter(id=request.user.id).values_list('favouriteTags')
-    interestQues = Question.objects.filter(tags__in=user).distinct()
+    if not (us is None for us in user):
+        interestQues = Question.objects.filter(tags__in=user).distinct()
+    else:
+        interestQues = Question.objects.filter(tags__in=get_popular_tags()).distinct()
     context = {
         'questions': interestQues,
         'pop_tags': get_popular_tags()
     }
+    #return HttpResponse(user)
     return render(request, 'home/home.html', context=context)
 
 
