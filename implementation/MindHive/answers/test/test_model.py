@@ -21,10 +21,10 @@ class AnswerModelTest(TestCase):
         question1.likedBy.add(user1)
         question1.tags.add(tag)
         question1.save()
-        answer1=Answer.objects.create(text=RichTextField("Why dont yu try using bertands theorem"), author=user2, anonymous=False, pub_date=datetime(2020,1,1,1,1,1,tzinfo=pytz.UTC),to_question=question1)
+        answer1=Answer.objects.create(text=RichTextField("Why dont you try using bertands theorem"), author=user2, anonymous=False, pub_date=datetime(2020,1,1,1,1,1,tzinfo=pytz.UTC),to_question=question1)
         answer1.likedBy.add(user1)
         answer1.save()
-        answer2=Answer.objects.create(text=RichTextField("Why dont yu try using bertands theorem"), author=user3, anonymous=True, pub_date=datetime(2020,1,1,1,1,3,tzinfo=pytz.UTC),to_question=question1)
+        answer2=Answer.objects.create(text=RichTextField("Why dont you try using bertands theorem"), author=user3, anonymous=True, pub_date=datetime(2020,1,1,1,1,3,tzinfo=pytz.UTC),to_question=question1)
         answer2.dislikedBy.add(user1)
         answer2.save()
 
