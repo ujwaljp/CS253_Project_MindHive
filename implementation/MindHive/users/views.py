@@ -1,16 +1,15 @@
 from .models import User
+from notifications.models import Notification
 from .forms import addTagsForm, UserCreateForm
 
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.urls import reverse_lazy
 from django.urls import reverse
-from django.views import generic
+from django.views.generic import CreateView, UpdateView
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.views.generic import CreateView
 from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
-from notifications.models import Notification
 # Create your views here.
 
 User = get_user_model()
@@ -32,7 +31,7 @@ class SignUp(CreateView):
     template_name = 'users/sign_up.html'
 
 # class-based view to add favourite tags
-class addTagsView(LoginRequiredMixin, generic.UpdateView):
+class addTagsView(LoginRequiredMixin, UpdateView):
     model = User
     form_class= addTagsForm
     # fields = ['favouriteTags']
@@ -70,7 +69,7 @@ def users_list_view(request):
     return render(request, 'users/users_list.html', {'users': users})
 
 # view function to edit the user info
-class UserEditView(LoginRequiredMixin ,generic.UpdateView):
+class UserEditView(LoginRequiredMixin, UpdateView):
     model = User
     fields=["username","profile_image"]
     template_name = "users/edit_profile.html"
