@@ -14,15 +14,17 @@ import pytz
 class Setup_Class(TestCase):
     def setUp(self):
         self.user = User.objects.create(email="user@iitk.ac.in", username="user", password="cscbndm",name="user")
-        Tag.objects.create(name="Anarchy")
-        question = Question.objects.create(title='test',tags='Anarchy')
+        user1 = User(email="example@iitk.ac.in", username="eg", password="example",name="harish")
+        user1.save()
+        tag = Tag.objects.create(name="Anarchy")
+        # question = Question.objects.create(title='test',tags='Anarchy')
 
 class QuestionFormTest(TestCase):
     def test_valid(self):
-        tag=Tag.objects.create(name="Anarchy")
+        forms.CheckboxSelectMultiple
         form_data = {'title': 'user',
                      'text': 'Usertext',
-                    #  'tags': "Anarchy",
+                     'tags': 
                      'anonymous':False}
         form = CreateQuestionForm(data = form_data)
         self.assertFalse(form.is_valid())
