@@ -5,8 +5,6 @@ from users.models import User
 from datetime import datetime
 from tags.models import Tag
 import pytz
-
-
 class QuestionModelTest(TestCase):
     @classmethod
     def setUpTestData(cls):
