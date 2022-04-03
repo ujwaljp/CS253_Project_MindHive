@@ -9,7 +9,7 @@ class Content(models.Model):
     text = RichTextField()
     author = models.ForeignKey(to='users.User', on_delete=models.SET_NULL, related_name='author', null=True)
     anonymous = models.BooleanField(default=False)
-    pub_date = models.DateTimeField('date published', default=datetime.now())
+    pub_date = models.DateTimeField('date published', auto_now_add = True, blank=True, null=True)
     likedBy = models.ManyToManyField(to='users.User', related_name='likedBy', blank=True)
     dislikedBy = models.ManyToManyField(to='users.User', related_name='dislikedBy', blank=True)
 

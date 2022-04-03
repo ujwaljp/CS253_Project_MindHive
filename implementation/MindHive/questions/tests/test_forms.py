@@ -37,3 +37,26 @@ class QuestionFormTest(TestCase):
         # self.assertEqual(saved.tags, tag)
         self.assertEqual(saved.author, user)
 
+<<<<<<< HEAD
+=======
+class AnswerFormTest(TestCase):
+    def test_valid(self):
+        user = User.objects.create(email="user@iitk.ac.in", username="user", password="cscbndm",name="user")
+        tag = Tag.objects.create(name="Anarchy")
+        question = Question.objects.create(title='test',author=user)
+        question.tags.set([tag])
+        form_data = {'text': 'Usertext',
+                     'author': user,
+                     'anonymous':False,
+                     'to_question': question}
+                     
+        form = AddAnswerForm(data = form_data)
+        self.assertTrue(form.is_valid())
+        saved = form.save()
+        self.assertEqual(saved.text, "Usertext")
+        # self.assertEqual(saved.tags, "Anarchy")
+        # self.assertEqual(saved.author, user)
+        # self.assertEqual(saved.timestamp.date(),datetime.now().date())
+
+    
+>>>>>>> 1931d45db7c0b66ed423f6953caac0f0d0e7ab80
