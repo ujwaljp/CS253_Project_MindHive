@@ -3,14 +3,14 @@ from django.test import TestCase
 from matplotlib import widgets
 from questions.models import Question
 from notifications.models import Notification
-from users.forms import UserCreateForm
-from questions.forms import UpdateUserInfo
-from questions.forms import CreateReportForm
+from users.forms import *
 from users.models import User
 from tags.models import Tag
 from ckeditor.fields import RichTextField
+from django.core.files.uploadedfile import SimpleUploadedFile
 from datetime import datetime
 import pytz
+
 # class Setup_Class(TestCase):
 #     def setUp(self):
 #         self.user = User.objects.create(email="user@iitk.ac.in", username="user", password="cscbndm",name="user")
@@ -23,30 +23,24 @@ class UserCreateFormTest(TestCase):
         form_data = {'username': 'user',
                      'name': 'user',
                      'email': 'user@iitk.ac.in',
-                     'password1':'cscbndm',
-                     'password2':'cscbndm'}
+                     'password1':'Cscbndm01$5',
+                     'password2':'Cscbndm01$5'}
         form = UserCreateForm(data = form_data)
-        self.assertFalse(form.is_valid())
+        self.assertTrue(form.is_valid())
         saved = form.save()
-        self.assertEqual(saved.title, "user")
-        self.assertEqual(saved.text, "Usertext")
-        # self.assertEqual(saved.tags, "Anarchy")
-        self.assertEqual(saved.author, "user")
-        self.assertEqual(saved.timestamp.date(),datetime.now().date())
-
-class AnswerFormTest(TestCase):
+        self.assertEqual(saved.username, "user")
+        self.assertEqual(saved.name, "user")
+        self.assertEqual(saved.email,"user@iitk.ac.in")
+        
+# Not working below this ;-;
+class UpdateUserInfo(TestCase):
     def test_valid(self):
-        form_data = {'title': 'user',
-                     'text': 'Usertext',
-                    #  'tags': "Anarchy",
-                     'anonymous':False}
-        form = CreateQuestionForm(data = form_data)
-        self.assertFalse(form.is_valid())
+        image = SimpleUploadedFile(name='test_image.jpg', content=open('media/profile_image/index.jpeg', 'rb').read(), content_type='image/jpeg')
+        form_data = {'username': 'user',
+                     'profile_image': image
+                     }
+        form = UpdateUserInfo(data = form_data)
+        self.assertTrue(form.is_valid())
         saved = form.save()
-        self.assertEqual(saved.title, "user")
-        self.assertEqual(saved.text, "Usertext")
-        # self.assertEqual(saved.tags, "Anarchy")
-        self.assertEqual(saved.author, "user")
-        self.assertEqual(saved.timestamp.date(),datetime.now().date())
-
-    
+        self.assertEqual(saved.username, "user")
+        self.assertEqual(saved.profile_image, image)
