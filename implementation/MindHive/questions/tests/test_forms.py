@@ -37,8 +37,6 @@ class QuestionFormTest(TestCase):
         # self.assertEqual(saved.tags, tag)
         self.assertEqual(saved.author, user)
 
-<<<<<<< HEAD
-=======
 class AnswerFormTest(TestCase):
     def test_valid(self):
         user = User.objects.create(email="user@iitk.ac.in", username="user", password="cscbndm",name="user")
@@ -59,4 +57,3 @@ class AnswerFormTest(TestCase):
         # self.assertEqual(saved.timestamp.date(),datetime.now().date())
 
     
->>>>>>> 1931d45db7c0b66ed423f6953caac0f0d0e7ab80
