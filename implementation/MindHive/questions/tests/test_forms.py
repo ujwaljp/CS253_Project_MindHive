@@ -21,11 +21,13 @@ class Setup_Class(TestCase):
 
 class QuestionFormTest(TestCase):
     def test_valid(self):
-        forms.CheckboxSelectMultiple
-        form_data = {'title': 'user',
-                     'text': 'Usertext',
-                     'tags': 
-                     'anonymous':False}
+        form_data = {
+            'title': 'Random Question',
+            'text': 'Usertext',
+            'tags': ['1'],
+            'author': 'user',
+            'anonymous':False
+        }
         form = CreateQuestionForm(data = form_data)
         self.assertFalse(form.is_valid())
         saved = form.save()
@@ -36,6 +38,23 @@ class QuestionFormTest(TestCase):
         self.assertEqual(saved.timestamp.date(),datetime.now().date())
 
 class AnswerFormTest(TestCase):
+    def test_valid(self):
+        form_data = {
+            'author': 'user',
+            'text': 'Usertext',
+            'anonymous':False,
+            'to_question': 'user'   
+        }
+        form = CreateQuestionForm(data = form_data)
+        self.assertFalse(form.is_valid())
+        saved = form.save()
+        self.assertEqual(saved.title, "user")
+        self.assertEqual(saved.text, "Usertext")
+        # self.assertEqual(saved.tags, "Anarchy")
+        self.assertEqual(saved.author, "user")
+        self.assertEqual(saved.timestamp.date(),datetime.now().date())
+
+class ReportFormTest(TestCase):
     def test_valid(self):
         form_data = {'title': 'user',
                      'text': 'Usertext',
