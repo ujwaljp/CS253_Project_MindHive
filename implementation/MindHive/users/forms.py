@@ -20,7 +20,8 @@ class UserCreateForm(UserCreationForm):
             'name': forms.TextInput(attrs={'placeholder': 'Full Name'}),
             'email': forms.EmailInput(attrs={'placeholder': 'Email Address'}),
         }
-        model = get_user_model()
+        # model = get_user_model()
+        model = User
 
     def __init__(self,*args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -38,7 +39,7 @@ class UpdateUserInfo(forms.ModelForm):
             'username': forms.TextInput(attrs={'class':'form-control','placeholder':'Enter your new user name'}),
         }
         profile_image=forms.ImageField()
-
+        
 
 # form for adding the favourite tags
 class addTagsForm(forms.ModelForm):
@@ -53,4 +54,4 @@ class addTagsForm(forms.ModelForm):
         }
         # favouriteTags = forms.ModelMultipleChoiceField(
         #                 queryset=Tag.objects.all(),
-        #                 widget=forms.CheckboxSelectMultiple)
+        #                 widget=forms.CheckboxSelectMultiple).
