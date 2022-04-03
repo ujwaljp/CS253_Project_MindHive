@@ -1,16 +1,11 @@
-from django import forms
 from django.test import TestCase
-from matplotlib import widgets
 from questions.models import Question
-from notifications.models import Notification
 from questions.forms import CreateQuestionForm
-from questions.forms import AddAnswerForm
-from questions.forms import CreateReportForm
 from users.models import User
 from tags.models import Tag
-from ckeditor.fields import RichTextField
 from datetime import datetime
-import pytz
+
+
 class Setup_Class(TestCase):
     def setUp(self):
         self.user = User.objects.create(email="user@iitk.ac.in", username="user", password="cscbndm",name="user")
