@@ -37,27 +37,27 @@ class CommentModelTest(TestCase):
         expected_object_name =comment.text
         self.assertEqual(expected_object_name, str(RichTextField("What is bertands theorem?")))
         
-    def test_author(self):
+    def test_author_username(self):
         comment=Comment.objects.all()[0]
         expected_object_name =comment.author.username
         self.assertEqual(expected_object_name, "eg")
         
-    def test_anonymous(self):
+    def test_check_anonymous(self):
         comment=Comment.objects.all()[1]
         expected_object_name =comment.anonymous
         self.assertEqual(expected_object_name, True)
         
-    def test_pub_date(self):
+    def test_check_pub_date(self):
         comment=Comment.objects.all()[1]
         expected_object_name =comment.pub_date
         self.assertEqual(expected_object_name, datetime(2020,1,1,1,1,7,tzinfo=pytz.UTC))
         
-    def test_parentObjType(self):
+    def test_parentObjTypeQ(self):
         comment=Comment.objects.all()[1]
         expected_object_name =comment.parentObjType
         self.assertEqual(expected_object_name, "q")
     
-    def test_parentObjType(self):
+    def test_parentObjTypeA(self):
         comment=Comment.objects.all()[0]
         expected_object_name =comment.parentObjType
         self.assertEqual(expected_object_name, "a")  
