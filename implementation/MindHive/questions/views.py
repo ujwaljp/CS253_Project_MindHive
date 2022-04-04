@@ -8,7 +8,7 @@ from answers.models import Answer
 from comments.models import Comment
 from notifications.models import Notification
 
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import Http404, HttpResponse, HttpResponseRedirect
 from django.urls import reverse
 from django.shortcuts import render, get_object_or_404
 from django.views.generic.edit import CreateView
@@ -65,6 +65,10 @@ def edit_question(request, question_id):
         if form.is_valid():
             form.save()
             return HttpResponseRedirect(reverse('questions:view_question', args=[question_id]))
+        
+        # if form is not valid, return the form with errors
+        else:
+            raise Http404(form.errors)
 
     # for GET request
     question = get_object_or_404(Question, id=question_id)
