@@ -47,10 +47,6 @@ class CommentModelTest(TestCase):
         expected_object_name =comment.anonymous
         self.assertEqual(expected_object_name, True)
         
-    def test_check_pub_date(self):
-        comment=Comment.objects.all()[1]
-        expected_object_name =comment.pub_date
-        self.assertEqual(expected_object_name, datetime(2020,1,1,1,1,7,tzinfo=pytz.UTC))
         
     def test_parentObjTypeQ(self):
         comment=Comment.objects.all()[1]
