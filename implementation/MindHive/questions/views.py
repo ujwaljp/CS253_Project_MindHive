@@ -181,6 +181,9 @@ def add_comment(request, question_id):
 
 def add_answer(request, question_id):
     """add answer to a question"""
+    if not request.user.is_authenticated:
+        return HttpResponseRedirect(reverse('users:login'))
+
     form = AddAnswerForm(request.POST, use_required_attribute=False)
     if form.is_valid():
         form.save()

@@ -349,4 +349,325 @@ class FollowBookmarkViewTest(TestCase):
     def setUpTestData(cls):
         create_dummy_data()
     
-    # def test_view_url_exists_at_desired_location(self):
+    def test_view_url_exists_at_desired_location(self):
+        self.client.force_login(User.objects.get(pk=1))
+        response = self.client.post(
+            reverse('questions:follow_bookmark'),
+            {
+                'question_id': 1,
+                'action': 'bookmark'
+            })
+        self.assertEqual(response.status_code, 200)
+    
+    def test_view_url_accessible_by_name(self):
+        self.client.force_login(User.objects.get(pk=1))
+        response = self.client.post(
+            "/questions/follow-bookmark",
+            {
+                'question_id': 1,
+                'action': 'bookmark'
+            })
+        self.assertEqual(response.status_code, 200)
+    
+    def test_view_redirects_if_not_logged_in(self):
+        response = self.client.post(
+            reverse('questions:follow_bookmark'),
+            {
+                'question_id': 1,
+                'action': 'bookmark'
+            })
+        self.assertRedirects(response, reverse('users:login'))
+    
+    def test_raise_error_if_question_does_not_exist(self):
+        self.client.force_login(User.objects.get(pk=1))
+        response = self.client.post(
+            reverse('questions:follow_bookmark'),
+            {
+                'question_id': 100,
+                'action': 'bookmark'
+            })
+        self.assertEqual(response.status_code, 404)
+    
+    def test_bookmark(self):
+        self.assertEqual(User.objects.get(pk=1).bookmarkQuestions.count(), 0)
+        self.client.force_login(User.objects.get(pk=1))
+        response = self.client.post(
+            reverse('questions:follow_bookmark'),
+            {
+                'question_id': 1,
+                'action': 'bookmark'
+            })
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(User.objects.get(pk=1).bookmarkQuestions.count(), 1)
+        self.assertEqual(User.objects.get(pk=1).bookmarkQuestions.first().pk, 1)
+        response = self.client.post(
+            reverse('questions:follow_bookmark'),
+            {
+                'question_id': 1,
+                'action': 'bookmark'
+            })
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(User.objects.get(pk=1).bookmarkQuestions.count(), 0)
+    
+    def test_follow(self):
+        self.assertEqual(User.objects.get(pk=1).followingQuestions.count(), 0)
+        self.client.force_login(User.objects.get(pk=1))
+        response = self.client.post(
+            reverse('questions:follow_bookmark'),
+            {
+                'question_id': 1,
+                'action': 'follow'
+            })
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(User.objects.get(pk=1).followingQuestions.count(), 1)
+        self.assertEqual(User.objects.get(pk=1).followingQuestions.first().pk, 1)
+        response = self.client.post(
+            reverse('questions:follow_bookmark'),
+            {
+                'question_id': 1,
+                'action': 'follow'
+            })
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(User.objects.get(pk=1).followingQuestions.count(), 0)
+
+
+class AddCommentView(TestCase):
+    @classmethod
+    def setUpTestData(cls):
+        create_dummy_data()
+    
+    def test_view_url_exists_at_desired_location(self):
+        self.client.force_login(User.objects.get(pk=1))
+        response = self.client.post(
+            reverse('questions:add_comment', args=[1]),
+            {
+                'obj_type': 'question',
+                'question_id': 1,
+                'comment_text': 'test comment'
+            })
+        self.assertRedirects(response, reverse('questions:view_question', args=[1]))
+    
+    def test_view_url_accessible_by_name(self):
+        self.client.force_login(User.objects.get(pk=1))
+        response = self.client.post(
+            "/questions/1/add-comment",
+            {
+                'obj_type': 'question',
+                'question_id': 1,
+                'comment_text': 'test comment'
+            })
+        self.assertRedirects(response, reverse('questions:view_question', args=[1]))
+    
+    def test_view_redirects_if_not_logged_in(self):
+        response = self.client.post(
+            reverse('questions:add_comment', args=[1]),
+            {
+                'obj_type': 'question',
+                'question_id': 1,
+                'comment_text': 'test comment'
+            })
+        self.assertRedirects(response, reverse('users:login'))
+    
+    def test_raise_error_if_question_does_not_exist(self):
+        self.client.force_login(User.objects.get(pk=1))
+        response = self.client.post(
+            reverse('questions:add_comment', args=[100]),
+            {
+                'obj_type': 'question',
+                'question_id': 100,
+                'comment_text': 'test comment'
+            })
+        self.assertEqual(response.status_code, 404)
+    
+    def test_raise_error_if_answer_does_not_exist(self):
+        self.client.force_login(User.objects.get(pk=1))
+        response = self.client.post(
+            reverse('questions:add_comment', args=[1]),
+            {
+                'obj_type': 'answer',
+                'answer_id': 100,
+                'comment_text': 'test comment'
+            })
+        self.assertEqual(response.status_code, 404)
+    
+    def test_add_comment_on_question(self):
+        self.assertEqual(Question.objects.get(pk=1).comment_set.count(), 1)
+        self.client.force_login(User.objects.get(pk=1))
+        response = self.client.post(
+            reverse('questions:add_comment', args=[1]),
+            {
+                'obj_type': 'question',
+                'question_id': 1,
+                'comment_text': 'test comment'
+            })
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(Question.objects.get(pk=1).comment_set.count(), 2)
+        self.assertEqual(Question.objects.get(pk=1).comment_set.last().text, 'test comment')
+    
+    def test_add_comment_on_answer(self):
+        self.assertEqual(Answer.objects.get(pk=3).comment_set.count(), 1)
+        self.client.force_login(User.objects.get(pk=1))
+        response = self.client.post(
+            reverse('questions:add_comment', args=[1]),
+            {
+                'obj_type': 'answer',
+                'answer_id': 3,
+                'comment_text': 'test comment'
+            })
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(Answer.objects.get(pk=3).comment_set.count(), 2)
+        self.assertEqual(Answer.objects.get(pk=3).comment_set.last().text, 'test comment')
+
+
+class AddAnswerView(TestCase):
+    @classmethod
+    def setUpTestData(cls):
+        create_dummy_data()
+    
+    def test_view_url_exists_at_desired_location(self):
+        self.client.force_login(User.objects.get(pk=1))
+        response = self.client.post(
+            reverse('questions:add_answer', args=[1]),
+            {
+                'text': 'test answer',
+                'author': 1,
+                "to_question": 1
+            })
+        self.assertRedirects(response, reverse('questions:view_question', args=[1]))
+    
+    def test_view_url_accessible_by_name(self):
+        self.client.force_login(User.objects.get(pk=1))
+        response = self.client.post(
+            "/questions/1/add-answer",
+            {
+                'text': 'test answer',
+                'author': 1,
+                "to_question": 1
+            })
+        self.assertRedirects(response, reverse('questions:view_question', args=[1]))
+    
+    def test_view_redirects_if_not_logged_in(self):
+        response = self.client.post(
+            reverse('questions:add_answer', args=[1]),
+            {
+                'text': 'test answer',
+                'author': 1,
+                "to_question": 1
+            })
+        self.assertRedirects(response, reverse('users:login'))
+    
+    def test_add_answer(self):
+        self.assertEqual(Question.objects.get(pk=1).answer_set.count(), 1)
+        self.client.force_login(User.objects.get(pk=1))
+        response = self.client.post(
+            reverse('questions:add_answer', args=[1]),
+            {
+                'text': 'test answer',
+                'author': 1,
+                "to_question": 1
+            })
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(Question.objects.get(pk=1).answer_set.count(), 2)
+        self.assertEqual(Question.objects.get(pk=1).answer_set.last().text, 'test answer')
+
+
+class ReportViewTest(TestCase):
+    @classmethod
+    def setUpTestData(cls):
+        create_dummy_data()
+    
+    def test_view_url_exists_at_desired_location(self):
+        self.client.force_login(User.objects.get(pk=1))
+        response = self.client.get(reverse('questions:report', args=[1]),
+            {'obj_type': 'q', 'id': 1})
+        self.assertEqual(response.status_code, 200)
+    
+    def test_view_url_accessible_by_name(self):
+        self.client.force_login(User.objects.get(pk=1))
+        response = self.client.get("/questions/1/report", {'obj_type': 'q', 'id': 1})
+        self.assertEqual(response.status_code, 200)
+
+    def test_view_uses_correct_template(self):
+        self.client.force_login(User.objects.get(pk=1))
+        response = self.client.get(reverse('questions:report', args=[1]),
+            {'obj_type': 'q', 'id': 1})
+        self.assertTemplateUsed(response, 'questions/report.html')
+    
+    def test_view_redirects_if_not_logged_in(self):
+        response = self.client.get(reverse('questions:report', args=[1]),
+            {'obj_type': 'q', 'id': 1})
+        self.assertRedirects(response, reverse('users:login'))
+    
+    def test_raise_error_if_question_does_not_exist(self):
+        self.client.force_login(User.objects.get(pk=1))
+        response = self.client.get(reverse('questions:report', args=[1]),
+            {'obj_type': 'q', 'id': 100})
+        self.assertEqual(response.status_code, 404)
+    
+    def test_raise_error_if_answer_does_not_exist(self):
+        self.client.force_login(User.objects.get(pk=1))
+        response = self.client.get(reverse('questions:report', args=[1]),
+            {'obj_type': 'a', 'id': 100})
+        self.assertEqual(response.status_code, 404)
+    
+    def test_raise_error_if_commment_does_not_exist(self):
+        self.client.force_login(User.objects.get(pk=1))
+        response = self.client.get(reverse('questions:report', args=[1]),
+            {'obj_type': 'c', 'id': 100})
+        self.assertEqual(response.status_code, 404)
+    
+    def test_raise_error_if_obj_type_is_not_valid(self):
+        self.client.force_login(User.objects.get(pk=1))
+        response = self.client.get(reverse('questions:report', args=[1]),
+            {'obj_type': 'x', 'id': 1})
+        self.assertEqual(response.status_code, 404)
+    
+    def test_report(self):
+        self.assertEqual(Question.objects.get(pk=1).report_set.count(), 0)
+        self.client.force_login(User.objects.get(pk=2))
+        response = self.client.post(reverse('questions:report', args=[1]),
+            {
+                'reportedObjType': 'q',
+                'reportedObjQ': 1,
+                'report_text': 'test report',
+                'reporter': 2,
+                'reportedUser': 1,
+            })
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(Question.objects.get(pk=1).report_set.count(), 1)
+        self.assertEqual(Question.objects.get(pk=1).report_set.last().report_text, 'test report')
+
+
+class QuestionCreateViewTest(TestCase):
+    @classmethod
+    def setUpTestData(cls):
+        create_dummy_data()
+    
+    def test_view_url_exists_at_desired_location(self):
+        self.client.force_login(User.objects.get(pk=1))
+        response = self.client.get(reverse('questions:add_question'))
+        self.assertEqual(response.status_code, 200)
+    
+    def test_view_url_accessible_by_name(self):
+        self.client.force_login(User.objects.get(pk=1))
+        response = self.client.get("/questions/askform/")
+        self.assertEqual(response.status_code, 200)
+    
+    def test_view_uses_correct_template(self):
+        self.client.force_login(User.objects.get(pk=1))
+        response = self.client.get(reverse('questions:add_question'))
+        self.assertTemplateUsed(response, 'questions/askform.html')
+    
+    def test_add_question(self):
+        self.assertEqual(Question.objects.count(), 2)
+        self.client.force_login(User.objects.get(pk=1))
+        response = self.client.post(reverse('questions:add_question'),
+            {
+                'author': 1,
+                'title': 'This is a test question.',
+                'text': 'test question',
+                'tags': ['1']
+            })
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(Question.objects.count(), 3)
+        self.assertEqual(Question.objects.first().text, 'test question')
