@@ -11,6 +11,7 @@ from . import views
 
 # urlpatterns to match the urls with the views
 urlpatterns = [
+    path('polls/', include('polls.urls')),
     path('', views.HomePage.as_view(), name='index'),          # index page
     path('admin/', admin.site.urls),                           # admin page
     path('questions/', include('questions.urls',

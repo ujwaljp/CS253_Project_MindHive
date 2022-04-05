@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block insert_title %}
+Make a poll - MindHive
+{% endblock %}
+
+{%block insert_content%}
+<div class="form-group">
+    <form method="post">{% csrf_token %}
+        {{ form.media }}
+        {{ form.author.as_hidden }}
+        {{ form|crispy }}
+        <input type="submit" value="Save">
+    </form>
+</div>
+<script>
+    $(document).ready(function () {
+        $("#askButton").closest('a').addClass("active");
+    })
+</script>
+{%endblock%}

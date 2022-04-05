@@ -32,6 +32,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'polls.apps.PollsConfig',
     'answers.apps.AnswersConfig',
     'comments.apps.CommentsConfig',
     'home.apps.HomeConfig',
