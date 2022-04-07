@@ -42,11 +42,6 @@ class AnswerModelTest(TestCase):
         answer = Answer.objects.all()[1]
         expected_object_name = answer.dislikedBy.get(id=1).username
         self.assertEqual("eg", expected_object_name)
-    
-    def test_check_pubdate(self):
-        answer = Answer.objects.all()[1]
-        expected_object_name = answer.pub_date
-        self.assertEqual(expected_object_name,datetime(2020,1,1,1,1,3,tzinfo=pytz.UTC))
 
     def test_check_author(self):
         answer = Answer.objects.all()[0]

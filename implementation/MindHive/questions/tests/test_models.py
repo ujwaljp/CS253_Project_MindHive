@@ -59,11 +59,6 @@ class QuestionModelTest(TestCase):
         question = Question.objects.get(id=1)
         expected_object_name = question.viewedBy.get(id=1).username
         self.assertEqual("eg", expected_object_name)
-    
-    def test_check_pubdate(self):
-        question = Question.objects.get(id=1)
-        expected_object_name = question.pub_date
-        self.assertEqual(expected_object_name, datetime(2020,1,1,0,0,0,tzinfo=pytz.UTC))
 
     def test_check_author(self):
         question = Question.objects.get(id=1)
