@@ -431,7 +431,7 @@ class FollowBookmarkViewTest(TestCase):
         self.assertEqual(User.objects.get(pk=1).followingQuestions.count(), 0)
 
 
-class AddCommentView(TestCase):
+class AddCommentViewTest(TestCase):
     @classmethod
     def setUpTestData(cls):
         create_dummy_data()
@@ -519,7 +519,7 @@ class AddCommentView(TestCase):
         self.assertEqual(Answer.objects.get(pk=3).comment_set.last().text, 'test comment')
 
 
-class AddAnswerView(TestCase):
+class AddAnswerViewTest(TestCase):
     @classmethod
     def setUpTestData(cls):
         create_dummy_data()
