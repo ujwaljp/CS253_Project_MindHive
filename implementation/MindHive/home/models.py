@@ -27,4 +27,4 @@ class Content(models.Model):
         if self.anonymous:
             return 'Anonymous User'
         else:
-            return self.author.name
+            return self.author.username
