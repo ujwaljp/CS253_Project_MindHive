@@ -1,0 +1,73 @@
+
+from selenium import webdriver
+from selenium.webdriver.common.by import By
+from selenium.webdriver.common.action_chains import ActionChains
+class TestSignuptests():
+  def setup_method(self, method):
+    self.driver = webdriver.Firefox()
+    self.vars = {}
+  
+  def teardown_method(self, method):
+    self.driver.quit()
+  
+  def test_signuptests(self):
+    self.driver.get("http://127.0.0.1:8000/")
+    self.driver.find_element(By.ID, "signup").click()
+    self.driver.find_element(By.ID, "id_username").click()
+    self.driver.find_element(By.ID, "id_username").send_keys("sofiaportman12")
+    self.driver.find_element(By.ID, "id_email").click()
+    self.driver.find_element(By.ID, "id_email").click()
+    self.driver.find_element(By.ID, "id_email").click()
+    self.driver.find_element(By.ID, "id_email").send_keys("tharsh20@iitk.ac.in")
+    self.driver.find_element(By.ID, "id_password1").click()
+    self.driver.find_element(By.ID, "id_password1").send_keys("wsxc1234")
+    self.driver.find_element(By.ID, "id_password2").click()
+    self.driver.find_element(By.ID, "id_password2").send_keys("wsxc1234")
+    self.driver.find_element(By.ID, "id_name").click()
+    self.driver.find_element(By.ID, "id_name").send_keys("harsh trivedi")
+    self.driver.find_element(By.CSS_SELECTOR, ".btn").click()
+    element = self.driver.find_element(By.CSS_SELECTOR, "li:nth-child(4)")
+    actions = ActionChains(self.driver)
+    actions.move_to_element(element).click_and_hold().perform()
+    element = self.driver.find_element(By.CSS_SELECTOR, "li:nth-child(4)")
+    actions = ActionChains(self.driver)
+    actions.move_to_element(element).perform()
+    element = self.driver.find_element(By.CSS_SELECTOR, "li:nth-child(4)")
+    actions = ActionChains(self.driver)
+    actions.move_to_element(element).release().perform()
+    self.driver.find_element(By.CSS_SELECTOR, "li:nth-child(4)").click()
+    self.driver.find_element(By.ID, "id_password1").click()
+    self.driver.find_element(By.ID, "id_username").click()
+    self.driver.find_element(By.ID, "id_username").click()
+    self.driver.find_element(By.ID, "id_username").send_keys("rtoli")
+    self.driver.find_element(By.ID, "id_email").click()
+    element = self.driver.find_element(By.ID, "id_email")
+    actions = ActionChains(self.driver)
+    actions.move_to_element(element).click_and_hold().perform()
+    element = self.driver.find_element(By.ID, "id_email")
+    actions = ActionChains(self.driver)
+    actions.move_to_element(element).perform()
+    element = self.driver.find_element(By.ID, "id_email")
+    actions = ActionChains(self.driver)
+    actions.move_to_element(element).release().perform()
+    self.driver.find_element(By.ID, "id_email").click()
+    self.driver.find_element(By.ID, "id_email").send_keys("checker@iitk.ac")
+    self.driver.find_element(By.ID, "id_password1").click()
+    self.driver.find_element(By.ID, "id_password1").send_keys("wsxc1234")
+    self.driver.find_element(By.ID, "id_password2").click()
+    self.driver.find_element(By.ID, "id_password2").send_keys("wsxc1234")
+    self.driver.find_element(By.CSS_SELECTOR, ".btn").click()
+    self.driver.find_element(By.ID, "id_email").click()
+    self.driver.find_element(By.ID, "id_email").send_keys("checker5@iitk.ac.in")
+    self.driver.find_element(By.ID, "id_password1").click()
+    self.driver.find_element(By.ID, "id_password1").send_keys("wsxc1234")
+    self.driver.find_element(By.ID, "id_password2").click()
+    self.driver.find_element(By.ID, "id_password2").send_keys("wsxc1234")
+    self.driver.find_element(By.CSS_SELECTOR, ".btn").click()
+    self.driver.find_element(By.CSS_SELECTOR, ".btn").click()
+  
+testClass = TestSignuptests()
+
+testClass.setup_method("")
+testClass.test_signuptests()
+testClass.teardown_method("")
