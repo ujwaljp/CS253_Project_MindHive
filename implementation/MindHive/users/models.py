@@ -49,7 +49,6 @@ class User(AbstractUser):
     )
 
     name = models.CharField(max_length=20, blank=True, null=True)
-    roll_no=models.CharField(max_length=8, blank=True, null=True)
 
     profile_image = models.ImageField(upload_to='profile_image', default='default.jpg')
     blocked = models.BooleanField(default=False)
