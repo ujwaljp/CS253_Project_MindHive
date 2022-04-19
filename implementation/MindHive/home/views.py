@@ -81,9 +81,9 @@ def autQues(request):
     }
     return render(request, 'home/home.html', context=context)
 
-def otautQues(request):
+def otautQues(request, user_id):
     """author questions page view"""
-    user = User.objects.filter(id=request.user.id)
+    user = User.objects.filter(id=user_id)
     autQuestions = Question.objects.filter(author__in=user,anonymous=False).distinct()
     context = {
         'questions': autQuestions,

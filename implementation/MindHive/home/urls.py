@@ -13,5 +13,5 @@ urlpatterns = [
     path('bookmarks/', views.bookView, name='bookmarks'),                # bookmarks page
     path('tags/<tagname>', views.tagView, name='tags'),                  # tag questions page
     path('authorQuestions', views.autQues, name='authorQuestions'),         # author questions page
-    path('otherauthorQuestions', views.otautQues, name='otherauthorQuestions') ,      # author questions page
+    path('<int:user_id>/questions', views.otautQues, name='otherauthorQuestions') ,      # author questions page
 ]

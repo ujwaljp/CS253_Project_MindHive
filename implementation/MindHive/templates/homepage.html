@@ -41,7 +41,7 @@
         </form>
         {%else%}
         <form class="data-input" action="" view="profile">
-            <a href="{% url 'home:otherauthorQuestions' %}">Questions Asked</a><br>
+            <a href="{% url 'home:otherauthorQuestions' usr.id %}">Questions Asked</a><br>
         </form>
         {% endif %}
     </div>
