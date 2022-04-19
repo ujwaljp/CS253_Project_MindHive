@@ -82,15 +82,36 @@
         </button>
     </form>
 
-    {% if user != answer.author and not user.blocked %}
-    <form class="icon-only-buttons" action="{% url 'questions:report' question.id %}" method="GET"
-        style="display:inline">
-        {% csrf_token %}
-        <input type="hidden" name="obj_type" value="q">
-        <button type="submit" name="id" , value={{question.id}}>
-            <i class="fa-solid fa-ban"></i>
-        </button>
-    </form>
+    {% if user != question.author and not user.blocked %}
+    <!-- Button trigger modal -->
+    <button type="button" class="report-button" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+        <i class="fa-solid fa-ban" style="color: red;"></i>
+    </button>
+
+    <!-- Modal -->
+    <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+        aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="staticBackdropLabel">Report</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form action="{% url 'questions:report' question.id %}" method="POST">
+                    {% csrf_token %}
+                    <div class="modal-body">
+                        <input type="hidden" name="obj_type" value="q">
+                        <textarea class="form-control" name="report_text" aria-label="With textarea"
+                            placeholder="Author used abusive language..." required></textarea>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" name="id" value={{question.id}} class="btn btn-danger">Report</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
     {% endif %}
 
     &nbsp; &nbsp;
@@ -167,7 +188,7 @@
                 {% else %}
                 <input type="hidden" name="blocked_user" value="false">
                 {% endif %}
-                
+
                 <button type="submit" , class="upvote" , value="upvote">
                     <span class="like_count" style="color: green;">{{answer.likedBy.count}}</span>
                     {% if user in answer.likedBy.all %}
@@ -188,15 +209,36 @@
             </form>
             &nbsp; &nbsp; &nbsp;
             {% if user != answer.author and not user.blocked%}
-            <form class="icon-only-buttons" action="{% url 'questions:report' question.id %}" method="GET"
-                style="display:inline">
-                {% csrf_token %}
-                <input type="hidden" name="obj_type" value="a">
-                <button type="submit" name="id" , value={{answer.id}}>
-                    <i class="fa-solid fa-ban"></i>
-                    Report
-                </button>
-            </form>
+            <!-- Button trigger modal -->
+            <button type="button" class="report-button" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+                <i class="fa-solid fa-ban" style="color: red;"></i>
+            </button>
+
+            <!-- Modal -->
+            <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+                aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="staticBackdropLabel">Report</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <form action="{% url 'questions:report' question.id %}" method="POST">
+                            {% csrf_token %}
+                            <div class="modal-body">
+                                <input type="hidden" name="obj_type" value="a">
+                                <textarea class="form-control" name="report_text" aria-label="With textarea"
+                                    placeholder="Author used abusive language..." required></textarea>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                <button type="submit" name="id" value={{answer.id}}
+                                    class="btn btn-danger">Report</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
             {% endif %}
 
             <div class="d-flex flex-row" style="position: absolute; right: 20px;">

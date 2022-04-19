@@ -132,6 +132,7 @@ html {
 
 .dropdown-menu.show {
   right: -236px;
+  left: auto;
   top: 25px;
   background-color: rgba(255, 243, 176, 0.98);
   /* border: 2px solid #b3b3b3; */
@@ -362,6 +363,15 @@ form[view="profile"] {
 .icon-only-buttons .fa-star {
   color: lightseagreen;
 }
+
+.report-button {
+  background-color: transparent;
+  border: none;
+  color: black;
+  padding: 0;
+  margin: 0;
+}
+
 .fa-thumbs-up {
   color: rgb(0, 160, 0);
 }
@@ -399,4 +409,13 @@ form[view="profile"] {
 .user-box {
   padding: 5px;
 
+}
+
+.modal-backdrop {
+  height: 100%;
+  width: 100%;
+}
+
+.modal-open {
+  overflow: auto !important;
 }

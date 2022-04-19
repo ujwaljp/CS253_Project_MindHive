@@ -242,39 +242,31 @@ def report(request, question_id):
     if not request.user.is_authenticated:
         return HttpResponseRedirect(reverse('users:login'))
 
-    if request.method == 'POST':
-        form = CreateReportForm(request.POST)
-        if form.is_valid():
-            form.save()
-            return HttpResponseRedirect(reverse('questions:view_question', args=[question_id]))
-
     reportedObjQ = None
     reportedObjA = None
     reportedObjC = None
-    if request.GET['obj_type'] == 'q':
-        reportedObjQ = get_object_or_404(Question, id=request.GET['id'])
+    if request.POST['obj_type'] == 'q':
+        reportedObjQ = get_object_or_404(Question, id=request.POST['id'])
         reportedUser = reportedObjQ.author
-    elif request.GET['obj_type'] == 'a':
-        reportedObjA = get_object_or_404(Answer, id=request.GET['id'])
+    elif request.POST['obj_type'] == 'a':
+        reportedObjA = get_object_or_404(Answer, id=request.POST['id'])
         reportedUser = reportedObjA.author
     else:
-        reportedObjC = get_object_or_404(Comment, id=request.GET['id'])
+        reportedObjC = get_object_or_404(Comment, id=request.POST['id'])
         reportedUser = reportedObjC.author
 
     initial_report_data = {
         'reporter': request.user,
+        'report_text': request.POST['report_text'],
         'reportedUser': reportedUser,
-        'reportedObjType': request.GET['obj_type'],
+        'reportedObjType': request.POST['obj_type'],
         'reportedObjQ': reportedObjQ,
         'reportedObjA': reportedObjA,
         'reportedObjC': reportedObjC,
     }
     form = CreateReportForm(initial_report_data)
-    context = {
-        'question_id': question_id,
-        'form': form,
-    }
-    return render(request, 'questions/report.html', context=context)
+    form.save()
+    return HttpResponseRedirect(reverse('questions:view_question', args=[question_id]))
 
 
 class QuestionCreateView(CreateView):
