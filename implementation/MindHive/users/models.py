@@ -19,7 +19,7 @@ class UserInfoManager(BaseUserManager):
         user = self.model(
             email = self.normalize_email(email),
             username=username,
-            roll_no=roll_no,
+            
             name=name,
         )
         user.set_password(password)
@@ -28,7 +28,7 @@ class UserInfoManager(BaseUserManager):
     # function for creating an admin user
     def create_superuser(self, email, username, password, name=None, roll_no=None):
         user = self.create_user(email=email, username=username, name=name,
-                                roll_no=roll_no, password=password)
+                                 password=password)
         user.is_superuser = True
         user.is_staff = True
 
