@@ -185,6 +185,7 @@ html {
   overflow-y: scroll;
   -ms-overflow-style: none;  /* IE and Edge */
   scrollbar-width: none;  /* Firefox */
+  align-items: unset;
   display: flex;
   flex-direction: column;
   padding-top: 1%;
@@ -418,4 +419,14 @@ form[view="profile"] {
 
 .modal-open {
   overflow: auto !important;
+}
+
+.comment-text {
+  margin: 0px;
+  padding: 0px;
+  text-align: inherit;
+}
+.comment-text:focus {
+  outline: none;
+  box-shadow: none;
 }

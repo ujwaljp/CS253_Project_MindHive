@@ -81,14 +81,18 @@ def edit_question(request, question_id):
 
 
 def vote(request, question_id):
-    """vote for question or answer"""
+    """vote for question, answer or comment"""
     if not request.user.is_authenticated:  # add blocked as well
         return HttpResponseRedirect(reverse('users:login'))
 
     if request.POST['obj_type'] == 'question':
         object = get_object_or_404(Question, id=request.POST['obj_id'])
-    else:
+    elif request.POST['obj_type'] == 'answer':
         object = get_object_or_404(Answer, id=request.POST['obj_id'])
+    elif request.POST['obj_type'] == 'comment':
+        object = get_object_or_404(Comment, id=request.POST['obj_id'])
+    else:
+        raise Http404
 
     user = request.user
     vote = request.POST['vote']
@@ -117,6 +121,8 @@ def vote(request, question_id):
     json_data = {
         'likes': object.likedBy.count(),
         'dislikes': object.dislikedBy.count(),
+        'obj_type': request.POST['obj_type'],
+        'votes': object.likedBy.count() - object.dislikedBy.count(),
         'status': status
     }
     return HttpResponse(json.dumps(json_data))

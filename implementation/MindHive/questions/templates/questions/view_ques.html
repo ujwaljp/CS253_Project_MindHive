@@ -40,7 +40,8 @@
         {% endif %}
 
         <!-- check if user has upvoted the question -->
-        <button type="submit" , class="upvote" , value="upvote">
+        <button type="submit" , class="upvote" , value="upvote" data-toggle="tooltip" data-placement="bottom"
+            title="Upvote">
             <span class="like_count" style="color: green;">{{question.likedBy.count}}</span>
             {% if user in question.likedBy.all %}
             <i class="fa-solid fa-thumbs-up"></i>
@@ -49,7 +50,8 @@
             {% endif %}
         </button>
         &nbsp;
-        <button type="submit" , class="downvote" , value="downvote">
+        <button type="submit" , class="downvote" , value="downvote" data-toggle="tooltip" data-placement="bottom"
+            title="Downvote">
             <span class="dislike_count" style="color:rgb(180, 0, 0);">{{question.dislikedBy.count}}</span>
             {% if user in question.dislikedBy.all %}
             <i class="fa-solid fa-thumbs-down"></i>
@@ -65,7 +67,8 @@
         {% csrf_token %}
         <input type="hidden" name="question_id" value="{{question.id}}">
 
-        <button type="submit" class="bookmark" name="action" , value="bookmark">
+        <button type="submit" class="bookmark" name="action" , value="bookmark" data-toggle="tooltip"
+            data-placement="bottom" title="Bookmark">
             {% if user in question.users_bookmarked.all %}
             <i class="fa-solid fa-bookmark"></i>
             {% else %}
@@ -73,7 +76,8 @@
             {% endif %}
         </button>
 
-        <button type="submit" class="follow" name="action" , value="follow">
+        <button type="submit" class="follow" name="action" , value="follow" data-toggle="tooltip"
+            data-placement="bottom" title="Follow">
             {% if user in question.users_following.all %}
             <i class="fa-solid fa-star"></i>
             {% else %}
@@ -84,7 +88,8 @@
 
     {% if user != question.author and not user.blocked %}
     <!-- Button trigger modal -->
-    <button type="button" class="report-button" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+    <button type="button" class="report-button" data-bs-toggle="modal" data-bs-target="#staticBackdrop"
+        data-toggle="tooltip" data-placement="bottom" title="Report">
         <i class="fa-solid fa-ban" style="color: red;"></i>
     </button>
 
@@ -137,7 +142,15 @@
 <ul class="list-group ques-comments">
     {% for comment in question.comment_set.all %}
     <li class="list-group-item">
-        <div class="d-inline">{{comment.get_text}}
+        <div class="d-inline">
+            <a class="btn comment-text" data-bs-toggle="collapse" href="#comment-menu-{{comment.id}}" role="button"
+                aria-expanded="false" aria-controls="comment-menu-{{comment.id}}" data-toggle="tooltip"
+                data-placement="bottom" title="Click to see more details">
+                <span style="color: coral; display: inline-block; min-width: 20px;" class="votes" data-toggle="tooltip"
+                    data-placement="bottom" title="number of votes recieved">
+                    {{comment.get_votes}}</span> &nbsp; {{comment.get_text}}
+            </a>
+
             - {% if comment.get_author_name == 'Anonymous User' %}
             <img src="/media/default.jpg" width="20" height="20" style="border-radius: 50%;"> &nbsp;
             {{comment.get_author_name}}
@@ -150,6 +163,81 @@
         <div class="d-inline text-muted" style="position: absolute; right: 10px;">
             <small>{{comment.pub_date}}</small>
         </div>
+        <div class="collapse" id="comment-menu-{{comment.id}}" style="margin: 7px 20px 2px 35px;">
+            <div class="d-flex">
+                <div class="d-flex flex-row">
+                    <form class="vote_form icon-only-buttons" style="display:inline;">
+                        {% csrf_token %}
+                        <input type="hidden" name="obj_type" value="comment">
+                        <input type="hidden" name="obj_id" value={{comment.id}}>
+
+                        {% if user.blocked %}
+                        <input type="hidden" name="blocked_user" value="true">
+                        {% else %}
+                        <input type="hidden" name="blocked_user" value="false">
+                        {% endif %}
+
+                        <button type="submit" , class="upvote" , value="upvote" data-toggle="tooltip"
+                            data-placement="bottom" title="Upvote">
+                            <span class="like_count" style="color: green;">{{comment.likedBy.count}}</span>
+                            {% if user in comment.likedBy.all %}
+                            <i class="fa-solid fa-thumbs-up"></i>
+                            {% else %}
+                            <i class="fa-regular fa-thumbs-up"></i>
+                            {% endif %}
+                        </button>
+                        &nbsp;
+                        <button type="submit" , class="downvote" , value="downvote" data-toggle="tooltip"
+                            data-placement="bottom" title="Downvote">
+                            <span class="dislike_count"
+                                style="color:rgb(180, 0, 0);">{{comment.dislikedBy.count}}</span>
+                            {% if user in comment.dislikedBy.all %}
+                            <i class="fa-solid fa-thumbs-down"></i>
+                            {% else %}
+                            <i class="fa-regular fa-thumbs-down"></i>
+                            {% endif %}
+                        </button>
+                    </form>
+
+                    &nbsp; &nbsp; &nbsp;
+
+                    {% if user != comment.author and not user.blocked%}
+                    <!-- Button trigger modal -->
+                    <button type="button" class="report-button" data-bs-toggle="modal" data-bs-target="#staticBackdrop"
+                        data-toggle="tooltip" data-placement="bottom" title="Report">
+                        <i class="fa-solid fa-ban" style="color: red;"></i>
+                    </button>
+
+                    <!-- Modal -->
+                    <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false"
+                        tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="staticBackdropLabel">Report</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                        aria-label="Close"></button>
+                                </div>
+                                <form action="{% url 'questions:report' question.id %}" method="POST">
+                                    {% csrf_token %}
+                                    <div class="modal-body">
+                                        <input type="hidden" name="obj_type" value="c">
+                                        <textarea class="form-control" name="report_text" aria-label="With textarea"
+                                            placeholder="Author used abusive language..." required></textarea>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary"
+                                            data-bs-dismiss="modal">Close</button>
+                                        <button type="submit" name="id" value={{comment.id}}
+                                            class="btn btn-danger">Report</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
     </li>
     {% endfor %}
 
@@ -189,7 +277,8 @@
                 <input type="hidden" name="blocked_user" value="false">
                 {% endif %}
 
-                <button type="submit" , class="upvote" , value="upvote">
+                <button type="submit" , class="upvote" , value="upvote" data-toggle="tooltip" data-placement="bottom"
+                    title="Upvote">
                     <span class="like_count" style="color: green;">{{answer.likedBy.count}}</span>
                     {% if user in answer.likedBy.all %}
                     <i class="fa-solid fa-thumbs-up"></i>
@@ -198,7 +287,8 @@
                     {% endif %}
                 </button>
                 &nbsp;
-                <button type="submit" , class="downvote" , value="downvote">
+                <button type="submit" , class="downvote" , value="downvote" data-toggle="tooltip"
+                    data-placement="bottom" title="Downvote">
                     <span class="dislike_count" style="color:rgb(180, 0, 0);">{{answer.dislikedBy.count}}</span>
                     {% if user in answer.dislikedBy.all %}
                     <i class="fa-solid fa-thumbs-down"></i>
@@ -210,7 +300,8 @@
             &nbsp; &nbsp; &nbsp;
             {% if user != answer.author and not user.blocked%}
             <!-- Button trigger modal -->
-            <button type="button" class="report-button" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+            <button type="button" class="report-button" data-bs-toggle="modal" data-bs-target="#staticBackdrop"
+                data-toggle="tooltip" data-placement="bottom" title="Report">
                 <i class="fa-solid fa-ban" style="color: red;"></i>
             </button>
 
@@ -260,7 +351,15 @@
         <ul class="list-group ques-comments">
             {% for comment in answer.comment_set.all %}
             <li class="list-group-item">
-                <div class="d-inline">{{comment.get_text}}
+                <div class="d-inline">
+                    <a class="btn comment-text" data-bs-toggle="collapse" href="#comment-menu-{{comment.id}}"
+                        role="button" aria-expanded="false" aria-controls="comment-menu-{{comment.id}}"
+                        data-toggle="tooltip" data-placement="bottom" title="Click to see more details">
+                        <span style="color: coral; display: inline-block; min-width: 20px;" class="votes"
+                            data-toggle="tooltip" data-placement="bottom" title="number of votes recieved">
+                            {{comment.get_votes}}</span> &nbsp; {{comment.get_text}}
+                    </a>
+
                     - {% if comment.get_author_name == 'Anonymous User' %}
                     <img src="/media/default.jpg" width="20" height="20" style="border-radius: 50%;"> &nbsp;
                     {{comment.get_author_name}}
@@ -274,6 +373,84 @@
                 <div class="d-inline text-muted" style="position: absolute; right: 10px;">
                     <small>{{comment.pub_date}}</small>
                 </div>
+                <div class="collapse" id="comment-menu-{{comment.id}}" style="margin: 7px 20px 2px 35px;">
+                    <div class="d-flex">
+                        <div class="d-flex flex-row">
+                            <form class="vote_form icon-only-buttons" style="display:inline;">
+                                {% csrf_token %}
+                                <input type="hidden" name="obj_type" value="comment">
+                                <input type="hidden" name="obj_id" value={{comment.id}}>
+
+                                {% if user.blocked %}
+                                <input type="hidden" name="blocked_user" value="true">
+                                {% else %}
+                                <input type="hidden" name="blocked_user" value="false">
+                                {% endif %}
+
+                                <button type="submit" , class="upvote" , value="upvote" data-toggle="tooltip"
+                                    data-placement="bottom" title="Upvote">
+                                    <span class="like_count" style="color: green;">{{comment.likedBy.count}}</span>
+                                    {% if user in comment.likedBy.all %}
+                                    <i class="fa-solid fa-thumbs-up"></i>
+                                    {% else %}
+                                    <i class="fa-regular fa-thumbs-up"></i>
+                                    {% endif %}
+                                </button>
+                                &nbsp;
+                                <button type="submit" , class="downvote" , value="downvote" data-toggle="tooltip"
+                                    data-placement="bottom" title="Downvote">
+                                    <span class="dislike_count"
+                                        style="color:rgb(180, 0, 0);">{{comment.dislikedBy.count}}</span>
+                                    {% if user in comment.dislikedBy.all %}
+                                    <i class="fa-solid fa-thumbs-down"></i>
+                                    {% else %}
+                                    <i class="fa-regular fa-thumbs-down"></i>
+                                    {% endif %}
+                                </button>
+                            </form>
+
+                            &nbsp; &nbsp; &nbsp;
+
+                            {% if user != comment.author and not user.blocked%}
+                            <!-- Button trigger modal -->
+                            <button type="button" class="report-button" data-bs-toggle="modal"
+                                data-bs-target="#staticBackdrop" data-toggle="tooltip" data-placement="bottom"
+                                title="Report">
+                                <i class="fa-solid fa-ban" style="color: red;"></i>
+                            </button>
+
+                            <!-- Modal -->
+                            <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static"
+                                data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel"
+                                aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="staticBackdropLabel">Report</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                aria-label="Close"></button>
+                                        </div>
+                                        <form action="{% url 'questions:report' question.id %}" method="POST">
+                                            {% csrf_token %}
+                                            <div class="modal-body">
+                                                <input type="hidden" name="obj_type" value="c">
+                                                <textarea class="form-control" name="report_text"
+                                                    aria-label="With textarea"
+                                                    placeholder="Author used abusive language..." required></textarea>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary"
+                                                    data-bs-dismiss="modal">Close</button>
+                                                <button type="submit" name="id" value={{comment.id}}
+                                                    class="btn btn-danger">Report</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                            {% endif %}
+                        </div>
+                    </div>
             </li>
             {% endfor %}
 
@@ -350,6 +527,7 @@
 
         $(".vote_form").find(':button').click(function (e) {
             var form = $(this).closest('form');
+            var li = $(this).closest('li');
             var dataString = form.serializeArray();
             if (dataString[3]['value'] == 'true') {
                 alert("You can not vote while blocked.");
@@ -370,6 +548,9 @@
                         form.find(".upvote i").removeClass("fa-regular").addClass("fa-solid");
                     } else if (result.status == "disliked") {
                         form.find(".downvote i").removeClass("fa-regular").addClass("fa-solid");
+                    }
+                    if (result['obj_type'] == 'comment') {
+                        li.find('.votes').html(result['votes']);
                     }
                 },
                 error: function () {

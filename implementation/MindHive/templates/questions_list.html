@@ -43,7 +43,7 @@ Questions - MindHive
                         {% csrf_token %}
                         <input type="hidden" name="question_id" value="{{question.id}}">
 
-                        <button type="submit" class="bookmark" name="action" , value="bookmark">
+                        <button type="submit" class="bookmark" name="action" , value="bookmark" data-toggle="tooltip" data-placement="bottom" title="Bookmark">
                             {% if user in question.users_bookmarked.all %}
                             <i class="fa-solid fa-bookmark"></i>
                             {% else %}
@@ -51,7 +51,7 @@ Questions - MindHive
                             {% endif %}
                         </button>
 
-                        <button type="submit" class="follow" name="action" , value="follow">
+                        <button type="submit" class="follow" name="action" , value="follow" data-toggle="tooltip" data-placement="bottom" title="Follow">
                             {% if user in question.users_following.all %}
                             <i class="fa-solid fa-star"></i>
                             {% else %}
@@ -63,7 +63,7 @@ Questions - MindHive
                     <!-- report button -->
                     {% if not user.blocked %}
                     <!-- Button trigger modal -->
-                    <button type="button" class="report-button" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+                    <button type="button" class="report-button" data-bs-toggle="modal" data-bs-target="#staticBackdrop"  data-toggle="tooltip" data-placement="bottom" title="Report">
                         <i class="fa-solid fa-ban" style="color: red;"></i>
                     </button>
 

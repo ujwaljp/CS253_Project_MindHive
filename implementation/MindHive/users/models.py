@@ -39,16 +39,16 @@ class UserInfoManager(BaseUserManager):
 # declare the main User model by inheriting the AbstractUser model of Django
 class User(AbstractUser):
 
-    username = models.CharField(max_length=20,blank=False,unique=True)
+    username = models.CharField(max_length=25,blank=False,unique=True)
     email = models.EmailField(
         verbose_name='email address',
-        max_length=255,
+        max_length=50,
         unique=True,
         blank=False,
         validators=[EmailValidator()]
     )
 
-    name = models.CharField(max_length=20, blank=True, null=True)
+    name = models.CharField(max_length=30, blank=True, null=True)
 
     profile_image = models.ImageField(upload_to='profile_image', default='default.jpg')
     blocked = models.BooleanField(default=False)

@@ -22,6 +22,10 @@ class Content(models.Model):
         """return the first 70 characters of the content's text"""
         return self.text[:70]
     
+    def get_votes(self):
+        """returns the total number of votes for a question"""
+        return self.likedBy.count() - self.dislikedBy.count()
+    
     def get_author_name(self):
         """return the author's name if anonymous is False, else return Anonymous User"""
         if self.anonymous:

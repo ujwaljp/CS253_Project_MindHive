@@ -20,10 +20,6 @@ class Question(Content):
     def get_absolute_url(self):
         """returns the url to access a particular question instance"""
         return reverse('questions:view_question', args=[self.pk])
-    
-    def get_votes(self):
-        """returns the total number of votes for a question"""
-        return self.likedBy.count() - self.dislikedBy.count()
 
     def get_summary_text(self):
         """returns the summary text of the question after removing html tags"""
