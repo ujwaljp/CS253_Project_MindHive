@@ -1,0 +1,21 @@
+{% extends 'questions_list.html' %}
+
+{% block insert_title %}
+Home - MindHive
+{% endblock %}
+
+{% block heading %}
+Questions asked by {{author}}
+{% endblock %}
+
+{%block empty_message%}
+No questions to display.
+{% endblock %}
+
+{% block script %}
+<script>
+  $(document).ready(function () {
+    $("#homeButton").closest('a').addClass("active");
+  })
+</script>
+{%endblock%}

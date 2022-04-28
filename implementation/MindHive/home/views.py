@@ -77,9 +77,10 @@ def autQues(request):
     autQuestions = Question.objects.filter(author__in=user).distinct()
     context = {
         'questions': autQuestions,
-        'pop_tags': get_popular_tags()
+        'pop_tags': get_popular_tags(),
+        'author': user[0].name
     }
-    return render(request, 'home/home.html', context=context)
+    return render(request, 'home/author_questions.html', context=context)
 
 def otautQues(request, user_id):
     """author questions page view"""
@@ -87,9 +88,10 @@ def otautQues(request, user_id):
     autQuestions = Question.objects.filter(author__in=user,anonymous=False).distinct()
     context = {
         'questions': autQuestions,
-        'pop_tags': get_popular_tags()
+        'pop_tags': get_popular_tags(),
+        'author': user[0].name
     }
-    return render(request, 'home/home.html', context=context)
+    return render(request, 'home/author_questions.html', context=context)
 
 def search_results(request):
     """search results page view"""
