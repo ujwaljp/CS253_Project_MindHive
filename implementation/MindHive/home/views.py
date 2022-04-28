@@ -78,7 +78,7 @@ def autQues(request):
     context = {
         'questions': autQuestions,
         'pop_tags': get_popular_tags(),
-        'author': user[0].name
+        'title': 'My Questions'
     }
     return render(request, 'home/author_questions.html', context=context)
 
@@ -89,7 +89,7 @@ def otautQues(request, user_id):
     context = {
         'questions': autQuestions,
         'pop_tags': get_popular_tags(),
-        'author': user[0].name
+        'title': 'Questions asked by '+user.first().name
     }
     return render(request, 'home/author_questions.html', context=context)
 
