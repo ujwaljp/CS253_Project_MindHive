@@ -10,7 +10,7 @@ from home.models import Content
 class Question(Content):
     # Question-specific fields
     title = models.CharField(max_length=100)
-    tags = models.ManyToManyField(to='tags.Tag', blank=True)
+    tags = models.ManyToManyField(to='tags.Tag', blank=False)
     viewedBy = models.ManyToManyField(to='users.User', related_name='viewedBy', blank=True)
 
     def __str__(self):

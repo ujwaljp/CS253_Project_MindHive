@@ -7,7 +7,7 @@ from ckeditor.fields import RichTextField
 
 # content model, base class for the Question, Answer and Comment classes
 class Content(models.Model):
-    text = RichTextField()
+    text = RichTextField(blank=False)
     author = models.ForeignKey(to='users.User', on_delete=models.SET_NULL, related_name='author', null=True)
     anonymous = models.BooleanField(default=False)
     pub_date = models.DateTimeField('date published', default = datetime.now(), blank=True, null=True)

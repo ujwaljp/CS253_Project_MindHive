@@ -68,7 +68,12 @@ def edit_question(request, question_id):
         
         # if form is not valid, return the form with errors
         else:
-            raise Http404(form.errors)
+            context = {
+                'question': question,
+                'user': request.user,
+                'form': form
+            }
+            return render(request, 'questions/askform.html', context)
 
     # for GET request
     question = get_object_or_404(Question, id=question_id)
