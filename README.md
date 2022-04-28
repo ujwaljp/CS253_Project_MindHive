@@ -62,6 +62,7 @@ Install all the dependencies-
 ```
 pip install -r Requirements.txt
 ```
+if it does not work then we have to install each requirements one by one.
 ```
 cd MindHive
 ```
